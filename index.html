@@ -2980,7 +2980,7 @@
         </div>
 
         <div class="form-group" style="margin-bottom: 18px;">
-          <label for="admin-password" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: block;">Password or PIN</label>
+          <label for="admin-password" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: block;">Password</label>
           <div style="position: relative;">
             <input type="password" id="admin-password" class="input-control" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 42px;">
             <button type="button" id="btn-toggle-password-view" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px;" title="Show/Hide Password">👁️</button>
@@ -2993,8 +2993,8 @@
       </form>
 
       <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
-        <div>👑 <strong>Transit Admin (Tariffs &amp; Fleet):</strong> <code>admin</code> / <code>admin</code> (or PIN <code>6700</code>)</div>
-        <div style="margin-top: 4px;">👮 <strong>Complaints Officer (TMO Desk):</strong> <code>officer</code> / <code>officer</code> (or <code>tmo2026</code>)</div>
+        <div>👑 <strong>Transit Admin (Tariffs &amp; Fleet):</strong> <code>admin</code> / <code>admin</code></div>
+        <div style="margin-top: 4px;">👮 <strong>Complaints Officer (TMO Desk):</strong> <code>officer</code> / <code>officer</code></div>
       </div>
     </div>
   </div>
@@ -4958,13 +4958,13 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         const cleanUser = (username || '').trim().toLowerCase();
         const cleanPass = (password || '').trim();
 
-        // 1. Transit Administrator Credentials
-        const adminUsers = ['admin', 'admin@catbalogan.gov.ph', 'lgu_traffic', 'city_hall'];
-        const adminPasses = ['admin', 'samar2026', 'catbalogan6700', '6700'];
+        // 1. Strictly Assigned Transit Administrator Credentials (No generic PINs)
+        const adminUsers = ['admin', 'admin@catbalogan.gov.ph'];
+        const adminPasses = ['admin'];
 
-        // 2. Complaints Officer / TMO Desk Credentials
-        const officerUsers = ['officer', 'officer@catbalogan.gov.ph', 'tmo', 'tmo_staff', 'inspector', 'staff', 'employee'];
-        const officerPasses = ['officer', 'tmo2026', 'samar2026', '6700', 'staff'];
+        // 2. Strictly Assigned Complaints Officer Credentials (No generic PINs)
+        const officerUsers = ['officer', 'officer@catbalogan.gov.ph', 'tmo'];
+        const officerPasses = ['officer'];
 
         if (adminUsers.includes(cleanUser) && adminPasses.includes(cleanPass)) {
           this.resetAttempts();
