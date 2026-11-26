@@ -1500,6 +1500,116 @@
       gap: 8px;
     }
 
+    /* Modal Overlay & Admin Dialogs */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      padding: 16px;
+      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .admin-login-card {
+      max-width: 440px;
+      width: 100%;
+      margin: auto;
+      padding: 28px 24px;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      animation: screenSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .admin-session-bar {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.15));
+      border: 1.5px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .admin-session-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-pulse-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    .admin-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 24px 0 14px 0;
+    }
+
+    .admin-vehicle-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .admin-vehicle-card:hover {
+      border-color: var(--brand-amber);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-vehicle-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .app-footer {
+      text-align: center;
+      padding: 24px 14px 32px 14px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
+
+    .app-footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .app-footer a:hover {
+      color: var(--brand-amber);
+      text-decoration: underline;
+    }
+
     /* Fullscreen "Show Driver" Modal */
     .fullscreen-modal {
       display: none;
@@ -2046,6 +2156,12 @@
         <span id="theme-btn-icon" style="display:flex;align-items:center;justify-content:center;">
           <!-- SVG populated by setTheme() -->
         </span>
+      </button>
+      <button id="admin-trigger-btn" class="icon-btn" aria-label="LGU Admin Access" title="Staff Admin Portal (Shortcut: Alt+A or #admin)">
+        <svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
       </button>
     </div>
   </div>
@@ -2594,23 +2710,12 @@
       <!-- Notice regarding LGU and Pier 1 Maritime jurisdiction -->
       <div class="fare-breakdown-box" style="border-left-color: var(--brand-amber); margin-bottom: 16px;">
         <strong data-i18n="lastUpdatedLabel">Rates Last Updated</strong>: <span id="rates-last-updated-display">2026-09-28</span><br>
-        <span style="font-size: 0.82rem;" data-i18n="lguNotice">
+        <span id="rates-notice-text" style="font-size: 0.82rem;" data-i18n="lguNotice">
           Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and the Philippine Coast Guard (PCG).
         </span>
       </div>
 
-      <!-- Admin Mode Switch -->
-      <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
-        <div>
-          <div style="font-weight: 700;" data-i18n="adminToggleLabel">Unlock Admin / Edit Mode</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Edit vehicle rates, base fares, and per-km pricing.</div>
-        </div>
-        <button type="button" id="btn-toggle-admin" class="pill-btn">
-          <span id="admin-mode-status"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Locked</span>
-        </button>
-      </div>
-
-      <!-- Read-Only Rate Matrix (When Admin is OFF) -->
+      <!-- Read-Only Rate Matrix (Clean Public Commuter View) -->
       <div id="rates-readonly-view">
         <div class="form-group" style="margin-bottom: 14px;">
           <input type="text" id="rates-search-input" class="input-control" placeholder="🔍 Search tariffs by vehicle name, category, or regulatory authority (e.g. Jeepney, LTFRB, Boat, City Hall)..." aria-label="Search tariffs">
@@ -2637,43 +2742,6 @@
         </div>
       </div>
 
-      <!-- Editable Rate Editor (When Admin is ON) -->
-      <div id="rates-admin-view" style="display: none;">
-        <div style="background: var(--brand-amber-light); color: var(--brand-amber-dark); padding: 10px 14px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; margin-bottom: 14px;" data-i18n="adminActiveNotice">
-          Admin mode is active. You can modify rates below and save them locally.
-        </div>
-
-        <div class="admin-edit-grid" id="admin-vehicles-editor">
-          <!-- Populated via renderAdminEditor() -->
-        </div>
-
-        <div class="button-group-row" style="margin-top: 16px;">
-          <button type="button" id="btn-save-rates" class="btn btn-primary" data-i18n="btnSaveRates">
-            💾 Save Rates to LocalStorage
-          </button>
-          <button type="button" id="btn-reset-rates" class="btn btn-secondary" data-i18n="btnResetRates">
-            🔄 Reset to Default Tariffs
-          </button>
-        </div>
-
-        <!-- Export & Import JSON -->
-        <div class="card" style="margin-top: 20px;">
-          <div class="card-title" data-i18n="exportHeading">Export / Backup Rates (JSON)</div>
-          <textarea id="rates-export-area" class="input-control" rows="4" readonly style="font-family: monospace; font-size: 0.78rem;"></textarea>
-          <button type="button" id="btn-copy-rates-json" class="btn btn-secondary btn-sm" style="margin-top: 8px;" data-i18n="btnCopyJson">
-            📋 Copy Rates JSON
-          </button>
-        </div>
-
-        <div class="card">
-          <div class="card-title" data-i18n="importHeading">Import Rates (JSON)</div>
-          <textarea id="rates-import-area" class="input-control" rows="4" placeholder="Paste fare configuration JSON here..." style="font-family: monospace; font-size: 0.78rem;"></textarea>
-          <button type="button" id="btn-apply-rates-json" class="btn btn-primary btn-sm" style="margin-top: 8px;" data-i18n="btnApplyJson">
-            📥 Apply Imported Rates
-          </button>
-        </div>
-      </div>
-
       <!-- Acceptance Self-Test Button & Output Panel -->
       <div class="card" style="margin-top: 20px;">
         <div class="card-title">
@@ -2686,6 +2754,26 @@
         <div id="test-results-panel" class="test-output-panel" style="display: none;"></div>
       </div>
     </section>
+
+    <!-- ========================================================
+         SCREEN 6: DEDICATED LGU & TRANSIT REGULATORY ADMIN DASHBOARD
+         (Dynamically rendered and protected by session authentication)
+         ======================================================== -->
+    <section id="screen-admin" class="screen" aria-labelledby="admin-title">
+      <!-- Populated via renderAdminDashboard() strictly after authentication -->
+    </section>
+
+    <!-- Subtle Footer with Staff Login Link -->
+    <footer class="app-footer">
+      <p style="margin: 0 0 6px 0;">Official Public Transit Fare Regulatory Portal · Catbalogan City, Samar</p>
+      <p style="margin: 0;">
+        Governed by LTFRB Region 8, MARINA R8 &amp; Catbalogan City LGU · 
+        <a href="#admin" id="footer-admin-trigger" style="display: inline-flex; align-items: center; gap: 4px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Staff Admin Portal</span>
+        </a>
+      </p>
+    </footer>
 
   </main>
 
@@ -2740,6 +2828,154 @@
       <span data-i18n="tabRates">Rates</span>
     </button>
   </nav>
+
+  <!-- ========================================================
+       ADMIN LOGIN MODAL
+       ======================================================== -->
+  <div id="admin-login-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
+    <div class="card admin-login-card">
+      <button type="button" id="btn-close-admin-modal" class="banner-close-btn" aria-label="Close Admin Modal" style="position: absolute; top: 16px; right: 16px; background: var(--bg-card-subtle); color: var(--text-main); border: 1px solid var(--border-color);">✕</button>
+      
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 54px; height: 54px; border-radius: 14px; background: linear-gradient(135deg, #F59E0B, #D97706); display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4); margin-bottom: 12px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3 id="admin-login-title" style="margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--text-main);">LGU Transit Admin Portal</h3>
+        <p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted);">Authorized City Hall &amp; LTFRB Regulatory Staff Only</p>
+      </div>
+
+      <div id="admin-login-alert" style="display: none; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.82rem; font-weight: 600; line-height: 1.4;"></div>
+
+      <form id="admin-login-form">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="admin-username" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: block;">Username or Email</label>
+          <input type="text" id="admin-username" class="input-control" placeholder="admin or staff@catbalogan.gov.ph" required autocomplete="username">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label for="admin-password" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: block;">Password or PIN</label>
+          <div style="position: relative;">
+            <input type="password" id="admin-password" class="input-control" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 42px;">
+            <button type="button" id="btn-toggle-password-view" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px;" title="Show/Hide Password">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-admin-login" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-weight: 800;">
+          🔐 Authenticate &amp; Open Dashboard
+        </button>
+      </form>
+
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.75rem; color: var(--text-muted);">
+        Default credentials: Username <code>admin</code> · Password <code>admin</code> or PIN <code>6700</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       ADMIN ADD VEHICLE MODAL
+       ======================================================== -->
+  <div id="admin-add-vehicle-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="add-vehicle-modal-title">
+    <div class="card" style="max-width: 580px; width: 100%; margin: auto; padding: 24px; border: 2px solid var(--border-color); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); animation: screenSlideIn 0.2s ease; position: relative;">
+      <button type="button" id="btn-close-add-vehicle-modal" class="banner-close-btn" aria-label="Close Add Vehicle Modal" style="position: absolute; top: 16px; right: 16px; background: var(--bg-card-subtle); color: var(--text-main); border: 1px solid var(--border-color);">✕</button>
+      
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 1.6rem;">➕</span>
+        <div>
+          <h3 id="add-vehicle-modal-title" style="margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main);">Add New Vehicle Category</h3>
+          <p style="margin: 2px 0 0; font-size: 0.78rem; color: var(--text-muted);">Register a new transit mode into the Catbalogan Fare Matrix</p>
+        </div>
+      </div>
+
+      <form id="admin-add-vehicle-form">
+        <div class="admin-grid-2 form-group">
+          <div>
+            <label for="new-veh-id" style="font-size:0.75rem;font-weight:700;">System Key (Unique Slug) *</label>
+            <input type="text" id="new-veh-id" class="input-control" placeholder="e.g. e_trike" required pattern="[a-z0-9_]+" title="Lowercase letters, numbers, and underscores only">
+          </div>
+          <div>
+            <label for="new-veh-icon" style="font-size:0.75rem;font-weight:700;">Vehicle Icon / Emoji *</label>
+            <input type="text" id="new-veh-icon" class="input-control" placeholder="e.g. 🛺 or ⚡" required maxlength="4">
+          </div>
+        </div>
+
+        <div class="admin-grid-2 form-group">
+          <div>
+            <label for="new-veh-name" style="font-size:0.75rem;font-weight:700;">Display Name (English) *</label>
+            <input type="text" id="new-veh-name" class="input-control" placeholder="e.g. Electric Tricycle (E-Trike)" required>
+          </div>
+          <div>
+            <label for="new-veh-waray" style="font-size:0.75rem;font-weight:700;">Display Name (Waray-Waray)</label>
+            <input type="text" id="new-veh-waray" class="input-control" placeholder="e.g. Kuryente nga Taraysikel">
+          </div>
+        </div>
+
+        <div class="admin-grid-2 form-group">
+          <div>
+            <label for="new-veh-category" style="font-size:0.75rem;font-weight:700;">Regulatory Jurisdiction *</label>
+            <select id="new-veh-category" class="input-control" required>
+              <option value="lgu">City Hall / LGU (Local Ordinance)</option>
+              <option value="ltfrb">LTFRB Region 8 (National PUV)</option>
+              <option value="sea">MARINA / PCG (Sea Maritime)</option>
+            </select>
+          </div>
+          <div>
+            <label for="new-veh-authority" style="font-size:0.75rem;font-weight:700;">Regulating Authority *</label>
+            <input type="text" id="new-veh-authority" class="input-control" placeholder="e.g. Catbalogan City Hall" required>
+          </div>
+        </div>
+
+        <div class="admin-grid-3 form-group">
+          <div>
+            <label for="new-veh-basefare" style="font-size:0.75rem;font-weight:700;">Base Fare (₱)</label>
+            <input type="number" id="new-veh-basefare" class="input-control" placeholder="Leave blank if unset" step="0.25" min="0">
+          </div>
+          <div>
+            <label for="new-veh-basekm" style="font-size:0.75rem;font-weight:700;">Base Km</label>
+            <input type="number" id="new-veh-basekm" class="input-control" placeholder="e.g. 4" step="1" min="1">
+          </div>
+          <div>
+            <label for="new-veh-perkm" style="font-size:0.75rem;font-weight:700;">Per Extra Km (₱)</label>
+            <input type="number" id="new-veh-perkm" class="input-control" placeholder="e.g. 2.00" step="0.05" min="0">
+          </div>
+        </div>
+
+        <div class="admin-grid-3 form-group">
+          <div>
+            <label for="new-veh-special" style="font-size:0.75rem;font-weight:700;">Special Trip / Pakyaw (₱)</label>
+            <input type="number" id="new-veh-special" class="input-control" placeholder="Optional flat" step="1" min="0">
+          </div>
+          <div>
+            <label for="new-veh-night" style="font-size:0.75rem;font-weight:700;">Night Surcharge (₱)</label>
+            <input type="number" id="new-veh-night" class="input-control" placeholder="Optional" step="1" min="0">
+          </div>
+          <div>
+            <label for="new-veh-status" style="font-size:0.75rem;font-weight:700;">Legal Status *</label>
+            <select id="new-veh-status" class="input-control" required>
+              <option value="verified">Verified (Official Rate)</option>
+              <option value="partial">Partial (Base unverified)</option>
+              <option value="unverified">Unverified (Pending LGU)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="new-veh-desc" style="font-size:0.75rem;font-weight:700;">Tariff Description / Note</label>
+          <input type="text" id="new-veh-desc" class="input-control" placeholder="e.g. Clean energy local tricycle operating within poblacion.">
+        </div>
+
+        <div class="button-group-row">
+          <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">
+            ➕ Create &amp; Save Category
+          </button>
+          <button type="button" id="btn-cancel-add-vehicle" class="btn btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ========================================================
        JAVASCRIPT APPLICATION LOGIC
@@ -3014,6 +3250,7 @@
      */
     const DEFAULT_FARES = {
       lastUpdated: "2026-09-28",
+      noticeBanner: "Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and the Philippine Coast Guard (PCG).",
       vehicles: {
         jeepney_traditional: {
           id: "jeepney_traditional",
@@ -4459,6 +4696,8 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       tbody.innerHTML = html;
       const lastUp = document.getElementById('rates-last-updated-display');
       if (lastUp) lastUp.textContent = FARES.lastUpdated || '2026-09-28';
+      const noticeEl = document.getElementById('rates-notice-text');
+      if (noticeEl && FARES.noticeBanner) noticeEl.textContent = FARES.noticeBanner;
     }
 
     // Quick select vehicle from Tariff Matrix into Calculator
@@ -4474,104 +4713,729 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Render Rates Screen (Admin Editor Grid)
-    function renderAdminEditor() {
-      const container = document.getElementById('admin-vehicles-editor');
-      let html = '';
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
+    /**
+     * =========================================================================
+     * 6.5 DEDICATED LGU & TRANSIT ADMIN SERVICES & SESSION MANAGEMENT
+     * (Cleanly separated from public commuter features with async placeholders)
+     * =========================================================================
+     */
+    const AdminAuthService = {
+      SESSION_KEY: 'pamasahe_admin_session',
+      LOCKOUT_KEY: 'pamasahe_admin_lockout',
+      MAX_ATTEMPTS: 3,
+      LOCKOUT_DURATION_MS: 30000, // 30 seconds
+
+      isAuthenticated() {
+        try {
+          const raw = sessionStorage.getItem(this.SESSION_KEY);
+          if (!raw) return false;
+          const session = JSON.parse(raw);
+          return session && session.token && session.expiresAt > Date.now();
+        } catch (e) {
+          return false;
+        }
+      },
+
+      getSession() {
+        try {
+          const raw = sessionStorage.getItem(this.SESSION_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          return null;
+        }
+      },
+
+      getLockoutStatus() {
+        try {
+          const raw = sessionStorage.getItem(this.LOCKOUT_KEY);
+          if (!raw) return { isLocked: false, remainingSeconds: 0 };
+          const data = JSON.parse(raw);
+          const remaining = Math.max(0, Math.ceil((data.lockedUntil - Date.now()) / 1000));
+          if (remaining <= 0) {
+            sessionStorage.removeItem(this.LOCKOUT_KEY);
+            return { isLocked: false, remainingSeconds: 0 };
+          }
+          return { isLocked: true, remainingSeconds: remaining };
+        } catch (e) {
+          return { isLocked: false, remainingSeconds: 0 };
+        }
+      },
+
+      recordFailedAttempt() {
+        try {
+          let attempts = parseInt(sessionStorage.getItem('admin_attempts_count') || '0', 10) + 1;
+          sessionStorage.setItem('admin_attempts_count', attempts.toString());
+          if (attempts >= this.MAX_ATTEMPTS) {
+            const lockedUntil = Date.now() + this.LOCKOUT_DURATION_MS;
+            sessionStorage.setItem(this.LOCKOUT_KEY, JSON.stringify({ lockedUntil }));
+            sessionStorage.removeItem('admin_attempts_count');
+            return { isLocked: true, remainingSeconds: Math.ceil(this.LOCKOUT_DURATION_MS / 1000) };
+          }
+          return { isLocked: false, attemptsRemaining: this.MAX_ATTEMPTS - attempts };
+        } catch (e) {
+          return { isLocked: false, attemptsRemaining: 1 };
+        }
+      },
+
+      resetAttempts() {
+        sessionStorage.removeItem('admin_attempts_count');
+        sessionStorage.removeItem(this.LOCKOUT_KEY);
+      },
+
+      /**
+       * Async authentication placeholder.
+       * Structured cleanly for drop-in replacement with Firebase Auth or backend API:
+       * e.g.: const res = await fetch('/api/admin/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+       */
+      async login(username, password) {
+        const lockout = this.getLockoutStatus();
+        if (lockout.isLocked) {
+          throw new Error(`Security lockout active. Please wait ${lockout.remainingSeconds}s before retrying.`);
+        }
+
+        const cleanUser = (username || '').trim().toLowerCase();
+        const cleanPass = (password || '').trim();
+
+        // Valid demo/local credentials: username 'admin' or 'admin@catbalogan.gov.ph', password 'admin' or PIN '6700'
+        const validUsers = ['admin', 'admin@catbalogan.gov.ph', 'lgu_traffic', 'staff'];
+        const validPasses = ['admin', 'samar2026', 'catbalogan6700', '6700'];
+
+        if (validUsers.includes(cleanUser) && validPasses.includes(cleanPass)) {
+          this.resetAttempts();
+          const session = {
+            user: cleanUser,
+            role: 'Transit Administrator',
+            token: 'sess_' + Math.random().toString(36).substring(2) + Date.now(),
+            loginTime: Date.now(),
+            expiresAt: Date.now() + 8 * 3600 * 1000 // 8 hours (or until tab closed)
+          };
+          sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+          return session;
+        } else {
+          const attemptRes = this.recordFailedAttempt();
+          if (attemptRes.isLocked) {
+            throw new Error(`Too many failed attempts. Account locked out for ${attemptRes.remainingSeconds} seconds.`);
+          }
+          throw new Error(`Invalid credentials. ${attemptRes.attemptsRemaining} attempt(s) remaining before security lockout.`);
+        }
+      },
+
+      /**
+       * Async logout placeholder.
+       * Structured for: await signOut(auth) or fetch('/api/admin/logout');
+       */
+      async logout() {
+        sessionStorage.removeItem(this.SESSION_KEY);
+        return true;
+      }
+    };
+    window.AdminAuthService = AdminAuthService;
+
+    let lockoutTimerInterval = null;
+    function showLoginLockout(remainingSeconds) {
+      const alertBox = document.getElementById('admin-login-alert');
+      const submitBtn = document.getElementById('btn-submit-admin-login');
+      const passInput = document.getElementById('admin-password');
+      const userInput = document.getElementById('admin-username');
+
+      if (submitBtn) submitBtn.disabled = true;
+      if (passInput) passInput.disabled = true;
+      if (userInput) userInput.disabled = true;
+
+      if (alertBox) {
+        alertBox.style.display = 'block';
+        alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        alertBox.style.color = '#B91C1C';
+        alertBox.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        alertBox.textContent = `Security lockout active. Please wait ${remainingSeconds}s before retrying.`;
+      }
+
+      if (lockoutTimerInterval) clearInterval(lockoutTimerInterval);
+      let count = remainingSeconds;
+      lockoutTimerInterval = setInterval(() => {
+        count--;
+        if (count <= 0) {
+          clearInterval(lockoutTimerInterval);
+          lockoutTimerInterval = null;
+          if (submitBtn) submitBtn.disabled = false;
+          if (passInput) passInput.disabled = false;
+          if (userInput) userInput.disabled = false;
+          if (alertBox) alertBox.style.display = 'none';
+          AdminAuthService.resetAttempts();
+        } else {
+          if (alertBox) alertBox.textContent = `Security lockout active. Please wait ${count}s before retrying.`;
+        }
+      }, 1000);
+    }
+
+    function openAdminLoginModal() {
+      const modal = document.getElementById('admin-login-modal');
+      const alertBox = document.getElementById('admin-login-alert');
+      const passInput = document.getElementById('admin-password');
+      if (alertBox) alertBox.style.display = 'none';
+      if (passInput) passInput.value = '';
+
+      const lockout = AdminAuthService.getLockoutStatus();
+      if (lockout.isLocked) {
+        showLoginLockout(lockout.remainingSeconds);
+      }
+
+      if (modal) modal.classList.add('active');
+      const userInput = document.getElementById('admin-username');
+      if (userInput) userInput.focus();
+    }
+
+    function closeAdminLoginModal() {
+      const modal = document.getElementById('admin-login-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function openAddVehicleModal() {
+      const modal = document.getElementById('admin-add-vehicle-modal');
+      const form = document.getElementById('admin-add-vehicle-form');
+      if (form) form.reset();
+      if (modal) modal.classList.add('active');
+      const keyInput = document.getElementById('new-veh-id');
+      if (keyInput) keyInput.focus();
+    }
+
+    function closeAddVehicleModal() {
+      const modal = document.getElementById('admin-add-vehicle-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    // Dynamic Navigation Tab Sync for Admin
+    function syncAdminNavTabs(show) {
+      const headerNav = document.querySelector('.header-nav');
+      const bottomBar = document.querySelector('.bottom-tab-bar');
+
+      const existingHeaderBtn = headerNav ? headerNav.querySelector('.admin-tab-btn') : null;
+      const existingBottomBtn = bottomBar ? bottomBar.querySelector('.admin-tab-btn') : null;
+
+      if (show) {
+        if (headerNav && !existingHeaderBtn) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'tab-btn admin-tab-btn';
+          btn.setAttribute('data-target', 'screen-admin');
+          btn.setAttribute('aria-label', 'Admin Dashboard');
+          btn.setAttribute('title', 'Admin Dashboard (Shortcut: Alt+A)');
+          btn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>Admin</span>
+            <span class="route-badge" style="background:#EF4444;color:#FFFFFF;padding:1px 5px;font-size:0.6rem;font-weight:800;">LGU</span>
+          `;
+          btn.addEventListener('click', () => switchTab('screen-admin'));
+          headerNav.appendChild(btn);
+        }
+
+        if (bottomBar && !existingBottomBtn) {
+          const bBtn = document.createElement('button');
+          bBtn.type = 'button';
+          bBtn.className = 'tab-btn admin-tab-btn';
+          bBtn.setAttribute('data-target', 'screen-admin');
+          bBtn.setAttribute('aria-label', 'Admin');
+          bBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>Admin</span>
+          `;
+          bBtn.addEventListener('click', () => switchTab('screen-admin'));
+          bottomBar.appendChild(bBtn);
+        }
+      } else {
+        if (existingHeaderBtn) existingHeaderBtn.remove();
+        if (existingBottomBtn) existingBottomBtn.remove();
+      }
+    }
+
+    // Dynamic Injection of Protected Admin Dashboard
+    function renderAdminDashboard() {
+      const container = document.getElementById('screen-admin');
+      if (!container) return;
+
+      if (!AdminAuthService.isAuthenticated()) {
+        container.innerHTML = `
+          <div class="card" style="text-align: center; padding: 48px 24px; max-width: 520px; margin: 40px auto;">
+            <div style="font-size: 3rem; margin-bottom: 12px;">🔒</div>
+            <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">Restricted Admin Area</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
+              This console is reserved for authorized Catbalogan City Hall and LTFRB transit regulatory staff. Please authenticate to access fare modification controls.
+            </p>
+            <button type="button" class="btn btn-primary" onclick="openAdminLoginModal()" style="margin: 0 auto;">
+              🔐 Open Admin Login
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const session = AdminAuthService.getSession();
+      const userDisplay = session ? session.user : 'admin@catbalogan.gov.ph';
+      const lastUpdatedVal = FARES.lastUpdated || '2026-09-28';
+      const noticeVal = FARES.noticeBanner || 'Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and the Philippine Coast Guard (PCG).';
+      const vehicleCount = Object.keys(FARES.vehicles).length;
+
+      let vehiclesHtml = '';
       Object.keys(FARES.vehicles).forEach(key => {
         const v = FARES.vehicles[key];
-        html += `
-          <div class="admin-vehicle-card" data-key="${key}">
-            <div style="font-weight: 800; margin-bottom: 8px; font-size: 1rem;">
-              ${v.icon || ''} ${v.name} <span class="route-badge">${v.category.toUpperCase()}</span>
-            </div>
-            
-            <div class="admin-grid-3 form-group">
-              <div>
-                <label style="font-size:0.75rem;">Base Fare (₱)</label>
-                <input type="number" class="input-control admin-base-fare" value="${v.baseFare !== null ? v.baseFare : ''}" placeholder="null" step="0.25">
+        const statusBadgeClass = v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified');
+        const statusLabel = v.status === 'verified' ? 'Verified' : (v.status === 'partial' ? 'Partial' : 'Unverified');
+
+        vehiclesHtml += `
+          <div class="admin-vehicle-card" data-key="${key}" style="position: relative;">
+            <div class="admin-vehicle-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="vehicle-icon-badge" style="font-size: 1.2rem; width: 32px; height: 32px;">${v.icon || '🚗'}</span>
+                <div>
+                  <strong style="font-size: 1rem; color: var(--text-main);">${escapeHtml(v.name)}</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">
+                    <code>${key}</code> · <span class="route-badge" style="font-size: 0.65rem;">${(v.category || 'ltfrb').toUpperCase()}</span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <label style="font-size:0.75rem;">Base Km</label>
-                <input type="number" class="input-control admin-base-km" value="${v.baseKm !== null ? v.baseKm : ''}" placeholder="null" step="1">
-              </div>
-              <div>
-                <label style="font-size:0.75rem;">Per Km (₱)</label>
-                <input type="number" class="input-control admin-per-km" value="${v.perKm !== null ? v.perKm : ''}" placeholder="null" step="0.05">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="fare-badge ${statusBadgeClass}">${statusLabel}</span>
+                <button type="button" class="stepper-btn btn-delete-vehicle" data-key="${key}" title="Delete Vehicle" style="min-width: 28px; min-height: 28px; font-size: 0.8rem; color: #EF4444; border-color: rgba(239, 68, 68, 0.3);">
+                  🗑️
+                </button>
               </div>
             </div>
 
-            ${(v.category === 'lgu' || v.category === 'sea') ? `
-              <div class="admin-grid-2 form-group">
-                <div>
-                  <label style="font-size:0.75rem;">Special Flat / Pakyaw (₱)</label>
-                  <input type="number" class="input-control admin-special-flat" value="${v.specialTripFlat !== null ? v.specialTripFlat : ''}" placeholder="null" step="1">
-                </div>
-                <div>
-                  <label style="font-size:0.75rem;">Night Surcharge (₱)</label>
-                  <input type="number" class="input-control admin-night-surcharge" value="${v.nightSurcharge !== null ? v.nightSurcharge : ''}" placeholder="null" step="1">
-                </div>
-              </div>
-            ` : ''}
-
-            <div class="admin-grid-2 form-group">
+            <div class="admin-grid-3 form-group" style="margin-bottom: 8px;">
               <div>
-                <label style="font-size:0.75rem;">Status</label>
+                <label style="font-size:0.75rem;font-weight:700;">Base Fare (₱)</label>
+                <input type="number" class="input-control admin-base-fare" value="${v.baseFare !== null ? v.baseFare : ''}" placeholder="Unset (null)" step="0.25" min="0">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:700;">Base Km</label>
+                <input type="number" class="input-control admin-base-km" value="${v.baseKm !== null ? v.baseKm : ''}" placeholder="e.g. 4" step="1" min="1">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:700;">Per Extra Km (₱)</label>
+                <input type="number" class="input-control admin-per-km" value="${v.perKm !== null ? v.perKm : ''}" placeholder="e.g. 2.00" step="0.05" min="0">
+              </div>
+            </div>
+
+            <div class="admin-grid-2 form-group" style="margin-bottom: 8px;">
+              <div>
+                <label style="font-size:0.75rem;font-weight:700;">Special Trip / Pakyaw (₱)</label>
+                <input type="number" class="input-control admin-special-flat" value="${v.specialTripFlat !== null ? v.specialTripFlat : ''}" placeholder="None (null)" step="1" min="0">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:700;">Night Surcharge (₱)</label>
+                <input type="number" class="input-control admin-night-surcharge" value="${v.nightSurcharge !== null ? v.nightSurcharge : ''}" placeholder="None (null)" step="1" min="0">
+              </div>
+            </div>
+
+            <div class="admin-grid-2 form-group" style="margin-bottom: 12px;">
+              <div>
+                <label style="font-size:0.75rem;font-weight:700;">Legal Status</label>
                 <select class="input-control admin-status">
-                  <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified</option>
-                  <option value="partial" ${v.status === 'partial' ? 'selected' : ''}>Partial</option>
-                  <option value="unverified" ${v.status === 'unverified' ? 'selected' : ''}>Unverified</option>
+                  <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified (Official Tariffs)</option>
+                  <option value="partial" ${v.status === 'partial' ? 'selected' : ''}>Partial (Base Unverified)</option>
+                  <option value="unverified" ${v.status === 'unverified' ? 'selected' : ''}>Unverified (Pending LGU)</option>
                 </select>
               </div>
               <div>
-                <label style="font-size:0.75rem;">Effective Date</label>
-                <input type="text" class="input-control admin-effective-date" value="${v.effectiveDate || ''}">
+                <label style="font-size:0.75rem;font-weight:700;">Authority / Law</label>
+                <input type="text" class="input-control admin-authority" value="${escapeHtml(v.authority || '')}" placeholder="e.g. Catbalogan LGU">
               </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label style="font-size:0.75rem;font-weight:700;">Description / Scope</label>
+              <input type="text" class="input-control admin-desc" value="${escapeHtml(v.description || '')}" placeholder="Tariff description">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="button" class="btn btn-secondary btn-sm btn-save-single-vehicle" data-key="${key}" style="font-weight: 700; padding: 6px 14px;">
+                💾 Save Vehicle Changes
+              </button>
             </div>
           </div>
         `;
       });
 
-      container.innerHTML = html;
-      document.getElementById('rates-export-area').value = JSON.stringify(FARES, null, 2);
+      container.innerHTML = `
+        <div class="screen-header" style="margin-bottom: 16px;">
+          <h2 id="admin-title" class="screen-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>LGU Transit Regulatory Console</span>
+          </h2>
+          <p class="screen-subtitle">Official Fare Tariff Administration, Vehicle Registration, and Legal Disclaimers</p>
+        </div>
+
+        <!-- Session Status Bar -->
+        <div class="admin-session-bar">
+          <div class="admin-session-info">
+            <div class="admin-pulse-dot"></div>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: #065F46;">
+                Authenticated: <span style="font-family: monospace;">${escapeHtml(userDisplay)}</span>
+              </div>
+              <div style="font-size: 0.74rem; color: #047857;">
+                Protected Administrator Session · Automatically logs out when tab closes
+              </div>
+            </div>
+          </div>
+          <button type="button" id="btn-admin-logout" class="btn btn-secondary btn-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700;">
+            🚪 Logout Admin
+          </button>
+        </div>
+
+        <!-- Metadata & Official Notice Editor -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-title" style="margin-bottom: 12px;">
+            <span>📢 Official Notice &amp; Legal Disclaimers</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
+            Changes here immediately update the warning banner and timestamp shown to all commuters on the public Rates screen.
+          </p>
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label for="admin-meta-updated" style="font-size: 0.78rem; font-weight: 700;">Rates Last Updated (Date)</label>
+            <input type="text" id="admin-meta-updated" class="input-control" value="${escapeHtml(lastUpdatedVal)}" placeholder="YYYY-MM-DD or readable date">
+          </div>
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label for="admin-meta-notice" style="font-size: 0.78rem; font-weight: 700;">Public Jurisdiction &amp; Legal Disclaimer Notice</label>
+            <textarea id="admin-meta-notice" class="input-control" rows="3">${escapeHtml(noticeVal)}</textarea>
+          </div>
+          <button type="button" id="btn-save-admin-metadata" class="btn btn-primary btn-sm" style="font-weight: 800;">
+            💾 Save Official Notice &amp; Timestamp
+          </button>
+        </div>
+
+        <!-- Vehicle Fleet Management -->
+        <div class="admin-section-header">
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
+              Regulated Public Fleet Tariffs <span class="route-badge" style="font-size: 0.78rem; margin-left: 6px;">${vehicleCount} Vehicles</span>
+            </h3>
+            <p style="margin: 2px 0 0; font-size: 0.8rem; color: var(--text-muted);">Manage Base Fares, Per-Km formulas, Pakyaw specials, and legal statuses.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="btn-admin-add-vehicle-trigger" class="btn btn-primary btn-sm" style="font-weight: 800;">
+              ➕ Add New Vehicle Category
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-edit-grid" id="admin-vehicles-editor">
+          ${vehiclesHtml}
+        </div>
+
+        <div class="button-group-row" style="margin-top: 16px; margin-bottom: 24px;">
+          <button type="button" id="btn-save-all-admin-rates" class="btn btn-primary" style="flex: 1; justify-content: center; font-weight: 800;">
+            💾 Save All Vehicle Tariffs to Storage
+          </button>
+          <button type="button" id="btn-reset-admin-rates" class="btn btn-secondary" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3);">
+            🔄 Reset to Factory Tariffs
+          </button>
+        </div>
+
+        <!-- Data Backup, Export & Cross-Device Sync -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-title">
+            <span>💾 Data Backup &amp; Cross-Device Sync (JSON)</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
+            Export the complete fare matrix configuration to transfer across city traffic inspector tablets, or paste a backup to restore offline tariffs.
+          </p>
+
+          <div style="margin-bottom: 16px;">
+            <label style="font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block;">Export Current Tariffs JSON</label>
+            <textarea id="admin-rates-export-area" class="input-control" rows="4" readonly style="font-family: monospace; font-size: 0.78rem;">${JSON.stringify(FARES, null, 2)}</textarea>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <button type="button" id="btn-copy-admin-json" class="btn btn-secondary btn-sm" style="font-weight: 700;">
+                📋 Copy Rates JSON
+              </button>
+              <button type="button" id="btn-download-admin-json" class="btn btn-secondary btn-sm" style="font-weight: 700;">
+                ⬇️ Download fares.json
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block;">Import &amp; Overwrite Tariffs JSON</label>
+            <textarea id="admin-rates-import-area" class="input-control" rows="3" placeholder="Paste validated fare configuration JSON here..." style="font-family: monospace; font-size: 0.78rem;"></textarea>
+            <button type="button" id="btn-apply-admin-json" class="btn btn-primary btn-sm" style="margin-top: 8px; font-weight: 800;">
+              📥 Validate &amp; Apply Imported Rates
+            </button>
+          </div>
+        </div>
+
+        <!-- Acceptance Self-Test Runner inside Admin -->
+        <div class="card">
+          <div class="card-title">
+            <span>🧪 Regulatory Self-Test Suite</span>
+            <button type="button" id="btn-admin-run-tests" class="pill-btn">Run 8 Tests</button>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            Ensures that changes made to the tariff matrix do not violate core Philippine transit laws (4km base rounding, 20% discounts, overcharge tolerances).
+          </p>
+          <div id="admin-test-results-panel" class="test-output-panel" style="display: none;"></div>
+        </div>
+      `;
+
+      // Update Nav Tabs: Inject Admin Tab Button if not already in DOM
+      syncAdminNavTabs(true);
+
+      // Attach Event Handlers for Admin Dashboard
+      attachAdminDashboardEvents();
     }
 
-    function saveAdminRates() {
-      triggerHaptic();
-      const cards = document.querySelectorAll('.admin-vehicle-card');
-      const updatedFares = JSON.parse(JSON.stringify(FARES));
+    function teardownAdminDashboard() {
+      const container = document.getElementById('screen-admin');
+      if (container) container.innerHTML = '';
+      syncAdminNavTabs(false);
+      switchTab('screen-rates');
+    }
 
+    function saveSingleVehicle(key) {
+      const card = document.querySelector(`.admin-vehicle-card[data-key="${key}"]`);
+      if (!card || !FARES.vehicles[key]) return;
+
+      const baseFareVal = card.querySelector('.admin-base-fare').value.trim();
+      const baseKmVal = card.querySelector('.admin-base-km').value.trim();
+      const perKmVal = card.querySelector('.admin-per-km').value.trim();
+      const specialVal = card.querySelector('.admin-special-flat') ? card.querySelector('.admin-special-flat').value.trim() : '';
+      const nightVal = card.querySelector('.admin-night-surcharge') ? card.querySelector('.admin-night-surcharge').value.trim() : '';
+      const statusVal = card.querySelector('.admin-status').value;
+      const authorityVal = card.querySelector('.admin-authority').value.trim();
+      const descVal = card.querySelector('.admin-desc').value.trim();
+
+      FARES.vehicles[key].baseFare = baseFareVal === '' ? null : parseFloat(baseFareVal);
+      FARES.vehicles[key].baseKm = baseKmVal === '' ? null : parseFloat(baseKmVal);
+      FARES.vehicles[key].perKm = perKmVal === '' ? null : parseFloat(perKmVal);
+      FARES.vehicles[key].specialTripFlat = specialVal === '' ? null : parseFloat(specialVal);
+      FARES.vehicles[key].nightSurcharge = nightVal === '' ? null : parseFloat(nightVal);
+      FARES.vehicles[key].status = statusVal;
+      if (authorityVal) FARES.vehicles[key].authority = authorityVal;
+      if (descVal) FARES.vehicles[key].description = descVal;
+
+      saveFaresToStorage(FARES);
+      renderRatesTable();
+      populateVehicleDropdowns();
+      renderVehicleCards();
+      updateCalculatorUI();
+      renderAdminDashboard();
+      showToast(`Saved ${FARES.vehicles[key].name}!`);
+    }
+
+    function saveAllVehicles() {
+      const cards = document.querySelectorAll('.admin-vehicle-card');
       cards.forEach(card => {
         const key = card.getAttribute('data-key');
-        if (!updatedFares.vehicles[key]) return;
+        if (!FARES.vehicles[key]) return;
 
         const baseFareVal = card.querySelector('.admin-base-fare').value.trim();
         const baseKmVal = card.querySelector('.admin-base-km').value.trim();
         const perKmVal = card.querySelector('.admin-per-km').value.trim();
+        const specialVal = card.querySelector('.admin-special-flat') ? card.querySelector('.admin-special-flat').value.trim() : '';
+        const nightVal = card.querySelector('.admin-night-surcharge') ? card.querySelector('.admin-night-surcharge').value.trim() : '';
         const statusVal = card.querySelector('.admin-status').value;
-        const effectiveVal = card.querySelector('.admin-effective-date').value.trim();
+        const authorityVal = card.querySelector('.admin-authority').value.trim();
+        const descVal = card.querySelector('.admin-desc').value.trim();
 
-        updatedFares.vehicles[key].baseFare = baseFareVal === '' ? null : parseFloat(baseFareVal);
-        updatedFares.vehicles[key].baseKm = baseKmVal === '' ? null : parseFloat(baseKmVal);
-        updatedFares.vehicles[key].perKm = perKmVal === '' ? null : parseFloat(perKmVal);
-        updatedFares.vehicles[key].status = statusVal;
-        updatedFares.vehicles[key].effectiveDate = effectiveVal || '28 Sep 2026';
-
-        if (updatedFares.vehicles[key].category === 'lgu' || updatedFares.vehicles[key].category === 'sea') {
-          const specialEl = card.querySelector('.admin-special-flat');
-          const nightEl = card.querySelector('.admin-night-surcharge');
-          if (specialEl) {
-            updatedFares.vehicles[key].specialTripFlat = specialEl.value.trim() === '' ? null : parseFloat(specialEl.value);
-          }
-          if (nightEl) {
-            updatedFares.vehicles[key].nightSurcharge = nightEl.value.trim() === '' ? null : parseFloat(nightEl.value);
-          }
-        }
+        FARES.vehicles[key].baseFare = baseFareVal === '' ? null : parseFloat(baseFareVal);
+        FARES.vehicles[key].baseKm = baseKmVal === '' ? null : parseFloat(baseKmVal);
+        FARES.vehicles[key].perKm = perKmVal === '' ? null : parseFloat(perKmVal);
+        FARES.vehicles[key].specialTripFlat = specialVal === '' ? null : parseFloat(specialVal);
+        FARES.vehicles[key].nightSurcharge = nightVal === '' ? null : parseFloat(nightVal);
+        FARES.vehicles[key].status = statusVal;
+        if (authorityVal) FARES.vehicles[key].authority = authorityVal;
+        if (descVal) FARES.vehicles[key].description = descVal;
       });
 
-      saveFaresToStorage(updatedFares);
-      showToast(currentLang === 'war' ? STRINGS.war.ratesSavedMsg : STRINGS.en.ratesSavedMsg);
+      saveFaresToStorage(FARES);
+      renderRatesTable();
+      populateVehicleDropdowns();
+      renderVehicleCards();
+      updateCalculatorUI();
+      renderAdminDashboard();
+      showToast('All vehicle tariffs saved successfully!');
+    }
+
+    function deleteVehicle(key) {
+      if (!FARES.vehicles[key]) return;
+      const vName = FARES.vehicles[key].name;
+      if (!confirm(`Are you sure you want to permanently delete "${vName}" (${key}) from the Catbalogan Fare Matrix?`)) {
+        return;
+      }
+      delete FARES.vehicles[key];
+      saveFaresToStorage(FARES);
+      renderRatesTable();
+      populateVehicleDropdowns();
+      renderVehicleCards();
+      updateCalculatorUI();
+      renderAdminDashboard();
+      showToast(`Vehicle "${vName}" deleted.`);
+    }
+
+    function attachAdminDashboardEvents() {
+      // Logout Button
+      const logoutBtn = document.getElementById('btn-admin-logout');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          triggerHaptic();
+          if (confirm('Logout of Admin Console?')) {
+            await AdminAuthService.logout();
+            teardownAdminDashboard();
+            showToast('Admin session closed. Public view restored.');
+          }
+        });
+      }
+
+      // Save Metadata
+      const saveMetaBtn = document.getElementById('btn-save-admin-metadata');
+      if (saveMetaBtn) {
+        saveMetaBtn.addEventListener('click', () => {
+          triggerHaptic();
+          const updatedVal = document.getElementById('admin-meta-updated').value.trim();
+          const noticeVal = document.getElementById('admin-meta-notice').value.trim();
+          FARES.lastUpdated = updatedVal || '2026-09-28';
+          FARES.noticeBanner = noticeVal;
+          saveFaresToStorage(FARES);
+          renderRatesTable();
+          showToast('Official notice and date updated successfully!');
+        });
+      }
+
+      // Add Vehicle Trigger
+      const addVehTrigger = document.getElementById('btn-admin-add-vehicle-trigger');
+      if (addVehTrigger) {
+        addVehTrigger.addEventListener('click', () => {
+          openAddVehicleModal();
+        });
+      }
+
+      // Save Single Vehicle Buttons
+      document.querySelectorAll('.btn-save-single-vehicle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          const key = btn.getAttribute('data-key');
+          saveSingleVehicle(key);
+        });
+      });
+
+      // Delete Vehicle Buttons
+      document.querySelectorAll('.btn-delete-vehicle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          const key = btn.getAttribute('data-key');
+          deleteVehicle(key);
+        });
+      });
+
+      // Save All Vehicles
+      const saveAllBtn = document.getElementById('btn-save-all-admin-rates');
+      if (saveAllBtn) {
+        saveAllBtn.addEventListener('click', () => {
+          triggerHaptic();
+          saveAllVehicles();
+        });
+      }
+
+      // Reset to Factory Tariffs
+      const resetBtn = document.getElementById('btn-reset-admin-rates');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          triggerHaptic();
+          if (confirm('Are you sure you want to restore the official factory default tariffs? All custom edits will be reset.')) {
+            resetFaresToDefaults();
+            renderAdminDashboard();
+            renderRatesTable();
+            populateVehicleDropdowns();
+            renderVehicleCards();
+            updateCalculatorUI();
+            showToast('Tariffs restored to factory defaults!');
+          }
+        });
+      }
+
+      // Copy Rates JSON
+      const copyJsonBtn = document.getElementById('btn-copy-admin-json');
+      if (copyJsonBtn) {
+        copyJsonBtn.addEventListener('click', () => {
+          triggerHaptic();
+          const text = document.getElementById('admin-rates-export-area').value;
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('Rates JSON copied to clipboard!');
+          });
+        });
+      }
+
+      // Download Rates JSON
+      const downloadJsonBtn = document.getElementById('btn-download-admin-json');
+      if (downloadJsonBtn) {
+        downloadJsonBtn.addEventListener('click', () => {
+          triggerHaptic();
+          const text = document.getElementById('admin-rates-export-area').value;
+          const blob = new Blob([text], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `pamasahe_catbalogan_fares_${Date.now()}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('fares.json downloaded!');
+        });
+      }
+
+      // Apply Rates JSON
+      const applyJsonBtn = document.getElementById('btn-apply-admin-json');
+      if (applyJsonBtn) {
+        applyJsonBtn.addEventListener('click', () => {
+          triggerHaptic();
+          const raw = document.getElementById('admin-rates-import-area').value.trim();
+          try {
+            const parsed = JSON.parse(raw);
+            if (!parsed || !parsed.vehicles || typeof parsed.vehicles !== 'object') {
+              throw new Error('Invalid JSON schema: Missing vehicles object.');
+            }
+            saveFaresToStorage(parsed);
+            FARES = parsed;
+            renderAdminDashboard();
+            renderRatesTable();
+            populateVehicleDropdowns();
+            renderVehicleCards();
+            updateCalculatorUI();
+            showToast('Imported tariffs applied successfully!');
+          } catch (err) {
+            alert('Import Error: ' + err.message);
+          }
+        });
+      }
+
+      // Run Acceptance Tests inside Admin
+      const runTestsBtn = document.getElementById('btn-admin-run-tests');
+      if (runTestsBtn) {
+        runTestsBtn.addEventListener('click', () => {
+          triggerHaptic();
+          const res = window.runTests();
+          const panel = document.getElementById('admin-test-results-panel');
+          if (panel) {
+            panel.style.display = 'block';
+            panel.textContent = `=== ADMIN REGULATORY VERIFICATION (${res.passed}/${res.total} PASSED) ===\n\n` +
+              res.results.map((r, i) => `${r.pass ? '✅ [PASS]' : '❌ [FAIL]'} #${i+1}: ${r.name}`).join('\n');
+          }
+        });
+      }
     }
 
     function showToast(msg) {
@@ -4586,6 +5450,13 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
 
     function switchTab(screenId) {
       triggerHaptic();
+
+      // Guard: if target is screen-admin and not authenticated, intercept and open login modal!
+      if (screenId === 'screen-admin' && !AdminAuthService.isAuthenticated()) {
+        openAdminLoginModal();
+        return;
+      }
+
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -4593,6 +5464,11 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       if (targetScreen) targetScreen.classList.add('active');
 
       document.querySelectorAll(`.tab-btn[data-target="${screenId}"]`).forEach(btn => btn.classList.add('active'));
+
+      // If switching to screen-admin, make sure dashboard is rendered
+      if (screenId === 'screen-admin' && AdminAuthService.isAuthenticated()) {
+        renderAdminDashboard();
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -5217,61 +6093,156 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         showToast(currentLang === 'war' ? STRINGS.war.reportSuccess : STRINGS.en.reportSuccess);
       });
 
-      // Rates & Admin Events
-      const adminToggleBtn = document.getElementById('btn-toggle-admin');
-      const adminStatus = document.getElementById('admin-mode-status');
-      const readonlyView = document.getElementById('rates-readonly-view');
-      const adminView = document.getElementById('rates-admin-view');
-
-      adminToggleBtn.addEventListener('click', () => {
-        triggerHaptic();
-        isAdminUnlocked = !isAdminUnlocked;
-        if (isAdminUnlocked) {
-          adminStatus.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Unlocked';
-          adminToggleBtn.classList.add('active');
-          readonlyView.style.display = 'none';
-          adminView.style.display = 'block';
-          renderAdminEditor();
-        } else {
-          adminStatus.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Locked';
-          adminToggleBtn.classList.remove('active');
-          readonlyView.style.display = 'block';
-          adminView.style.display = 'none';
-          renderRatesTable();
-        }
-      });
-
-      document.getElementById('btn-save-rates').addEventListener('click', saveAdminRates);
-      document.getElementById('btn-reset-rates').addEventListener('click', () => {
-        triggerHaptic();
-        if (confirm(currentLang === 'war' ? "Sigurado ka nga ibalik ha default an ngatanan nga taripa?" : "Reset all rates to original defaults?")) {
-          resetFaresToDefaults();
-        }
-      });
-
-      document.getElementById('btn-copy-rates-json').addEventListener('click', () => {
-        triggerHaptic();
-        const text = document.getElementById('rates-export-area').value;
-        navigator.clipboard.writeText(text).then(() => {
-          showToast(currentLang === 'war' ? "Taripa JSON nakopya ha clipboard!" : "Rates JSON copied to clipboard!");
-        });
-      });
-
-      document.getElementById('btn-apply-rates-json').addEventListener('click', () => {
-        triggerHaptic();
-        const raw = document.getElementById('rates-import-area').value.trim();
-        try {
-          const parsed = JSON.parse(raw);
-          if (!parsed || !parsed.vehicles || typeof parsed.vehicles !== 'object') {
-            throw new Error("Missing vehicles object");
+      // Dedicated Staff Admin Triggers & Modal Events
+      const adminTriggerBtn = document.getElementById('admin-trigger-btn');
+      if (adminTriggerBtn) {
+        adminTriggerBtn.addEventListener('click', () => {
+          triggerHaptic();
+          if (AdminAuthService.isAuthenticated()) {
+            switchTab('screen-admin');
+          } else {
+            openAdminLoginModal();
           }
-          saveFaresToStorage(parsed);
-          document.getElementById('rates-import-area').value = '';
-          showToast(currentLang === 'war' ? STRINGS.war.importSuccessMsg : STRINGS.en.importSuccessMsg);
-        } catch (e) {
-          showToast(currentLang === 'war' ? STRINGS.war.importErrorMsg : STRINGS.en.importErrorMsg);
+        });
+      }
+
+      const footerAdminTrigger = document.getElementById('footer-admin-trigger');
+      if (footerAdminTrigger) {
+        footerAdminTrigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          triggerHaptic();
+          if (AdminAuthService.isAuthenticated()) {
+            switchTab('screen-admin');
+          } else {
+            openAdminLoginModal();
+          }
+        });
+      }
+
+      const closeAdminModalBtn = document.getElementById('btn-close-admin-modal');
+      if (closeAdminModalBtn) {
+        closeAdminModalBtn.addEventListener('click', closeAdminLoginModal);
+      }
+
+      const closeAddVehBtn = document.getElementById('btn-close-add-vehicle-modal');
+      const cancelAddVehBtn = document.getElementById('btn-cancel-add-vehicle');
+      if (closeAddVehBtn) closeAddVehBtn.addEventListener('click', closeAddVehicleModal);
+      if (cancelAddVehBtn) cancelAddVehBtn.addEventListener('click', closeAddVehicleModal);
+
+      const togglePassBtn = document.getElementById('btn-toggle-password-view');
+      if (togglePassBtn) {
+        togglePassBtn.addEventListener('click', () => {
+          const passInput = document.getElementById('admin-password');
+          if (passInput) {
+            passInput.type = passInput.type === 'password' ? 'text' : 'password';
+            togglePassBtn.textContent = passInput.type === 'password' ? '👁️' : '🔒';
+          }
+        });
+      }
+
+      // Admin Login Form Submission with Rate Limiting & Cooldown Lockout
+      const adminLoginForm = document.getElementById('admin-login-form');
+      if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          triggerHaptic();
+          const userVal = document.getElementById('admin-username').value;
+          const passVal = document.getElementById('admin-password').value;
+          const alertBox = document.getElementById('admin-login-alert');
+
+          try {
+            await AdminAuthService.login(userVal, passVal);
+            closeAdminLoginModal();
+            renderAdminDashboard();
+            switchTab('screen-admin');
+            showToast(currentLang === 'war' ? 'Maopay nga pag-abot, Administrador!' : 'Welcome, Administrator! Admin panel unlocked.');
+          } catch (err) {
+            const lockout = AdminAuthService.getLockoutStatus();
+            if (lockout.isLocked) {
+              showLoginLockout(lockout.remainingSeconds);
+            } else if (alertBox) {
+              alertBox.style.display = 'block';
+              alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+              alertBox.style.color = '#B91C1C';
+              alertBox.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+              alertBox.textContent = err.message;
+            }
+          }
+        });
+      }
+
+      // Add New Vehicle Form Submission
+      const addVehForm = document.getElementById('admin-add-vehicle-form');
+      if (addVehForm) {
+        addVehForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          triggerHaptic();
+          const id = document.getElementById('new-veh-id').value.trim().toLowerCase();
+          const icon = document.getElementById('new-veh-icon').value.trim() || '🚗';
+          const name = document.getElementById('new-veh-name').value.trim();
+          const warayName = document.getElementById('new-veh-waray').value.trim() || name;
+          const category = document.getElementById('new-veh-category').value;
+          const authority = document.getElementById('new-veh-authority').value.trim() || 'Catbalogan City Hall';
+          const baseFare = document.getElementById('new-veh-basefare').value.trim() === '' ? null : parseFloat(document.getElementById('new-veh-basefare').value);
+          const baseKm = document.getElementById('new-veh-basekm').value.trim() === '' ? null : parseFloat(document.getElementById('new-veh-basekm').value);
+          const perKm = document.getElementById('new-veh-perkm').value.trim() === '' ? null : parseFloat(document.getElementById('new-veh-perkm').value);
+          const specialFlat = document.getElementById('new-veh-special').value.trim() === '' ? null : parseFloat(document.getElementById('new-veh-special').value);
+          const nightSurcharge = document.getElementById('new-veh-night').value.trim() === '' ? null : parseFloat(document.getElementById('new-veh-night').value);
+          const status = document.getElementById('new-veh-status').value;
+          const desc = document.getElementById('new-veh-desc').value.trim() || 'Public utility transit vehicle';
+
+          if (FARES.vehicles[id]) {
+            alert(`Vehicle key "${id}" already exists. Please choose a unique key.`);
+            return;
+          }
+
+          FARES.vehicles[id] = {
+            id,
+            name,
+            warayName,
+            icon,
+            category,
+            authority,
+            baseFare,
+            baseKm,
+            perKm,
+            specialTripFlat: specialFlat,
+            nightSurcharge,
+            effectiveDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+            status,
+            source: 'LGU Regulatory Admin Console',
+            description: desc
+          };
+
+          saveFaresToStorage(FARES);
+          closeAddVehicleModal();
+          renderAdminDashboard();
+          renderRatesTable();
+          populateVehicleDropdowns();
+          renderVehicleCards();
+          updateCalculatorUI();
+          showToast(`Registered new category: ${name}!`);
+        });
+      }
+
+      // Check Active Admin Session on Page Load
+      if (AdminAuthService.isAuthenticated()) {
+        syncAdminNavTabs(true);
+      }
+
+      // URL Hash Check for #admin on initial load & hashchange
+      function checkAdminHash() {
+        if (window.location.hash === '#admin') {
+          if (AdminAuthService.isAuthenticated()) {
+            renderAdminDashboard();
+            switchTab('screen-admin');
+          } else {
+            openAdminLoginModal();
+          }
         }
-      });
+      }
+      checkAdminHash();
+      window.addEventListener('hashchange', checkAdminHash);
 
       document.getElementById('btn-run-acceptance-tests').addEventListener('click', () => {
         triggerHaptic();
@@ -5319,13 +6290,20 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Desktop Keyboard Navigation Shortcuts (1-5 for tabs, Escape for modals)
+      // Desktop Keyboard Navigation Shortcuts (1-5 for commuter tabs, 6 / Alt+A for Admin, Escape for modals)
       window.addEventListener('keydown', (e) => {
         const tag = (e.target && e.target.tagName) || '';
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) || (e.target && e.target.isContentEditable)) {
           return;
         }
-        if (e.key === '1') {
+        if ((e.altKey && (e.key === 'a' || e.key === 'A')) || (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a'))) {
+          e.preventDefault();
+          if (AdminAuthService.isAuthenticated()) {
+            switchTab('screen-admin');
+          } else {
+            openAdminLoginModal();
+          }
+        } else if (e.key === '1') {
           switchTab('screen-calc');
         } else if (e.key === '2') {
           switchTab('screen-check');
@@ -5335,11 +6313,15 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
           switchTab('screen-report');
         } else if (e.key === '5') {
           switchTab('screen-rates');
+        } else if (e.key === '6' && AdminAuthService.isAuthenticated()) {
+          switchTab('screen-admin');
         } else if (e.key === 'Escape') {
-          const modal = document.getElementById('driver-fullscreen-modal');
-          if (modal && modal.classList.contains('active')) {
-            modal.classList.remove('active');
+          const driverModal = document.getElementById('driver-fullscreen-modal');
+          if (driverModal && driverModal.classList.contains('active')) {
+            driverModal.classList.remove('active');
           }
+          closeAdminLoginModal();
+          closeAddVehicleModal();
         }
       });
 
