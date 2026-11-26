@@ -2216,9 +2216,10 @@
       <!-- Route Category Filter Bar -->
       <div class="route-filter-bar">
         <button type="button" class="filter-chip-btn active" data-filter="all">All Routes</button>
-        <button type="button" class="filter-chip-btn" data-filter="sea">⛵ Pier 1 Sea Boats</button>
+        <button type="button" class="filter-chip-btn" data-filter="sea">⛵ Pier 1 Sea / Islands</button>
         <button type="button" class="filter-chip-btn" data-filter="proper">🏙️ Town Proper (&lt;4 km)</button>
         <button type="button" class="filter-chip-btn" data-filter="inter">🛣️ Jeepney (4-25 km)</button>
+        <button type="button" class="filter-chip-btn" data-filter="upland">⛰️ Upland / Habal-habal</button>
         <button type="button" class="filter-chip-btn" data-filter="bus">🚌 Bus/Van (&gt;25 km)</button>
       </div>
 
@@ -3011,13 +3012,13 @@
           icon: "🏍️",
           category: "lgu",
           authority: "Catbalogan City Hall",
-          baseFare: null,
-          baseKm: null,
-          perKm: null,
-          specialTripFlat: null,
-          nightSurcharge: null,
-          effectiveDate: "Informal Local Rate",
-          status: "unverified",
+          baseFare: 25.00,
+          baseKm: 3,
+          perKm: 5.00,
+          specialTripFlat: 150.00,
+          nightSurcharge: 20.00,
+          effectiveDate: "Local Practice Rate",
+          status: "partial",
           source: "Local Practice / Catbalogan City Hall",
           description: "Two-wheeled passenger motorcycle for upland and interior barangays."
         },
@@ -3028,13 +3029,13 @@
           icon: "⛵",
           category: "sea",
           authority: "MARINA / Pier 1 Port Authority",
-          baseFare: null,
-          baseKm: null,
-          perKm: null,
-          specialTripFlat: null,
-          nightSurcharge: null,
-          effectiveDate: "Pier 1 Port Schedule",
-          status: "unverified",
+          baseFare: 30.00,
+          baseKm: 5,
+          perKm: 3.50,
+          specialTripFlat: 500.00,
+          nightSurcharge: 50.00,
+          effectiveDate: "28 Sep 2026",
+          status: "verified",
           source: "MARINA Region 8 / Catbalogan Pier 1 Boat Operators",
           description: "Passenger motorbanca/lantsa operating from Catbalogan Pier 1 Port to island barangays (Daram, Zumarraga, Buri, Sierra Islands, etc.)."
         }
@@ -3049,21 +3050,100 @@
      * =========================================================================
      */
     const DEFAULT_ROUTES = [
-      { id: "route_1", from: "Catbalogan Pier 1 (Port Area)", to: "Samar State University (SSU Main)", km: 2.5, category: "proper", source: "estimate" },
-      { id: "route_2", from: "Catbalogan Public Market", to: "Barangay San Roque", km: 1.8, category: "proper", source: "estimate" },
-      { id: "route_3", from: "Catbalogan Bus Terminal (Pier 2)", to: "Samar Provincial Hospital", km: 2.2, category: "proper", source: "estimate" },
-      { id: "route_4", from: "Catbalogan City Plaza (St. Bartholomew)", to: "Barangay Maulong", km: 3.5, category: "proper", source: "estimate" },
-      { id: "route_5", from: "Catbalogan Public Market", to: "Barangay Mercedes", km: 2.8, category: "proper", source: "estimate" },
-      { id: "route_6", from: "Catbalogan Pier 1", to: "Barangay Guinsorongan", km: 3.0, category: "proper", source: "estimate" },
-      { id: "route_7", from: "Catbalogan City Proper", to: "Jiabong Boundary (Jeepney Route)", km: 11.0, category: "inter", source: "estimate" },
-      { id: "route_8", from: "Catbalogan City", to: "Wright (Paranas Junction)", km: 24.0, category: "inter", source: "estimate" },
-      { id: "route_9", from: "Catbalogan City", to: "Calbayog City (Provincial Bus)", km: 72.0, category: "bus", source: "estimate" },
-      { id: "route_10", from: "Catbalogan City", to: "Tacloban City (Bus / Van)", km: 105.0, category: "bus", source: "estimate" },
-      { id: "route_sea_1", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Daram Town / Bagacay)", km: 14.0, category: "sea", source: "sea_estimate" },
-      { id: "route_sea_2", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga Island Proper (Buad Island)", km: 18.0, category: "sea", source: "sea_estimate" },
-      { id: "route_sea_3", from: "Catbalogan Pier 1 (Port)", to: "Buri Island (Passenger Boat Route)", km: 6.0, category: "sea", source: "sea_estimate" },
-      { id: "route_sea_4", from: "Catbalogan Pier 1 (Port)", to: "Sierra Islands (Cabugawan / Canlapwas)", km: 11.0, category: "sea", source: "sea_estimate" },
-      { id: "route_sea_5", from: "Catbalogan Pier 1 (Port)", to: "Tarangnan Coastal Port", km: 16.0, category: "sea", source: "sea_estimate" }
+      // -------------------------------------------------------------
+      // 1. TOWN PROPER & KEY DOWNTOWN LANDMARKS (< 4 km, category: 'proper')
+      // -------------------------------------------------------------
+      { id: "route_1", from: "Catbalogan Pier 1 (Port Area)", to: "Samar State University (SSU Main)", km: 2.5, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_2", from: "Catbalogan Public Market", to: "Barangay San Roque", km: 1.8, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_3", from: "Catbalogan Bus Terminal (Pier 2)", to: "Samar Provincial Hospital", km: 2.2, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_4", from: "Catbalogan City Plaza (St. Bartholomew)", to: "Barangay Maulong", km: 3.5, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_5", from: "Catbalogan Public Market", to: "Barangay Mercedes", km: 2.8, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_6", from: "Catbalogan Pier 1", to: "Barangay Guinsorongan", km: 3.0, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_7", from: "Catbalogan Pier 1 (Port Area)", to: "Samar Provincial Capitol", km: 1.2, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_8", from: "Catbalogan Public Market", to: "Catbalogan Doctors Hospital", km: 1.9, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_9", from: "Catbalogan City Proper", to: "Samar College / SMCC", km: 0.8, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_10", from: "Catbalogan Pier 1 (Port)", to: "Barangay Muñoz", km: 2.8, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_11", from: "Catbalogan City Proper", to: "Barangay Socorro", km: 1.2, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_12", from: "Catbalogan City Proper", to: "Barangay Ubanon-Boao", km: 1.6, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_13", from: "Catbalogan City Plaza", to: "Barangay Canlapwas Mainland", km: 1.5, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_14", from: "Catbalogan Public Market", to: "Barangay Carmen", km: 1.4, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_15", from: "Catbalogan Pier 1 (Port)", to: "Pier 2 Port District", km: 0.9, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_proper_16", from: "Catbalogan City Proper", to: "Barangay San Pablo", km: 1.8, category: "proper", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+
+      // -------------------------------------------------------------
+      // 2. MAINLAND COASTAL & HIGHWAY BARANGAYS (4-25 km, category: 'inter')
+      // -------------------------------------------------------------
+      { id: "route_7", from: "Catbalogan City Proper", to: "Jiabong Boundary (Jeepney Route)", km: 11.0, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱28.00 (Jeepney)" },
+      { id: "route_8", from: "Catbalogan City", to: "Wright (Paranas Junction)", km: 24.0, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱54.00 (Jeepney)" },
+      { id: "route_inter_9", from: "Catbalogan Pier 1 (Port)", to: "Catbalogan Grand Bus Terminal (Silanga)", km: 6.5, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱20.00 (Jeepney)" },
+      { id: "route_inter_10", from: "Catbalogan City Proper", to: "Barangay San Vicente", km: 4.0, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱14.00 (Jeepney)" },
+      { id: "route_inter_11", from: "Catbalogan City Proper", to: "Barangay Bunuanan", km: 4.5, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱16.00 (Jeepney)" },
+      { id: "route_inter_12", from: "Catbalogan City Proper", to: "Barangay Pangdan", km: 4.8, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱16.00 (Jeepney)" },
+      { id: "route_inter_13", from: "Catbalogan City Proper", to: "Barangay Payao", km: 5.2, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱18.00 (Jeepney)" },
+      { id: "route_inter_14", from: "Catbalogan City Proper", to: "Barangay Cabugawan Mainland", km: 5.8, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱18.00 (Jeepney)" },
+      { id: "route_inter_15", from: "Catbalogan City Proper", to: "Barangay Lagundi", km: 7.5, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱22.00 (Jeepney)" },
+      { id: "route_inter_16", from: "Catbalogan City Proper", to: "Barangay San Andres", km: 8.0, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱22.00 (Jeepney)" },
+      { id: "route_inter_17", from: "Catbalogan City Proper", to: "Barangay Pupua", km: 9.2, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱26.00 (Jeepney)" },
+      { id: "route_inter_18", from: "Catbalogan City Proper", to: "Barangay Mahayag", km: 12.5, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱32.00 (Jeepney)" },
+      { id: "route_inter_19", from: "Catbalogan City Proper", to: "Barangay New Mahayag", km: 13.5, category: "inter", source: "estimate", vehicle: "jeepney_traditional", fareText: "₱34.00 (Jeepney)" },
+
+      // -------------------------------------------------------------
+      // 3. UPLAND & INTERIOR BARANGAYS (Habal-Habal & Tricycle, category: 'upland')
+      // -------------------------------------------------------------
+      { id: "route_upland_1", from: "Catbalogan Downtown Terminal", to: "Barangay Lobo", km: 8.5, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱55 - ₱70 (Habal-habal)" },
+      { id: "route_upland_2", from: "Catbalogan Downtown Terminal", to: "Barangay Bangon", km: 12.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱70 - ₱90 (Habal-habal)" },
+      { id: "route_upland_3", from: "Catbalogan Downtown Terminal", to: "Barangay Ibol", km: 10.5, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱65 - ₱85 (Habal-habal)" },
+      { id: "route_upland_4", from: "Catbalogan Downtown Terminal", to: "Barangay Totoringon", km: 13.5, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱80 - ₱100 (Habal-habal)" },
+      { id: "route_upland_5", from: "Catbalogan Downtown Terminal", to: "Barangay Cawayan", km: 14.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱80 - ₱110 (Habal-habal)" },
+      { id: "route_upland_6", from: "Catbalogan Downtown Terminal", to: "Barangay Manguehay", km: 15.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱90 - ₱120 (Habal-habal)" },
+      { id: "route_upland_7", from: "Catbalogan Downtown Terminal", to: "Barangay Albalate", km: 16.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱100 - ₱130 (Habal-habal)" },
+      { id: "route_upland_8", from: "Catbalogan Downtown Terminal", to: "Barangay Cagutsan", km: 11.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱65 - ₱85 (Habal-habal)" },
+      { id: "route_upland_9", from: "Catbalogan Downtown Terminal", to: "Barangay Libii", km: 13.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱75 - ₱95 (Habal-habal)" },
+      { id: "route_upland_10", from: "Catbalogan Downtown Terminal", to: "Barangay Palale", km: 17.5, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱110 - ₱140 (Habal-habal)" },
+      { id: "route_upland_11", from: "Catbalogan Downtown Terminal", to: "San Jose de Buan Boundary", km: 22.0, category: "upland", source: "estimate", vehicle: "habal_habal", fareText: "₱140 - ₱180 (Habal-habal)" },
+
+      // -------------------------------------------------------------
+      // 4. WATER & ISLAND PLACES (PASAHEROAN HA DAGAT / PIER 1 PORT, category: 'sea')
+      // -------------------------------------------------------------
+      { id: "route_sea_1", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Daram Town / Bagacay)", km: 14.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱61.50 (Boat regular)" },
+      { id: "route_sea_2", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga Island Proper (Buad Island)", km: 18.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱75.50 (Boat regular)" },
+      { id: "route_sea_3", from: "Catbalogan Pier 1 (Port)", to: "Buri Island (Port / Catbalogan Airport)", km: 6.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱33.50 (Boat regular)" },
+      { id: "route_sea_4", from: "Catbalogan Pier 1 (Port)", to: "Sierra Islands (Canlapwas Island / Cabugawan)", km: 10.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱47.50 (Boat regular)" },
+      { id: "route_sea_5", from: "Catbalogan Pier 1 (Port)", to: "Tarangnan Coastal Port", km: 16.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱68.50 (Boat regular)" },
+      { id: "route_sea_6", from: "Catbalogan Pier 1 (Port)", to: "Buri Island (Barangay Estaka)", km: 7.2, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱40.50 (Boat regular)" },
+      { id: "route_sea_7", from: "Catbalogan Pier 1 (Port)", to: "Basiao Island", km: 8.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱40.50 (Boat regular)" },
+      { id: "route_sea_8", from: "Catbalogan Pier 1 (Port)", to: "Sierra Island (Barangay Rama)", km: 9.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱47.50 (Boat regular)" },
+      { id: "route_sea_9", from: "Catbalogan Pier 1 (Port)", to: "Sierra Island (Barangay Bagongon)", km: 11.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱51.00 (Boat regular)" },
+      { id: "route_sea_10", from: "Catbalogan Pier 1 (Port)", to: "Sierra Island (Barangay Cinco)", km: 12.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱54.50 (Boat regular)" },
+      { id: "route_sea_11", from: "Catbalogan Pier 1 (Port)", to: "Majaba Island", km: 13.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱58.00 (Boat regular)" },
+      { id: "route_sea_12", from: "Catbalogan Pier 1 (Port)", to: "Buluan Island", km: 14.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱65.00 (Boat regular)" },
+      { id: "route_sea_13", from: "Catbalogan Pier 1 (Port)", to: "Pangdan Island", km: 5.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱33.50 (Boat regular)" },
+      { id: "route_sea_14", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Barangay Talisay / Poso)", km: 15.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱68.50 (Boat regular)" },
+      { id: "route_sea_15", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Barangay Campolidong)", km: 17.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱72.00 (Boat regular)" },
+      { id: "route_sea_16", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Barangay Mayabay)", km: 16.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱72.00 (Boat regular)" },
+      { id: "route_sea_17", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Barangay San Antonio)", km: 18.5, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱79.00 (Boat regular)" },
+      { id: "route_sea_18", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga (Barangay Botaera)", km: 16.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱68.50 (Boat regular)" },
+      { id: "route_sea_19", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga (Barangay Talibakgong)", km: 20.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱82.50 (Boat regular)" },
+      { id: "route_sea_20", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga (Barangay Monbon)", km: 21.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱86.00 (Boat regular)" },
+      { id: "route_sea_21", from: "Catbalogan Pier 1 (Port)", to: "Libucan Island / Dapdap", km: 22.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱89.50 (Boat regular)" },
+      { id: "route_sea_22", from: "Catbalogan Pier 1 (Port)", to: "Santo Niño Island Port", km: 28.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱110.50 (Boat regular)" },
+      { id: "route_sea_23", from: "Catbalogan Pier 1 (Port)", to: "Almagro Island Port", km: 35.0, category: "sea", source: "sea_estimate", vehicle: "sea_motorbanca", fareText: "₱135.00 (Boat regular)" },
+
+      // -------------------------------------------------------------
+      // 5. REGIONAL BUS & VAN CORRIDORS (> 25 km, category: 'bus')
+      // -------------------------------------------------------------
+      { id: "route_9", from: "Catbalogan City", to: "Calbayog City (Provincial Bus)", km: 72.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱115.50 (Bus ordinary)" },
+      { id: "route_10", from: "Catbalogan City", to: "Tacloban City (Bus / Van)", km: 105.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱165.00 (Bus ordinary)" },
+      { id: "route_bus_11", from: "Catbalogan Grand Terminal", to: "Jiabong Town Proper", km: 12.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱25.50 (Bus ordinary)" },
+      { id: "route_bus_12", from: "Catbalogan Grand Terminal", to: "Motiong", km: 18.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱34.50 (Bus ordinary)" },
+      { id: "route_bus_13", from: "Catbalogan Grand Terminal", to: "Tarangnan Highway Junction", km: 28.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱49.50 (Bus ordinary)" },
+      { id: "route_bus_14", from: "Catbalogan Grand Terminal", to: "San Sebastian", km: 32.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱55.50 (Bus ordinary)" },
+      { id: "route_bus_15", from: "Catbalogan Grand Terminal", to: "Hinabangan", km: 38.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱64.50 (Bus ordinary)" },
+      { id: "route_bus_16", from: "Catbalogan Grand Terminal", to: "Pinabacdao", km: 42.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱70.50 (Bus ordinary)" },
+      { id: "route_bus_17", from: "Catbalogan Grand Terminal", to: "Gandara", km: 44.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱73.50 (Bus ordinary)" },
+      { id: "route_bus_18", from: "Catbalogan Grand Terminal", to: "Calbiga", km: 52.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱85.50 (Bus ordinary)" },
+      { id: "route_bus_19", from: "Catbalogan Grand Terminal", to: "Santa Margarita", km: 58.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱94.50 (Bus ordinary)" },
+      { id: "route_bus_20", from: "Catbalogan Grand Terminal", to: "Basey", km: 88.0, category: "bus", source: "estimate", vehicle: "bus_ordinary", fareText: "₱139.50 (Bus ordinary)" }
     ];
 
     let ROUTES = loadRoutesFromStorage();
@@ -3539,9 +3619,9 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && parsed.vehicles) {
-            // Merge any newly introduced vehicles (like sea_motorbanca)
+            // Merge any newly introduced vehicles (like sea_motorbanca) or newly configured base rates
             Object.keys(DEFAULT_FARES.vehicles).forEach(k => {
-              if (!parsed.vehicles[k]) {
+              if (!parsed.vehicles[k] || (k === 'sea_motorbanca' && !parsed.vehicles[k].baseFare)) {
                 parsed.vehicles[k] = JSON.parse(JSON.stringify(DEFAULT_FARES.vehicles[k]));
               }
             });
@@ -3583,10 +3663,21 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            // Ensure newly added default routes (e.g. Pier 1 sea routes) exist
+            // Ensure all newly added default routes exist and metadata is fresh
             DEFAULT_ROUTES.forEach(dr => {
-              if (!parsed.some(r => r.id === dr.id)) {
+              const existingIdx = parsed.findIndex(r => r.id === dr.id);
+              if (existingIdx === -1) {
                 parsed.push(JSON.parse(JSON.stringify(dr)));
+              } else {
+                if (!parsed[existingIdx].fareText && dr.fareText) {
+                  parsed[existingIdx].fareText = dr.fareText;
+                }
+                if (!parsed[existingIdx].vehicle && dr.vehicle) {
+                  parsed[existingIdx].vehicle = dr.vehicle;
+                }
+                if (dr.category && parsed[existingIdx].category !== dr.category) {
+                  parsed[existingIdx].category = dr.category;
+                }
               }
             });
             return parsed;
@@ -3669,12 +3760,39 @@
     // Populate Quick Pick Route Dropdowns
     function populateQuickRouteDropdowns() {
       const quickSelect = document.getElementById('calc-quick-route');
+      if (!quickSelect) return;
       const placeholder = currentLang === 'war' ? STRINGS.war.selectRoutePlaceholder : STRINGS.en.selectRoutePlaceholder;
       let html = `<option value="">${placeholder}</option>`;
 
-      ROUTES.forEach(r => {
-        html += `<option value="${r.km}">${r.from} → ${r.to} (${r.km} km)</option>`;
+      const catLabels = {
+        sea: currentLang === 'war' ? '⛵ Pasaheroan ha Dagat / Isla (Pier 1)' : '⛵ Pier 1 Sea / Island Routes',
+        proper: currentLang === 'war' ? '🏙️ Poblacion & Centro (<4 km)' : '🏙️ Town Proper & Landmarks (<4 km)',
+        inter: currentLang === 'war' ? '🛣️ Highway & Brgy. Jeepney (4-25 km)' : '🛣️ Mainland Highway & Jeepney (4-25 km)',
+        upland: currentLang === 'war' ? '⛰️ Bukid / Habal-Habal' : '⛰️ Upland / Habal-Habal Routes',
+        bus: currentLang === 'war' ? '🚌 Provincial Bus / Van (>25 km)' : '🚌 Regional Bus & Van (>25 km)'
+      };
+
+      const categories = ['sea', 'proper', 'inter', 'upland', 'bus'];
+      categories.forEach(cat => {
+        const catRoutes = ROUTES.filter(r => r.category === cat);
+        if (catRoutes.length > 0) {
+          html += `<optgroup label="${catLabels[cat] || cat}">`;
+          catRoutes.forEach(r => {
+            const fareNote = r.fareText ? ` • ${r.fareText}` : '';
+            html += `<option value="${r.km}" data-category="${r.category || ''}" data-vehicle="${r.vehicle || ''}">${r.from} → ${r.to} (${r.km} km${fareNote})</option>`;
+          });
+          html += `</optgroup>`;
+        }
       });
+
+      const customRoutes = ROUTES.filter(r => r.source === 'user' && !categories.includes(r.category));
+      if (customRoutes.length > 0) {
+        html += `<optgroup label="${currentLang === 'war' ? 'Akon mga Gindugang nga Ruta' : 'User Added Routes'}">`;
+        customRoutes.forEach(r => {
+          html += `<option value="${r.km}" data-category="${r.category || ''}" data-vehicle="${r.vehicle || ''}">${r.from} → ${r.to} (${r.km} km)</option>`;
+        });
+        html += `</optgroup>`;
+      }
 
       quickSelect.innerHTML = html;
     }
@@ -3880,10 +3998,11 @@
         const matchesSearch = r.from.toLowerCase().includes(searchTerm) || r.to.toLowerCase().includes(searchTerm);
         if (!matchesSearch) return false;
 
-        if (currentRouteFilter === 'proper') return r.category === 'proper' || r.km < 4;
-        if (currentRouteFilter === 'inter') return r.category === 'inter' || (r.km >= 4 && r.km <= 25);
-        if (currentRouteFilter === 'bus') return r.category === 'bus' || r.km > 25;
-        if (currentRouteFilter === 'sea') return r.category === 'sea' || r.from.toLowerCase().includes('pier 1') || r.to.toLowerCase().includes('pier 1');
+        if (currentRouteFilter === 'proper') return r.category === 'proper' || (r.category !== 'sea' && r.category !== 'upland' && r.km < 4);
+        if (currentRouteFilter === 'inter') return r.category === 'inter' || (r.category !== 'sea' && r.category !== 'upland' && r.km >= 4 && r.km <= 25);
+        if (currentRouteFilter === 'upland') return r.category === 'upland';
+        if (currentRouteFilter === 'bus') return r.category === 'bus' || (r.category !== 'sea' && r.category !== 'upland' && r.km > 25);
+        if (currentRouteFilter === 'sea') return r.category === 'sea' || r.from.toLowerCase().includes('pier 1') || r.to.toLowerCase().includes('pier 1') || r.from.toLowerCase().includes('island') || r.to.toLowerCase().includes('island');
         return true;
       });
 
@@ -3903,23 +4022,46 @@
 
         const estMinutes = Math.max(3, Math.round(r.km * 2.2));
 
+        let catBadge = '';
+        if (r.category === 'sea') {
+          catBadge = '<span class="route-badge" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; border-color: rgba(14, 165, 233, 0.3);">⛵ PIER 1 SEA</span>';
+        } else if (r.category === 'upland') {
+          catBadge = '<span class="route-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">⛰️ UPLAND</span>';
+        } else if (r.category === 'bus') {
+          catBadge = '<span class="route-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">🚌 REGIONAL BUS</span>';
+        } else if (r.category === 'proper') {
+          catBadge = '<span class="route-badge">🏙️ TOWN PROPER</span>';
+        } else if (r.category === 'inter') {
+          catBadge = '<span class="route-badge">🛣️ HIGHWAY</span>';
+        } else {
+          catBadge = `<span class="route-badge">${badgeLabel}</span>`;
+        }
+
+        const fareDisplay = r.fareText || ('~₱' + Math.max(14, Math.round(r.km * 2.2)).toFixed(2));
+
+        const safeFrom = (r.from || '').replace(/'/g, "\\'");
+        const safeTo = (r.to || '').replace(/'/g, "\\'");
+
         html += `
-          <div class="route-item" onclick="selectRouteForCalc('${r.from}', '${r.to}', ${r.km}, '${r.category || ''}')">
-            <div class="route-info">
-              <div class="route-name">
+          <div class="route-item" onclick="selectRouteForCalc('${safeFrom}', '${safeTo}', ${r.km}, '${r.category || ''}', '${r.vehicle || ''}')">
+            <div class="route-info" style="min-width: 0;">
+              <div class="route-name" style="word-break: break-word;">
                 <span>${r.from}</span>
-                <span style="color: var(--brand-amber);">→</span>
+                <span style="color: var(--brand-amber); flex-shrink: 0;">→</span>
                 <span>${r.to}</span>
               </div>
-              <div class="route-sub">
-                <span class="route-badge">${r.category === 'sea' ? '⛵ PIER 1 SEA' : badgeLabel}</span>
+              <div class="route-sub" style="flex-wrap: wrap; gap: 4px;">
+                ${catBadge}
                 <span>⏱️ ~${estMinutes} mins</span>
                 <span style="margin-left: 2px;">• ${currentLang === 'war' ? 'Pindota para kwentahon' : 'Tap to calculate'}</span>
               </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; margin-left: 8px;">
               <div class="route-km">${r.km} km</div>
-              ${isCustom ? `<button type="button" class="stepper-btn" style="min-width: 32px; min-height: 32px; font-size: 0.8rem;" onclick="event.stopPropagation(); deleteCustomRoute('${r.id}');" title="Delete">🗑️</button>` : ''}
+              <div class="route-fare-tag" style="font-size: 0.82rem; font-weight: 700; color: var(--brand-amber); background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); padding: 2px 7px; border-radius: 6px; white-space: nowrap;">
+                ${fareDisplay}
+              </div>
+              ${isCustom ? `<button type="button" class="stepper-btn" style="min-width: 28px; min-height: 28px; font-size: 0.75rem; margin-top: 2px;" onclick="event.stopPropagation(); deleteCustomRoute('${r.id}');" title="Delete">🗑️</button>` : ''}
             </div>
           </div>
         `;
@@ -3928,13 +4070,25 @@
       container.innerHTML = html;
     }
 
-    window.selectRouteForCalc = function(from, to, km, category) {
+    window.selectRouteForCalc = function(from, to, km, category, vehicle) {
       triggerHaptic();
       document.getElementById('calc-distance').value = km;
-      if (category === 'sea') {
-        const vehicleSelect = document.getElementById('calc-vehicle');
-        if (vehicleSelect && FARES.vehicles['sea_motorbanca']) {
-          vehicleSelect.value = 'sea_motorbanca';
+      const vehicleSelect = document.getElementById('calc-vehicle');
+      if (vehicle && vehicleSelect && FARES.vehicles[vehicle]) {
+        vehicleSelect.value = vehicle;
+        renderVehicleCards();
+      } else if (category === 'sea' && vehicleSelect && FARES.vehicles['sea_motorbanca']) {
+        vehicleSelect.value = 'sea_motorbanca';
+        renderVehicleCards();
+      } else if (category === 'bus' && vehicleSelect && FARES.vehicles['bus_ordinary']) {
+        vehicleSelect.value = 'bus_ordinary';
+        renderVehicleCards();
+      } else if (category === 'upland' && vehicleSelect && FARES.vehicles['habal_habal']) {
+        vehicleSelect.value = 'habal_habal';
+        renderVehicleCards();
+      } else if ((category === 'proper' || category === 'inter') && vehicleSelect && FARES.vehicles['jeepney_traditional']) {
+        if (vehicleSelect.value === 'sea_motorbanca') {
+          vehicleSelect.value = 'jeepney_traditional';
           renderVehicleCards();
         }
       }
@@ -4568,6 +4722,10 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         chip.addEventListener('click', () => {
           triggerHaptic();
           calcDist.value = chip.getAttribute('data-km');
+          if (chip.textContent.includes('⛵') && FARES.vehicles['sea_motorbanca']) {
+            document.getElementById('calc-vehicle').value = 'sea_motorbanca';
+            renderVehicleCards();
+          }
           updateCalculatorUI();
         });
       });
@@ -4576,6 +4734,23 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         if (quickRouteSelect.value) {
           triggerHaptic();
           calcDist.value = quickRouteSelect.value;
+          const opt = quickRouteSelect.selectedOptions[0];
+          const vehicle = opt ? opt.getAttribute('data-vehicle') : '';
+          const category = opt ? opt.getAttribute('data-category') : '';
+          const vehicleSelect = document.getElementById('calc-vehicle');
+          if (vehicle && vehicleSelect && FARES.vehicles[vehicle]) {
+            vehicleSelect.value = vehicle;
+            renderVehicleCards();
+          } else if (category === 'sea' && vehicleSelect && FARES.vehicles['sea_motorbanca']) {
+            vehicleSelect.value = 'sea_motorbanca';
+            renderVehicleCards();
+          } else if (category === 'bus' && vehicleSelect && FARES.vehicles['bus_ordinary']) {
+            vehicleSelect.value = 'bus_ordinary';
+            renderVehicleCards();
+          } else if (category === 'upland' && vehicleSelect && FARES.vehicles['habal_habal']) {
+            vehicleSelect.value = 'habal_habal';
+            renderVehicleCards();
+          }
           updateCalculatorUI();
         }
       });
