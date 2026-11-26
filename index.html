@@ -228,58 +228,32 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 8px 16px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
       backdrop-filter: blur(12px);
       box-shadow: var(--shadow-sm);
       width: 100%;
       max-width: 600px;
       margin: 0 auto;
-    }
-
-    @media (max-width: 640px) {
-      .app-header {
-        max-width: 100%;
-        padding: 8px 12px;
-        gap: 8px;
-      }
-
-      .brand-title {
-        font-size: 1.05rem !important;
-      }
-
-      .brand-sub {
-        font-size: 0.68rem !important;
-        max-width: 170px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .header-actions {
-        gap: 6px !important;
-      }
-
-      .icon-btn {
-        min-height: 38px !important;
-        min-width: 38px !important;
-        padding: 5px 8px !important;
-        font-size: 0.78rem !important;
-      }
+      box-sizing: border-box;
     }
 
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
     }
 
     .brand-icon {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
       background: linear-gradient(135deg, #F59E0B, #D97706);
       color: #FFFFFF;
       border-radius: var(--radius-sm);
@@ -290,34 +264,47 @@
       box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
     }
 
+    .brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: hidden;
+    }
+
     .brand-title {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.02em;
       line-height: 1.15;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .brand-sub-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 1px;
+      gap: 5px;
+      margin-top: 2px;
+      min-width: 0;
     }
 
     .brand-sub {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       font-weight: 600;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 95px;
     }
 
     .offline-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       font-weight: 700;
       color: var(--status-fair-text);
       background: var(--status-fair-bg);
@@ -325,6 +312,7 @@
       padding: 1px 6px;
       border-radius: var(--radius-full);
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .offline-dot {
@@ -343,27 +331,34 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-shrink: 0;
     }
 
     .icon-btn {
-      min-height: 44px;
-      min-width: 44px;
-      padding: 6px 12px;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      padding: 0;
       background: var(--bg-card-subtle);
       border: 1.5px solid var(--border-color);
       color: var(--text-main);
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 0.85rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
       transition: all 0.15s ease;
       touch-action: manipulation;
+    }
+
+    .icon-btn.lang-toggle-btn {
+      width: auto;
+      padding: 0 8px;
+      gap: 4px;
+      font-size: 0.76rem;
+      font-weight: 800;
     }
 
     .icon-btn:hover {
@@ -373,7 +368,28 @@
     }
 
     .icon-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.94);
+    }
+
+    .header-icon-svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
+      display: block;
+    }
+
+    .vehicle-icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      margin-right: 6px;
+      vertical-align: middle;
     }
 
     /* Main Content Area */
@@ -1643,29 +1659,38 @@
   <header class="app-header">
     <div class="brand-group">
       <div class="brand-icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/>
         </svg>
       </div>
-      <div>
+      <div class="brand-text-wrap">
         <h1 class="brand-title" id="header-title">Pamasahe Catbalogan</h1>
         <div class="brand-sub-row">
-          <span class="brand-sub" id="header-sub">Dire magpalabi hit pletehan!</span>
+          <span class="brand-sub" id="header-sub">Catbalogan City</span>
           <span class="offline-status-pill" title="Fully cached and offline ready">
-            <span class="offline-dot"></span> ⚡ Offline OK
+            <span class="offline-dot"></span> Offline
           </span>
         </div>
       </div>
     </div>
     <div class="header-actions">
       <button id="app-refresh-btn" class="icon-btn" aria-label="Refresh Entire Web App" title="Refresh Web App">
-        <span id="refresh-btn-icon">🔄</span>
+        <svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+        </svg>
       </button>
-      <button id="lang-toggle-btn" class="icon-btn" aria-label="Switch language">
-        <span id="lang-btn-text">🇵🇭 WAR</span>
+      <button id="lang-toggle-btn" class="icon-btn lang-toggle-btn" aria-label="Switch language" title="Switch language">
+        <svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span id="lang-btn-text">WAR</span>
       </button>
-      <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle color theme">
-        <span id="theme-btn-icon">🌙</span>
+      <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle color theme" title="Toggle color theme">
+        <span id="theme-btn-icon" style="display:flex;align-items:center;justify-content:center;">
+          <!-- SVG populated by setTheme() -->
+        </span>
       </button>
     </div>
   </header>
@@ -1679,7 +1704,8 @@
     <section id="screen-calc" class="screen active" aria-labelledby="calc-title">
       <div class="screen-header">
         <h2 id="calc-title" class="screen-title">
-          <span>🧮</span> <span data-i18n="calcHeading">Fare Calculator</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
+          <span data-i18n="calcHeading">Fare Calculator</span>
         </h2>
         <p class="screen-subtitle" data-i18n="calcSub">Calculate the legal transit fare for any trip in Catbalogan and Samar.</p>
       </div>
@@ -1852,7 +1878,8 @@
     <section id="screen-check" class="screen" aria-labelledby="check-title">
       <div class="screen-header">
         <h2 id="check-title" class="screen-title">
-          <span>⚖️</span> <span data-i18n="checkHeading">Am I Being Overcharged?</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          <span data-i18n="checkHeading">Am I Being Overcharged?</span>
         </h2>
         <p class="screen-subtitle" data-i18n="checkSub">Compare the amount asked by the driver against the official legal tariff.</p>
       </div>
@@ -1947,7 +1974,8 @@
     <section id="screen-routes" class="screen" aria-labelledby="routes-title">
       <div class="screen-header">
         <h2 id="routes-title" class="screen-title">
-          <span>🗺️</span> <span data-i18n="routesHeading">Popular Catbalogan Routes</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+          <span data-i18n="routesHeading">Popular Catbalogan Routes</span>
         </h2>
         <p class="screen-subtitle" data-i18n="routesSub">Tap any route to automatically load its distance into the Calculator.</p>
       </div>
@@ -2002,7 +2030,8 @@
     <section id="screen-report" class="screen" aria-labelledby="report-title">
       <div class="screen-header">
         <h2 id="report-title" class="screen-title">
-          <span>📢</span> <span data-i18n="tipsHeading">Passenger Rights & Scam Avoidance</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          <span data-i18n="tipsHeading">Passenger Rights & Scam Avoidance</span>
         </h2>
         <p class="screen-subtitle">Proteksyon hit pasahero kontra ha panloloko ha pletehan.</p>
       </div>
@@ -2140,7 +2169,8 @@
     <section id="screen-rates" class="screen" aria-labelledby="rates-title">
       <div class="screen-header">
         <h2 id="rates-title" class="screen-title">
-          <span>📋</span> <span data-i18n="ratesHeading">Official Fare Tariffs & Settings</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span data-i18n="ratesHeading">Official Fare Tariffs & Settings</span>
         </h2>
         <p class="screen-subtitle" data-i18n="ratesSub">Review current fare schedules or customize rates for Catbalogan City.</p>
       </div>
@@ -2160,7 +2190,7 @@
           <div style="font-size: 0.8rem; color: var(--text-muted);">Edit vehicle rates, base fares, and per-km pricing.</div>
         </div>
         <button type="button" id="btn-toggle-admin" class="pill-btn">
-          <span id="admin-mode-status">🔒 Locked</span>
+          <span id="admin-mode-status"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Locked</span>
         </button>
       </div>
 
@@ -3489,7 +3519,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         html += `
           <tr>
             <td>
-              <strong>${v.icon || ''} ${name}</strong><br>
+              <strong><span class="vehicle-icon-badge">${v.icon || '🚗'}</span>${name}</strong><br>
               <small style="color: var(--text-muted);">${v.authority || 'LTFRB'}</small>
             </td>
             <td>${baseFareText}</td>
@@ -3635,7 +3665,9 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       document.documentElement.lang = lang;
 
       const langBtn = document.getElementById('lang-btn-text');
-      langBtn.textContent = lang === 'war' ? '🇬🇧 EN' : '🇵🇭 WAR';
+      if (langBtn) {
+        langBtn.textContent = lang === 'war' ? 'EN' : 'WAR';
+      }
 
       document.getElementById('header-title').textContent = STRINGS[lang].appTitle;
       document.getElementById('header-sub').textContent = STRINGS[lang].appSubtitle;
@@ -3664,10 +3696,14 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       const icon = document.getElementById('theme-btn-icon');
       if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
-        icon.textContent = '☀️';
+        if (icon) {
+          icon.innerHTML = '<svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+        }
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
-        icon.textContent = '🌙';
+        if (icon) {
+          icon.innerHTML = '<svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+        }
       }
     }
 
@@ -4230,13 +4266,13 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         triggerHaptic();
         isAdminUnlocked = !isAdminUnlocked;
         if (isAdminUnlocked) {
-          adminStatus.textContent = '🔓 Unlocked';
+          adminStatus.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Unlocked';
           adminToggleBtn.classList.add('active');
           readonlyView.style.display = 'none';
           adminView.style.display = 'block';
           renderAdminEditor();
         } else {
-          adminStatus.textContent = '🔒 Locked';
+          adminStatus.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Locked';
           adminToggleBtn.classList.remove('active');
           readonlyView.style.display = 'block';
           adminView.style.display = 'none';
