@@ -1,0 +1,4169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#D97706">
+  <meta name="description" content="Pamasahe Catbalogan - Official public transit fare guide and overcharge protection for Catbalogan City, Samar, Philippines">
+  <title>Pamasahe Catbalogan | Fair Transit Fares</title>
+  
+  <!-- Embedded Web App Manifest -->
+  <link rel="manifest" id="app-manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Pamasahe%20Catbalogan%22%2C%22short_name%22%3A%22Pamasahe%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230F172A%22%2C%22theme_color%22%3A%22%23D97706%22%2C%22description%22%3A%22Fair%20transit%20fares%20for%20Catbalogan%20City%2C%20Samar%22%7D">
+  
+  <!-- Favicon SVG Data URI -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D97706'><path d='M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z'/></svg>">
+
+  <style>
+    /* =========================================================
+       PAMASAHE CATBALOGAN - PREMIUM TRANSIT UI/UX SYSTEM
+       High-contrast, sunlight-readable, mobile-first design.
+       ========================================================= */
+    :root {
+      /* Transit color palette */
+      --brand-amber: #D97706;
+      --brand-amber-hover: #B45309;
+      --brand-amber-light: #FEF3C7;
+      --brand-amber-dark: #92400E;
+      --brand-amber-glow: rgba(217, 119, 6, 0.25);
+      
+      --color-slate-900: #0F172A;
+      --color-slate-800: #1E293B;
+      --color-slate-700: #334155;
+      --color-slate-600: #475569;
+      --color-slate-500: #64748B;
+      --color-slate-400: #94A3B8;
+      --color-slate-300: #CBD5E1;
+      --color-slate-200: #E2E8F0;
+      --color-slate-100: #F1F5F9;
+      --color-slate-50:  #F8FAFC;
+
+      /* Status colors (High contrast for outdoor daylight) */
+      --status-fair-bg: #DCFCE7;
+      --status-fair-text: #166534;
+      --status-fair-border: #86EFAC;
+      
+      --status-caution-bg: #FEF3C7;
+      --status-caution-text: #92400E;
+      --status-caution-border: #FCD34D;
+      
+      --status-danger-bg: #FEE2E2;
+      --status-danger-text: #991B1B;
+      --status-danger-border: #FCA5A5;
+
+      /* Theme variables: default light */
+      --bg-body: var(--color-slate-50);
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: var(--color-slate-100);
+      --bg-input: #FFFFFF;
+      --border-color: var(--color-slate-300);
+      --border-strong: var(--color-slate-500);
+      
+      --text-main: var(--color-slate-900);
+      --text-secondary: var(--color-slate-700);
+      --text-muted: var(--color-slate-500);
+      --text-inverse: #FFFFFF;
+
+      --tab-bar-bg: rgba(255, 255, 255, 0.94);
+      --tab-bar-border: var(--color-slate-200);
+      --tab-active-color: var(--brand-amber);
+      --tab-inactive-color: var(--color-slate-500);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-glow: 0 0 15px var(--brand-amber-glow);
+    }
+
+    /* Dark Mode (High contrast asphalt navy) */
+    [data-theme="dark"] {
+      --bg-body: #090D16;
+      --bg-surface: #0F172A;
+      --bg-card: #182234;
+      --bg-card-subtle: #1E293B;
+      --bg-input: #141C2E;
+      --border-color: #334155;
+      --border-strong: #64748B;
+
+      --text-main: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --text-inverse: #0F172A;
+
+      --tab-bar-bg: rgba(15, 23, 42, 0.95);
+      --tab-bar-border: #1E293B;
+      --tab-active-color: #F59E0B;
+      --tab-inactive-color: #94A3B8;
+
+      --status-fair-bg: #064E3B;
+      --status-fair-text: #A7F3D0;
+      --status-fair-border: #059669;
+
+      --status-caution-bg: #78350F;
+      --status-caution-text: #FDE68A;
+      --status-caution-border: #D97706;
+
+      --status-danger-bg: #7F1D1D;
+      --status-danger-text: #FECACA;
+      --status-danger-border: #DC2626;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-body: #090D16;
+        --bg-surface: #0F172A;
+        --bg-card: #182234;
+        --bg-card-subtle: #1E293B;
+        --bg-input: #141C2E;
+        --border-color: #334155;
+        --border-strong: #64748B;
+
+        --text-main: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --text-muted: #94A3B8;
+        --text-inverse: #0F172A;
+
+        --tab-bar-bg: rgba(15, 23, 42, 0.95);
+        --tab-bar-border: #1E293B;
+        --tab-active-color: #F59E0B;
+        --tab-inactive-color: #94A3B8;
+
+        --status-fair-bg: #064E3B;
+        --status-fair-text: #A7F3D0;
+        --status-fair-border: #059669;
+
+        --status-caution-bg: #78350F;
+        --status-caution-text: #FDE68A;
+        --status-caution-border: #D97706;
+
+        --status-danger-bg: #7F1D1D;
+        --status-danger-text: #FECACA;
+        --status-danger-border: #DC2626;
+      }
+    }
+
+    /* Base Reset & Typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Top App Header with Blur */
+    .app-header {
+      background-color: var(--bg-surface);
+      border-bottom: 2px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #FFFFFF;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .brand-sub-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 1px;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .offline-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--status-fair-text);
+      background: var(--status-fair-bg);
+      border: 1px solid var(--status-fair-border);
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+    }
+
+    .offline-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #10B981;
+      border-radius: 50%;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 6px 12px;
+      background: var(--bg-card-subtle);
+      border: 1.5px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .icon-btn:hover {
+      background: var(--brand-amber-light);
+      border-color: var(--brand-amber);
+      color: var(--brand-amber-dark);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Main Content Area */
+    .app-main {
+      flex: 1;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 14px 14px calc(76px + env(safe-area-inset-bottom)) 14px;
+    }
+
+    /* Screen Management with micro-transitions */
+    .screen {
+      display: none;
+      animation: screenSlideIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes screenSlideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Screen Title Bar */
+    .screen-header {
+      margin-bottom: 14px;
+    }
+
+    .screen-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .screen-subtitle {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Card Component */
+    .card {
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Visual Vehicle Selector Carousel / Grid */
+    .vehicle-selector-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .vehicle-card-btn {
+      min-width: 108px;
+      flex: 0 0 auto;
+      background: var(--bg-card-subtle);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 10px 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .vehicle-card-btn:hover {
+      border-color: var(--brand-amber);
+      transform: translateY(-2px);
+    }
+
+    .vehicle-card-btn.active {
+      background: var(--brand-amber-light);
+      border-color: var(--brand-amber);
+      color: var(--brand-amber-dark);
+      box-shadow: 0 0 0 2px var(--brand-amber);
+    }
+
+    .vehicle-card-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .vehicle-card-name {
+      font-size: 0.76rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .vehicle-card-badge {
+      font-size: 0.64rem;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* Form Inputs & Controls */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .label-hint {
+      font-size: 0.75rem;
+      font-weight: normal;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    .input-control, select, input[type="text"], input[type="number"], input[type="datetime-local"], textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      background-color: var(--bg-input);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      color: var(--text-main);
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      user-select: text;
+    }
+
+    .input-control:focus, select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--brand-amber);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+    }
+
+    .input-control.is-invalid {
+      border-color: #DC2626 !important;
+      background-color: rgba(220, 38, 38, 0.04);
+    }
+
+    .field-error {
+      color: #DC2626;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    /* Stepper & Number Controls */
+    .stepper-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .stepper-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 12px;
+      background: var(--bg-card-subtle);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s;
+      touch-action: manipulation;
+    }
+
+    .stepper-btn:hover {
+      background: var(--brand-amber-light);
+      border-color: var(--brand-amber);
+    }
+
+    .stepper-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Quick Distance Presets Chips */
+    .preset-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .preset-chip {
+      min-height: 32px;
+      padding: 3px 9px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s ease;
+      touch-action: manipulation;
+    }
+
+    .preset-chip:hover {
+      border-color: var(--brand-amber);
+      color: var(--brand-amber-dark);
+      background: var(--brand-amber-light);
+    }
+
+    .preset-chip:active {
+      transform: scale(0.96);
+    }
+
+    /* Segmented Radios / Buttons */
+    .segmented-control {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      background: var(--bg-card-subtle);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+    }
+
+    .segmented-option {
+      position: relative;
+    }
+
+    .segmented-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .segmented-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 6px 8px;
+      margin: 0;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .segmented-option input:checked + label {
+      background: var(--brand-amber);
+      color: #FFFFFF;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Authentic Digital Transit Ticket Card */
+    .transit-ticket-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      margin-top: 18px;
+      position: relative;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .ticket-header {
+      background: var(--bg-card-subtle);
+      padding: 12px 16px;
+      border-bottom: 2px dashed var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .ticket-title-tag {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ticket-body {
+      padding: 16px;
+    }
+
+    .fare-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-verified {
+      background: var(--status-fair-bg);
+      color: var(--status-fair-text);
+      border: 1px solid var(--status-fair-border);
+    }
+
+    .badge-partial {
+      background: var(--status-caution-bg);
+      color: var(--status-caution-text);
+      border: 1px solid var(--status-caution-border);
+    }
+
+    .badge-unverified {
+      background: var(--status-danger-bg);
+      color: var(--status-danger-text);
+      border: 1px solid var(--status-danger-border);
+    }
+
+    .fare-price-hero {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .fare-amount-display {
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      letter-spacing: -0.03em;
+    }
+
+    .fare-currency {
+      font-size: 1.9rem;
+      color: var(--brand-amber);
+    }
+
+    .discount-savings-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: var(--status-fair-bg);
+      color: var(--status-fair-text);
+      border: 1px solid var(--status-fair-border);
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .regular-strikethrough {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-right: 4px;
+      font-weight: 600;
+    }
+
+    .fare-notice-box {
+      background: var(--bg-card-subtle);
+      border: 1.5px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    .fare-breakdown-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--bg-card-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--brand-amber);
+      line-height: 1.45;
+    }
+
+    .fare-breakdown-box strong {
+      color: var(--text-main);
+    }
+
+    .ticket-footer-meta {
+      padding: 10px 16px;
+      background: var(--bg-card-subtle);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      min-height: 44px;
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--brand-amber);
+      color: #FFFFFF;
+      box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-amber-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card-subtle);
+      color: var(--text-main);
+      border: 1.5px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--brand-amber-light);
+      border-color: var(--brand-amber);
+      color: var(--brand-amber-dark);
+    }
+
+    .btn-danger {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+
+    .btn-danger:hover {
+      background: #B91C1C;
+    }
+
+    .btn-sm {
+      min-height: 38px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+    }
+
+    .button-group-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    /* Visual Overcharge Meter & Gauge */
+    .overcharge-gauge-card {
+      background: var(--bg-card-subtle);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .gauge-track {
+      height: 12px;
+      width: 100%;
+      border-radius: 6px;
+      background: linear-gradient(to right, #10B981 0%, #10B981 40%, #F59E0B 40%, #F59E0B 60%, #EF4444 60%, #EF4444 100%);
+      position: relative;
+      margin: 12px 0 6px 0;
+    }
+
+    .gauge-needle {
+      position: absolute;
+      top: -4px;
+      width: 4px;
+      height: 20px;
+      background: #0F172A;
+      border: 1.5px solid #FFFFFF;
+      border-radius: 2px;
+      transform: translateX(-50%);
+      transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+
+    .gauge-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* Verdict Box on Screen 2 (Check a Fare) */
+    .verdict-box {
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .verdict-box.visible {
+      display: block;
+    }
+
+    .verdict-box.verdict-fair {
+      background: var(--status-fair-bg);
+      border-color: var(--status-fair-border);
+      color: var(--status-fair-text);
+    }
+
+    .verdict-box.verdict-caution {
+      background: var(--status-caution-bg);
+      border-color: var(--status-caution-border);
+      color: var(--status-caution-text);
+    }
+
+    .verdict-box.verdict-danger {
+      background: var(--status-danger-bg);
+      border-color: var(--status-danger-border);
+      color: var(--status-danger-text);
+    }
+
+    .verdict-box.verdict-neutral {
+      background: var(--bg-card-subtle);
+      border-color: var(--border-strong);
+      color: var(--text-main);
+    }
+
+    .verdict-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .verdict-desc {
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .verdict-diff {
+      font-size: 1.5rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      margin: 4px 0;
+    }
+
+    /* Polite Dispute Script Box */
+    .dispute-script-box {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 12px;
+      color: var(--text-main);
+    }
+
+    .dispute-script-box h4 {
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dispute-quote {
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      background: var(--bg-card-subtle);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border-left: 3px solid var(--brand-amber);
+      margin: 6px 0;
+    }
+
+    /* Route List Items */
+    .route-filter-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .filter-chip-btn {
+      padding: 4px 10px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.12s;
+    }
+
+    .filter-chip-btn.active {
+      background: var(--brand-amber);
+      border-color: var(--brand-amber);
+      color: #FFFFFF;
+    }
+
+    .route-item {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .route-item:hover {
+      border-color: var(--brand-amber);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .route-item:active {
+      transform: scale(0.99);
+    }
+
+    .route-info {
+      flex: 1;
+    }
+
+    .route-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .route-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .route-km {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--brand-amber);
+      white-space: nowrap;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .route-badge {
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-card-subtle);
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    /* Tips & Report Lists */
+    .tip-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      transition: border-color 0.15s ease;
+    }
+
+    .tip-card:hover {
+      border-color: var(--brand-amber);
+    }
+
+    .tip-card-title {
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .tip-card-body {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .violation-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .violation-chip {
+      font-size: 0.74rem;
+      padding: 4px 8px;
+      background: var(--bg-card-subtle);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-full);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.1s;
+    }
+
+    .violation-chip:hover {
+      background: var(--brand-amber-light);
+      border-color: var(--brand-amber);
+      color: var(--brand-amber-dark);
+    }
+
+    .report-item {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .report-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .report-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .report-actions-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .agency-box {
+      background: var(--bg-card-subtle);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-top: 14px;
+      font-size: 0.85rem;
+      user-select: text;
+    }
+
+    .agency-box h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .agency-box p {
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      word-break: break-word;
+    }
+
+    /* Rates Table & Admin Styles */
+    .rate-table-container {
+      overflow-x: auto;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+    }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .rate-table th {
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 1.5px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .rate-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .rate-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-edit-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .admin-vehicle-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .admin-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .admin-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Fullscreen "Show Driver" Modal */
+    .fullscreen-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #090D16;
+      color: #FFFFFF;
+      z-index: 1000;
+      padding: 24px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    .fullscreen-modal.active {
+      display: flex;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-hero-fare {
+      font-size: 5.5rem;
+      font-weight: 900;
+      color: #F59E0B;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      margin: 20px 0;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--color-slate-900);
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      font-weight: 700;
+      z-index: 200;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-width: 90vw;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      border: 1px solid #334155;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Bottom Tab Bar */
+    .bottom-tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--tab-bar-bg);
+      border-top: 2px solid var(--tab-bar-border);
+      height: calc(64px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn {
+      min-height: 44px;
+      background: none;
+      border: none;
+      color: var(--tab-inactive-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 2px;
+      position: relative;
+      transition: color 0.15s ease;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .tab-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+      transition: transform 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--brand-amber);
+    }
+
+    .tab-btn.active {
+      color: var(--tab-active-color);
+    }
+
+    .tab-btn.active svg {
+      transform: scale(1.12);
+    }
+
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 38px;
+      height: 3px;
+      background: var(--brand-amber);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Self-Test Output Area */
+    .test-output-panel {
+      background: #0F172A;
+      color: #E2E8F0;
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin-top: 12px;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      border: 1px solid #334155;
+    }
+
+    /* Accessibility Focus States */
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--brand-amber);
+      outline-offset: 2px;
+    }
+
+    /* =========================================================
+       APP SPLASH / LOADING SCREEN (1 to 3 Seconds Transit Refresh)
+       ========================================================= */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      background: #090D16;
+      color: #FFFFFF;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+    }
+
+    .splash-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .splash-logo-wrap {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .splash-logo-icon {
+      width: 76px;
+      height: 76px;
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      box-shadow: 0 10px 25px rgba(217, 119, 6, 0.5);
+      animation: splashBounce 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes splashBounce {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-8px) scale(1.03); }
+    }
+
+    .splash-title {
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .splash-tagline {
+      font-size: 0.86rem;
+      color: #FBBF24;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .splash-progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .splash-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #F59E0B, #10B981);
+      border-radius: 9999px;
+      transition: width 0.25s ease-out;
+    }
+
+    .splash-loading-text {
+      font-size: 0.8rem;
+      color: #94A3B8;
+      font-weight: 600;
+      margin-bottom: 16px;
+      min-height: 20px;
+    }
+
+    .splash-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34D399;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Splash / Loading Screen (1-3s Transit Refresh Screen) -->
+  <div id="app-splash-screen" class="splash-screen" role="progressbar" aria-label="Loading Pamasahe Catbalogan">
+    <div class="splash-content">
+      <div class="splash-logo-wrap">
+        <div class="splash-logo-icon">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/>
+          </svg>
+        </div>
+      </div>
+      <h1 class="splash-title">Pamasahe Catbalogan</h1>
+      <p class="splash-tagline" id="splash-tagline">Dire magpalabi hit pletehan!</p>
+      
+      <!-- Progress Track -->
+      <div class="splash-progress-track">
+        <div class="splash-progress-bar" id="splash-progress-bar"></div>
+      </div>
+      
+      <!-- Dynamic Status text -->
+      <div class="splash-loading-text" id="splash-status-text">
+        Gin-aandam an opisyal nga taripa...
+      </div>
+      
+      <div class="splash-badge">
+        <span>⚡ 100% Offline Ready • Catbalogan City</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="app-toast" class="toast" role="status" aria-live="polite">
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <!-- Fullscreen "Show Driver" Modal -->
+  <div id="fullscreen-driver-modal" class="fullscreen-modal" role="dialog" aria-modal="true" aria-label="Show fare to driver">
+    <div style="width: 100%; display: flex; justify-content: flex-end;">
+      <button type="button" class="icon-btn" id="btn-close-modal" aria-label="Close fullscreen modal">✕</button>
+    </div>
+    <div>
+      <div style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: #94A3B8; font-weight: 700;">
+        PAMASAHE CATBALOGAN
+      </div>
+      <div id="modal-vehicle-title" style="font-size: 1.6rem; font-weight: 800; margin-top: 4px;">
+        Traditional Jeepney
+      </div>
+      <div class="modal-hero-fare" id="modal-fare-amount">
+        ₱26.00
+      </div>
+      <div id="modal-route-details" style="font-size: 1.15rem; font-weight: 600; color: #E2E8F0;">
+        10 km • Regular Passenger
+      </div>
+      <div id="modal-authority-badge" style="display: inline-block; margin-top: 14px; background: rgba(245, 158, 11, 0.2); border: 1.5px solid #F59E0B; color: #FBBF24; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 800;">
+        Official LTFRB Tariff (28 Sep 2026)
+      </div>
+    </div>
+    <div style="font-size: 0.85rem; color: #64748B;">
+      Tap anywhere to return to calculator
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand-group">
+      <div class="brand-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title" id="header-title">Pamasahe Catbalogan</h1>
+        <div class="brand-sub-row">
+          <span class="brand-sub" id="header-sub">Dire magpalabi hit pletehan!</span>
+          <span class="offline-status-pill" title="Fully cached and offline ready">
+            <span class="offline-dot"></span> ⚡ Offline OK
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="app-refresh-btn" class="icon-btn" aria-label="Refresh Entire Web App" title="Refresh Web App">
+        <span id="refresh-btn-icon">🔄</span>
+      </button>
+      <button id="lang-toggle-btn" class="icon-btn" aria-label="Switch language">
+        <span id="lang-btn-text">🇵🇭 WAR</span>
+      </button>
+      <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle color theme">
+        <span id="theme-btn-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View Screens -->
+  <main class="app-main">
+
+    <!-- ========================================================
+         SCREEN 1: CALCULATOR
+         ======================================================== -->
+    <section id="screen-calc" class="screen active" aria-labelledby="calc-title">
+      <div class="screen-header">
+        <h2 id="calc-title" class="screen-title">
+          <span>🧮</span> <span data-i18n="calcHeading">Fare Calculator</span>
+        </h2>
+        <p class="screen-subtitle" data-i18n="calcSub">Calculate the legal transit fare for any trip in Catbalogan and Samar.</p>
+      </div>
+
+      <!-- Visual Vehicle Card Selector -->
+      <div class="vehicle-selector-scroll" id="vehicle-cards-bar" role="radiogroup" aria-label="Select vehicle type">
+        <!-- Rendered dynamically via JS for fast one-tap selection -->
+      </div>
+
+      <div class="card">
+        <!-- Vehicle Type Dropdown (kept synced) -->
+        <div class="form-group">
+          <label for="calc-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
+          <select id="calc-vehicle" class="input-control">
+            <!-- Populated dynamically via JS -->
+          </select>
+        </div>
+
+        <!-- Conditional Tricycle / Habal-habal Controls -->
+        <div id="calc-local-options" style="display: none;">
+          <div class="form-group">
+            <label data-i18n="rideTypeLabel">Ride Type</label>
+            <div class="segmented-control">
+              <div class="segmented-option">
+                <input type="radio" name="calc-ride-type" id="ride-shared" value="shared" checked>
+                <label for="ride-shared" data-i18n="sharedRide">Shared (Regular)</label>
+              </div>
+              <div class="segmented-option">
+                <input type="radio" name="calc-ride-type" id="ride-special" value="special">
+                <label for="ride-special" data-i18n="specialRide">Special Trip (Pakyaw)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="timeOfDayLabel">Time of Travel</label>
+            <div class="segmented-control">
+              <div class="segmented-option">
+                <input type="radio" name="calc-time" id="time-day" value="day" checked>
+                <label for="time-day" data-i18n="dayTime">Day (Standard)</label>
+              </div>
+              <div class="segmented-option">
+                <input type="radio" name="calc-time" id="time-night" value="night">
+                <label for="time-night" data-i18n="nightTime">Night (Surcharge)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distance (km) with Stepper and Quick Presets -->
+        <div class="form-group">
+          <label for="calc-distance">
+            <span data-i18n="distanceLabel">Distance (km)</span>
+            <span class="label-hint">(0.1 - 300 km)</span>
+          </label>
+          <div class="stepper-row">
+            <button type="button" class="stepper-btn" id="btn-km-minus" aria-label="Decrease distance">-</button>
+            <input type="number" id="calc-distance" class="input-control" value="10" min="0.1" max="300" step="0.1" inputmode="decimal">
+            <button type="button" class="stepper-btn" id="btn-km-plus" aria-label="Increase distance">+</button>
+          </div>
+          
+          <!-- Distance Quick Presets -->
+          <div class="preset-chips-row">
+            <button type="button" class="preset-chip" data-km="1.5">🏙️ Town (1.5 km)</button>
+            <button type="button" class="preset-chip" data-km="3.5">🛣️ Brgy (3.5 km)</button>
+            <button type="button" class="preset-chip" data-km="11.0">Jeepney (11 km)</button>
+            <button type="button" class="preset-chip" data-km="24.0">Wright (24 km)</button>
+          </div>
+
+          <div id="calc-distance-error" class="field-error" data-i18n="distanceError">
+            Please enter a valid distance between 0.1 and 300 km.
+          </div>
+
+          <!-- Quick Route Pick Dropdown -->
+          <div style="margin-top: 10px;">
+            <label for="calc-quick-route" style="font-size: 0.8rem; font-weight: 600;" data-i18n="routeQuickPick">Or quick-pick a known route:</label>
+            <select id="calc-quick-route" class="input-control" style="min-height: 40px; font-size: 0.88rem;">
+              <!-- Populated from ROUTES -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Passenger Classification -->
+        <div class="form-group">
+          <label data-i18n="passengerLabel">Passenger Classification</label>
+          <div class="segmented-control">
+            <div class="segmented-option">
+              <input type="radio" name="calc-passenger" id="pass-regular" value="regular" checked>
+              <label for="pass-regular" data-i18n="regularPass">Regular</label>
+            </div>
+            <div class="segmented-option">
+              <input type="radio" name="calc-passenger" id="pass-discounted" value="discounted">
+              <label for="pass-discounted" data-i18n="discountedPass">Student/Senior/PWD (-20%)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Calculated Output (Digital Transit Ticket) -->
+      <div class="transit-ticket-card" id="calc-result-card">
+        <div class="ticket-header">
+          <div class="ticket-title-tag">
+            <span>🎫</span> <span data-i18n="calculatedFare">Estimated Legal Fare</span>
+          </div>
+          <span id="calc-badge" class="fare-badge badge-verified">Verified</span>
+        </div>
+
+        <div class="ticket-body">
+          <!-- Price Hero Display -->
+          <div id="calc-price-wrap">
+            <div class="fare-price-hero">
+              <div class="fare-amount-display">
+                <span class="fare-currency">₱</span>
+                <span id="calc-fare-amount">26.00</span>
+              </div>
+              <div id="calc-discount-badge-wrap" style="display: none;">
+                <span class="discount-savings-pill" id="calc-savings-text">
+                  🎉 -20% Discount
+                </span>
+              </div>
+            </div>
+            <div id="calc-strikethrough-line" style="display: none; font-size: 0.85rem; margin-bottom: 6px;">
+              <span class="regular-strikethrough" id="calc-regular-price">₱26.00</span>
+              <span style="color: var(--status-fair-text); font-weight: 700;" id="calc-discount-note">Student/Senior/PWD Rate</span>
+            </div>
+          </div>
+
+          <div id="calc-missing-notice" class="fare-notice-box" style="display: none;">
+            <p id="calc-missing-text">Notice text</p>
+            <button type="button" id="btn-go-to-rates" class="btn btn-secondary btn-sm" style="margin-top: 8px;" data-i18n="btnEnterRate">
+              Open Rates Tab to Enter Rate
+            </button>
+          </div>
+
+          <div class="fare-breakdown-box" id="calc-breakdown-box">
+            <strong><span data-i18n="fareBreakdown">Fare Breakdown</span>:</strong>
+            <div id="calc-breakdown-text">Base fare ₱14.00 (first 4 km) + 6 extra km @ ₱2.00/km = ₱26.00</div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="button-group-row">
+            <button type="button" id="btn-show-driver" class="btn btn-primary btn-sm">
+              📱 Show Driver Fullscreen
+            </button>
+            <button type="button" id="btn-copy-breakdown" class="btn btn-secondary btn-sm">
+              📋 Copy Breakdown
+            </button>
+          </div>
+
+          <div class="button-group-row">
+            <button type="button" id="btn-send-to-check" class="btn btn-secondary btn-sm" data-i18n="btnCheckAgainstDriver">
+              ⚖️ Check Against Driver's Price
+            </button>
+            <button type="button" id="btn-send-to-report" class="btn btn-secondary btn-sm" data-i18n="btnReportOvercharge">
+              📢 Report Overcharging
+            </button>
+          </div>
+        </div>
+
+        <div class="ticket-footer-meta">
+          <span><strong><span data-i18n="rateSource">Source</span>:</strong> <span id="calc-source">LTFRB Resolution</span></span>
+          <span><strong><span data-i18n="effectiveDate">Effective</span>:</strong> <span id="calc-effective">28 Sep 2026</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 2: CHECK A FARE
+         ======================================================== -->
+    <section id="screen-check" class="screen" aria-labelledby="check-title">
+      <div class="screen-header">
+        <h2 id="check-title" class="screen-title">
+          <span>⚖️</span> <span data-i18n="checkHeading">Am I Being Overcharged?</span>
+        </h2>
+        <p class="screen-subtitle" data-i18n="checkSub">Compare the amount asked by the driver against the official legal tariff.</p>
+      </div>
+
+      <div class="card">
+        <div class="form-group">
+          <label for="check-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
+          <select id="check-vehicle" class="input-control">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="check-distance" data-i18n="distanceLabel">Distance (km)</label>
+          <input type="number" id="check-distance" class="input-control" value="10" min="0.1" max="300" step="0.1">
+          <div id="check-distance-error" class="field-error" data-i18n="distanceError">Please enter a valid distance between 0.1 and 300 km.</div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="passengerLabel">Passenger Classification</label>
+          <div class="segmented-control">
+            <div class="segmented-option">
+              <input type="radio" name="check-passenger" id="chk-pass-reg" value="regular" checked>
+              <label for="chk-pass-reg" data-i18n="regularPass">Regular</label>
+            </div>
+            <div class="segmented-option">
+              <input type="radio" name="check-passenger" id="chk-pass-disc" value="discounted">
+              <label for="chk-pass-disc" data-i18n="discountedPass">Student/Senior/PWD</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="check-asked-amount" data-i18n="askedLabel">Amount Driver Asked (₱)</label>
+          <input type="number" id="check-asked-amount" class="input-control" placeholder="e.g. 40" min="0" step="0.5" inputmode="decimal">
+          <div id="check-asked-error" class="field-error">Please enter the amount the driver charged you.</div>
+        </div>
+
+        <button type="button" id="btn-evaluate-fare" class="btn btn-primary" style="margin-top: 10px;" data-i18n="btnEvaluateFare">
+          Evaluate Fare
+        </button>
+      </div>
+
+      <!-- Verdict Box -->
+      <div id="check-verdict-box" class="verdict-box">
+        <div class="verdict-title" id="verdict-title">Fair Fare</div>
+        <p class="verdict-desc" id="verdict-desc">Verdict details will appear here.</p>
+        
+        <div id="verdict-diff-wrap">
+          <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" data-i18n="diffLabel">Fare Difference:</div>
+          <div class="verdict-diff" id="verdict-diff">+₱14.00</div>
+          <div style="font-size: 0.85rem;" id="verdict-breakdown-line">Official Fare: ₱26.00 | Driver Asked: ₱40.00</div>
+
+          <!-- Visual Overcharge Gauge / Meter -->
+          <div class="overcharge-gauge-card">
+            <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">
+              Fare Assessment Meter
+            </div>
+            <div class="gauge-track">
+              <div class="gauge-needle" id="gauge-needle" style="left: 85%;"></div>
+            </div>
+            <div class="gauge-labels">
+              <span>Fair (₱0)</span>
+              <span>Slight (+₱2)</span>
+              <span>Overcharge (>₱2)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Polite Dispute Helper Script -->
+        <div class="dispute-script-box" id="dispute-script-box" style="display: none;">
+          <h4><span>💬</span> What to Say (Polite Assertion Script):</h4>
+          <div class="dispute-quote" id="dispute-quote-text">
+            "Nong/Nang, sumala ha opisyal nga LTFRB fare matrix, ₱26.00 la po an plete. Pwede po paki-check an nakapaskil nga taripa?"
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-dispute-script" style="margin-top: 6px;">
+            📋 Copy Polite Script
+          </button>
+        </div>
+
+        <div id="verdict-action-wrap" style="margin-top: 14px;">
+          <button type="button" id="btn-check-to-report" class="btn btn-danger btn-sm" data-i18n="btnPreFillReport">
+            📢 File a Formal Report With This Trip
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 3: ROUTES
+         ======================================================== -->
+    <section id="screen-routes" class="screen" aria-labelledby="routes-title">
+      <div class="screen-header">
+        <h2 id="routes-title" class="screen-title">
+          <span>🗺️</span> <span data-i18n="routesHeading">Popular Catbalogan Routes</span>
+        </h2>
+        <p class="screen-subtitle" data-i18n="routesSub">Tap any route to automatically load its distance into the Calculator.</p>
+      </div>
+
+      <!-- Route Search Filter -->
+      <div class="form-group">
+        <input type="text" id="route-search-input" class="input-control" placeholder="Search routes (e.g. Pier, Market, SSU)..." aria-label="Search routes">
+      </div>
+
+      <!-- Route Category Filter Bar -->
+      <div class="route-filter-bar">
+        <button type="button" class="filter-chip-btn active" data-filter="all">All Routes</button>
+        <button type="button" class="filter-chip-btn" data-filter="proper">🏙️ Town Proper (&lt;4 km)</button>
+        <button type="button" class="filter-chip-btn" data-filter="inter">🛣️ Jeepney (4-25 km)</button>
+        <button type="button" class="filter-chip-btn" data-filter="bus">🚌 Bus/Van (&gt;25 km)</button>
+      </div>
+
+      <!-- Collapsible Add Custom Route Form -->
+      <div class="card">
+        <div class="card-title">
+          <span data-i18n="btnAddRoute">Add Custom Route</span>
+          <button type="button" id="btn-toggle-add-route" class="pill-btn">+ Add</button>
+        </div>
+        <div id="add-route-form-wrap" style="display: none;">
+          <div class="form-group">
+            <label for="new-route-from" data-i18n="fromLabel">Origin (From)</label>
+            <input type="text" id="new-route-from" class="input-control" placeholder="e.g. Pier 1">
+          </div>
+          <div class="form-group">
+            <label for="new-route-to" data-i18n="toLabel">Destination (To)</label>
+            <input type="text" id="new-route-to" class="input-control" placeholder="e.g. Samar College">
+          </div>
+          <div class="form-group">
+            <label for="new-route-km" data-i18n="distanceLabel">Distance (km)</label>
+            <input type="number" id="new-route-km" class="input-control" placeholder="e.g. 2.4" min="0.1" max="300" step="0.1">
+          </div>
+          <button type="button" id="btn-save-new-route" class="btn btn-primary btn-sm" data-i18n="saveRouteBtn">
+            Save Route to Phone
+          </button>
+        </div>
+      </div>
+
+      <!-- Routes List -->
+      <div id="routes-list-container">
+        <!-- Populated via renderRoutes() -->
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 4: TIPS & REPORT
+         ======================================================== -->
+    <section id="screen-report" class="screen" aria-labelledby="report-title">
+      <div class="screen-header">
+        <h2 id="report-title" class="screen-title">
+          <span>📢</span> <span data-i18n="tipsHeading">Passenger Rights & Scam Avoidance</span>
+        </h2>
+        <p class="screen-subtitle">Proteksyon hit pasahero kontra ha panloloko ha pletehan.</p>
+      </div>
+
+      <!-- Tips Accordion / Cards -->
+      <div class="tip-card">
+        <div class="tip-card-title"><span>🤝</span> <span data-i18n="tip1Title">1. Agree on the fare before boarding</span></div>
+        <div class="tip-card-body" data-i18n="tip1Desc">Always clarify the fare before stepping onto a tricycle or habal-habal to avoid awkward disputes at destination.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-title"><span>📋</span> <span data-i18n="tip2Title">2. Ask to see the posted fare matrix</span></div>
+        <div class="tip-card-body" data-i18n="tip2Desc">All PUVs and tricycles are required by law to prominently display their approved tariff matrix inside the vehicle.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-title"><span>🚫</span> <span data-i18n="tip3Title">3. No '3-for-1' passenger charging</span></div>
+        <div class="tip-card-body" data-i18n="tip3Desc">A driver cannot charge 3 passengers' fare for 1 person on a shared trip. Solo rides are only charged as special trips if you hired the entire vehicle.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-title"><span>🔢</span> <span data-i18n="tip4Title">4. Note the Plate or Body Number</span></div>
+        <div class="tip-card-body" data-i18n="tip4Desc">Check the local franchise sticker and body number painted on the side and rear of the vehicle before or during the ride.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-title"><span>📸</span> <span data-i18n="tip5Title">5. Take a photo if safe</span></div>
+        <div class="tip-card-body" data-i18n="tip5Desc">A quick photo of the vehicle plate or body number serves as indisputable evidence for city traffic inspectors.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-title"><span>🎓</span> <span data-i18n="tip6Title">6. 20% Mandatory Discount</span></div>
+        <div class="tip-card-body" data-i18n="tip6Desc">Students, Senior Citizens, and PWDs are entitled by Philippine law to a 20% discount on all days, including holidays and weekends.</div>
+      </div>
+
+      <!-- Report Form -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-title">
+          <span data-i18n="reportHeading">Report Overcharging Incident</span>
+        </div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;" data-i18n="reportSub">
+          Log incidents of fare gouging. Saved locally and ready to forward to authorities.
+        </p>
+
+        <form id="report-form">
+          <div class="form-group">
+            <label for="report-datetime" data-i18n="dateTimeLabel">Incident Date & Time</label>
+            <input type="datetime-local" id="report-datetime" class="input-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="report-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
+            <select id="report-vehicle" class="input-control" required>
+              <!-- Populated via JS -->
+            </select>
+          </div>
+
+          <div class="admin-grid-2 form-group">
+            <div>
+              <label for="report-from" data-i18n="fromLabel">Origin (From)</label>
+              <input type="text" id="report-from" class="input-control" placeholder="e.g. Public Market" required>
+            </div>
+            <div>
+              <label for="report-to" data-i18n="toLabel">Destination (To)</label>
+              <input type="text" id="report-to" class="input-control" placeholder="e.g. San Roque" required>
+            </div>
+          </div>
+
+          <div class="admin-grid-2 form-group">
+            <div>
+              <label for="report-charged" data-i18n="chargedLabel">Amount Charged (₱)</label>
+              <input type="number" id="report-charged" class="input-control" placeholder="e.g. 50" min="1" step="0.5" required inputmode="decimal">
+            </div>
+            <div>
+              <label for="report-correct" data-i18n="correctLabel">Official Fare (₱)</label>
+              <input type="number" id="report-correct" class="input-control" placeholder="e.g. 26" min="0" step="0.25" inputmode="decimal">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="report-plate" data-i18n="plateLabel">Plate / Body Number (Optional)</label>
+            <input type="text" id="report-plate" class="input-control" placeholder="e.g. Tricycle Body #0421 or ABC-123">
+          </div>
+
+          <!-- Quick Violation Tags -->
+          <div class="form-group">
+            <label data-i18n="notesLabel">Incident Notes / Remarks</label>
+            <div class="violation-chips-wrap">
+              <span class="violation-chip" data-tag="Refused 20% discount (May ID)">🏷️ Refused 20% discount</span>
+              <span class="violation-chip" data-tag="Charged special/pakyaw rate on shared ride">🏷️ Charged special on shared ride</span>
+              <span class="violation-chip" data-tag="Demanded fare above matrix">🏷️ Demanded excess fare</span>
+              <span class="violation-chip" data-tag="No fare matrix posted">🏷️ No posted matrix</span>
+            </div>
+            <textarea id="report-notes" class="input-control" rows="2" placeholder="e.g. Driver demanded ₱50 for a solo trip and refused student ID."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" data-i18n="submitReportBtn">
+            💾 Submit & Save Report
+          </button>
+        </form>
+      </div>
+
+      <!-- Past Reports List -->
+      <div class="card">
+        <div class="card-title">
+          <span data-i18n="myReportsHeading">My Reports History</span>
+          <span id="report-count-badge" class="route-badge">0</span>
+        </div>
+        <div id="reports-list-wrap">
+          <!-- Populated via renderReports() -->
+        </div>
+      </div>
+
+      <!-- Agency Contact Details (Selectable text with official placeholders) -->
+      <div class="agency-box">
+        <h4 data-i18n="agenciesHeading">Official Traffic & Complaint Offices</h4>
+        <p style="font-size: 0.8rem;" data-i18n="agenciesSub">You can copy-paste your report and send it to these offices:</p>
+
+        <div style="margin-bottom: 12px;">
+          <strong>🏛️ Catbalogan City Traffic Management Office (TMO / LGU)</strong><br>
+          Office: City Hall Compound, Del Rosario St., Catbalogan City, Samar 6700<br>
+          Hotline: <code>[Insert City Hall / TMO Hotline: e.g. (055) XXX-XXXX]</code><br>
+          Email: <code>[Insert City Traffic Office Email: e.g. traffic@catbalogan.gov.ph]</code><br>
+          Sangguniang Panlungsod (Tricycle Franchising Board): <code>[Insert SP Office Contact]</code>
+        </div>
+
+        <div>
+          <strong>🚌 LTFRB Region 8 (Eastern Visayas Regional Office)</strong><br>
+          Office: Regional Government Center, Brgy. Candahug, Palo, Leyte<br>
+          Complaints Desk: <code>[Insert LTFRB R8 Telephone: e.g. (053) XXX-XXXX]</code><br>
+          Email: <code>[Insert LTFRB R8 Email: e.g. r8@ltfrb.gov.ph]</code><br>
+          Nationwide LTFRB Hotline: <strong>1342</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 5: RATES & ADMIN
+         ======================================================== -->
+    <section id="screen-rates" class="screen" aria-labelledby="rates-title">
+      <div class="screen-header">
+        <h2 id="rates-title" class="screen-title">
+          <span>📋</span> <span data-i18n="ratesHeading">Official Fare Tariffs & Settings</span>
+        </h2>
+        <p class="screen-subtitle" data-i18n="ratesSub">Review current fare schedules or customize rates for Catbalogan City.</p>
+      </div>
+
+      <!-- Notice regarding LGU jurisdiction -->
+      <div class="fare-breakdown-box" style="border-left-color: var(--brand-amber); margin-bottom: 16px;">
+        <strong data-i18n="lastUpdatedLabel">Rates Last Updated</strong>: <span id="rates-last-updated-display">2026-09-28</span><br>
+        <span style="font-size: 0.82rem;" data-i18n="lguNotice">
+          Notice: Tricycle and Habal-Habal rates are not governed by the LTFRB. They are legislated exclusively by the Catbalogan City Local Government Unit (City Hall & Sangguniang Panlungsod).
+        </span>
+      </div>
+
+      <!-- Admin Mode Switch -->
+      <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-weight: 700;" data-i18n="adminToggleLabel">Unlock Admin / Edit Mode</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Edit vehicle rates, base fares, and per-km pricing.</div>
+        </div>
+        <button type="button" id="btn-toggle-admin" class="pill-btn">
+          <span id="admin-mode-status">🔒 Locked</span>
+        </button>
+      </div>
+
+      <!-- Read-Only Rate Matrix (When Admin is OFF) -->
+      <div id="rates-readonly-view">
+        <div class="rate-table-container">
+          <table class="rate-table">
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Base Fare</th>
+                <th>Base Km</th>
+                <th>Per Km</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="rates-table-body">
+              <!-- Populated via renderRatesTable() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Editable Rate Editor (When Admin is ON) -->
+      <div id="rates-admin-view" style="display: none;">
+        <div style="background: var(--brand-amber-light); color: var(--brand-amber-dark); padding: 10px 14px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; margin-bottom: 14px;" data-i18n="adminActiveNotice">
+          Admin mode is active. You can modify rates below and save them locally.
+        </div>
+
+        <div class="admin-edit-grid" id="admin-vehicles-editor">
+          <!-- Populated via renderAdminEditor() -->
+        </div>
+
+        <div class="button-group-row" style="margin-top: 16px;">
+          <button type="button" id="btn-save-rates" class="btn btn-primary" data-i18n="btnSaveRates">
+            💾 Save Rates to LocalStorage
+          </button>
+          <button type="button" id="btn-reset-rates" class="btn btn-secondary" data-i18n="btnResetRates">
+            🔄 Reset to Default Tariffs
+          </button>
+        </div>
+
+        <!-- Export & Import JSON -->
+        <div class="card" style="margin-top: 20px;">
+          <div class="card-title" data-i18n="exportHeading">Export / Backup Rates (JSON)</div>
+          <textarea id="rates-export-area" class="input-control" rows="4" readonly style="font-family: monospace; font-size: 0.78rem;"></textarea>
+          <button type="button" id="btn-copy-rates-json" class="btn btn-secondary btn-sm" style="margin-top: 8px;" data-i18n="btnCopyJson">
+            📋 Copy Rates JSON
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-title" data-i18n="importHeading">Import Rates (JSON)</div>
+          <textarea id="rates-import-area" class="input-control" rows="4" placeholder="Paste fare configuration JSON here..." style="font-family: monospace; font-size: 0.78rem;"></textarea>
+          <button type="button" id="btn-apply-rates-json" class="btn btn-primary btn-sm" style="margin-top: 8px;" data-i18n="btnApplyJson">
+            📥 Apply Imported Rates
+          </button>
+        </div>
+      </div>
+
+      <!-- Acceptance Self-Test Button & Output Panel -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-title">
+          <span>🧪 System Verification (Self-Test)</span>
+          <button type="button" id="btn-run-acceptance-tests" class="pill-btn" data-i18n="btnRunTests">Run Tests</button>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Runs all formal acceptance tests (jeepney, modern jeepney, provincial bus, 4.2 km billing round, tricycle unverified check, and check-a-fare overcharge verification).
+        </p>
+        <div id="test-results-panel" class="test-output-panel" style="display: none;"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Tab Bar (Mobile First) -->
+  <nav class="bottom-tab-bar" aria-label="Primary Navigation">
+    <button type="button" class="tab-btn active" data-target="screen-calc" aria-label="Calculator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2"/>
+        <line x1="8" y1="6" x2="16" y2="6"/>
+        <line x1="16" y1="14" x2="16" y2="18"/>
+        <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+      </svg>
+      <span data-i18n="tabCalc">Calc</span>
+    </button>
+
+    <button type="button" class="tab-btn" data-target="screen-check" aria-label="Check Fare">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+        <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+        <path d="M7 21h10"/>
+        <path d="M12 3v18"/>
+        <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+      </svg>
+      <span data-i18n="tabCheck">Check</span>
+    </button>
+
+    <button type="button" class="tab-btn" data-target="screen-routes" aria-label="Routes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="19" r="3"/>
+        <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/>
+        <circle cx="18" cy="5" r="3"/>
+      </svg>
+      <span data-i18n="tabRoutes">Routes</span>
+    </button>
+
+    <button type="button" class="tab-btn" data-target="screen-report" aria-label="Tips & Report">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 11 18-5v12L3 14v-3z"/>
+        <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+      </svg>
+      <span data-i18n="tabTips">Report</span>
+    </button>
+
+    <button type="button" class="tab-btn" data-target="screen-rates" aria-label="Rates">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <span data-i18n="tabRates">Rates</span>
+    </button>
+  </nav>
+
+  <!-- ========================================================
+       JAVASCRIPT APPLICATION LOGIC
+       ======================================================== -->
+  <script>
+    "use strict";
+
+    /**
+     * =========================================================================
+     * 1. FARES CONFIGURATION (SINGLE SOURCE OF TRUTH)
+     * =========================================================================
+     */
+    const DEFAULT_FARES = {
+      lastUpdated: "2026-09-28",
+      vehicles: {
+        jeepney_traditional: {
+          id: "jeepney_traditional",
+          name: "Traditional Jeepney",
+          warayName: "Tradisyunal nga Dyip",
+          icon: "🚙",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: 14.00,
+          baseKm: 4,
+          perKm: 2.00,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "verified",
+          source: "LTFRB Board Resolution / Fare Adjustment 2026",
+          description: "Standard open-air public utility jeepney"
+        },
+        jeepney_modern: {
+          id: "jeepney_modern",
+          name: "Modern Jeepney",
+          warayName: "Moderno nga Dyip (E-Jeep)",
+          icon: "🚌",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: 17.00,
+          baseKm: 4,
+          perKm: 2.40,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "verified",
+          source: "LTFRB PUV Modernization Program Tariff",
+          description: "Air-conditioned modern mini-bus PUV"
+        },
+        bus_ordinary: {
+          id: "bus_ordinary",
+          name: "Provincial Bus (Ordinary)",
+          warayName: "Bus Panlalawigan (Ordinaryo)",
+          icon: "🚎",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: 12.00,
+          baseKm: 5,
+          perKm: 2.20,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "verified",
+          source: "LTFRB Provincial Bus Tariff Matrix",
+          description: "Non-aircon provincial bus (Samar/Leyte corridors)"
+        },
+        bus_aircon: {
+          id: "bus_aircon",
+          name: "Provincial Bus (Aircon)",
+          warayName: "Bus Panlalawigan (May Aircon)",
+          icon: "❄️",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 5,
+          perKm: 2.45,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB (Base fare unverified - ask driver)",
+          description: "Regular air-conditioned provincial bus"
+        },
+        bus_deluxe: {
+          id: "bus_deluxe",
+          name: "Provincial Bus (Deluxe)",
+          warayName: "Bus Panlalawigan (Deluxe)",
+          icon: "✨",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 5,
+          perKm: 2.60,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB (Base fare unverified)",
+          description: "Deluxe seating class provincial bus"
+        },
+        bus_super_deluxe: {
+          id: "bus_super_deluxe",
+          name: "Provincial Bus (Super Deluxe)",
+          warayName: "Bus Panlalawigan (Super Deluxe)",
+          icon: "👑",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 5,
+          perKm: 2.70,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB (Base fare unverified)",
+          description: "Super Deluxe recliner seats provincial bus"
+        },
+        bus_luxury: {
+          id: "bus_luxury",
+          name: "Provincial Bus (Luxury)",
+          warayName: "Bus Panlalawigan (Luxury)",
+          icon: "🛋️",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 5,
+          perKm: 3.35,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB (Base fare unverified)",
+          description: "Luxury VIP class bus with onboard comfort room"
+        },
+        uv_traditional: {
+          id: "uv_traditional",
+          name: "UV Express (Traditional)",
+          warayName: "UV Express / Van (Tradisyunal)",
+          icon: "🚐",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 4,
+          perKm: 2.60,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB Provisional Order",
+          description: "Point-to-point and inter-city passenger van"
+        },
+        uv_modern: {
+          id: "uv_modern",
+          name: "UV Express (Modern)",
+          warayName: "UV Express / Van (Moderno)",
+          icon: "⚡",
+          category: "ltfrb",
+          authority: "LTFRB Region 8",
+          baseFare: null,
+          baseKm: 4,
+          perKm: 3.00,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "28 Sep 2026",
+          status: "partial",
+          source: "LTFRB Provisional Order",
+          description: "Modern Euro-4 compliant utility shuttle"
+        },
+        tricycle: {
+          id: "tricycle",
+          name: "Tricycle (Taraysikel)",
+          warayName: "Taraysikel (Tricycle)",
+          icon: "🛺",
+          category: "lgu",
+          authority: "Catbalogan City Hall",
+          baseFare: null,
+          baseKm: null,
+          perKm: null,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "Pending City Ordinance",
+          status: "unverified",
+          source: "Catbalogan City Hall / Sangguniang Panlungsod",
+          description: "Motorized tricycle. Governed strictly by Catbalogan City Ordinance."
+        },
+        habal_habal: {
+          id: "habal_habal",
+          name: "Habal-Habal (Motorcycle Taxi)",
+          warayName: "Habal-Habal (Motorsiklo)",
+          icon: "🏍️",
+          category: "lgu",
+          authority: "Catbalogan City Hall",
+          baseFare: null,
+          baseKm: null,
+          perKm: null,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "Informal Local Rate",
+          status: "unverified",
+          source: "Local Practice / Catbalogan City Hall",
+          description: "Two-wheeled passenger motorcycle for upland and interior barangays."
+        }
+      }
+    };
+
+    let FARES = loadFaresFromStorage();
+
+    /**
+     * =========================================================================
+     * 2. ROUTES SEED DATA (CATBALOGAN CITY & SAMAR)
+     * =========================================================================
+     */
+    const DEFAULT_ROUTES = [
+      { id: "route_1", from: "Catbalogan Pier 1 (Port Area)", to: "Samar State University (SSU Main)", km: 2.5, category: "proper", source: "estimate" },
+      { id: "route_2", from: "Catbalogan Public Market", to: "Barangay San Roque", km: 1.8, category: "proper", source: "estimate" },
+      { id: "route_3", from: "Catbalogan Bus Terminal (Pier 2)", to: "Samar Provincial Hospital", km: 2.2, category: "proper", source: "estimate" },
+      { id: "route_4", from: "Catbalogan City Plaza (St. Bartholomew)", to: "Barangay Maulong", km: 3.5, category: "proper", source: "estimate" },
+      { id: "route_5", from: "Catbalogan Public Market", to: "Barangay Mercedes", km: 2.8, category: "proper", source: "estimate" },
+      { id: "route_6", from: "Catbalogan Pier 1", to: "Barangay Guinsorongan", km: 3.0, category: "proper", source: "estimate" },
+      { id: "route_7", from: "Catbalogan City Proper", to: "Jiabong Boundary (Jeepney Route)", km: 11.0, category: "inter", source: "estimate" },
+      { id: "route_8", from: "Catbalogan City", to: "Wright (Paranas Junction)", km: 24.0, category: "inter", source: "estimate" },
+      { id: "route_9", from: "Catbalogan City", to: "Calbayog City (Provincial Bus)", km: 72.0, category: "bus", source: "estimate" },
+      { id: "route_10", from: "Catbalogan City", to: "Tacloban City (Bus / Van)", km: 105.0, category: "bus", source: "estimate" }
+    ];
+
+    let ROUTES = loadRoutesFromStorage();
+
+    /**
+     * =========================================================================
+     * 3. BILINGUAL STRING LOCALIZATION (ENGLISH & WARAY)
+     * =========================================================================
+     */
+    const STRINGS = {
+      en: {
+        appTitle: "Pamasahe Catbalogan",
+        appSubtitle: "Fair Public Transit Fares for Catbalogan City, Samar",
+        tabCalc: "Calc",
+        tabCheck: "Check",
+        tabRoutes: "Routes",
+        tabTips: "Report",
+        tabRates: "Rates",
+        
+        calcHeading: "Fare Calculator",
+        calcSub: "Calculate the legal transit fare for any trip in Catbalogan and Samar.",
+        vehicleLabel: "Vehicle Type",
+        distanceLabel: "Distance (km)",
+        distanceError: "Please enter a valid distance between 0.1 and 300 km.",
+        routeQuickPick: "Or quick-pick a known route:",
+        selectRoutePlaceholder: "-- Select a popular Catbalogan route --",
+        passengerLabel: "Passenger Classification",
+        regularPass: "Regular Passenger",
+        discountedPass: "Student / Senior / PWD (-20%)",
+        rideTypeLabel: "Ride Type",
+        sharedRide: "Shared (Regular)",
+        specialRide: "Special Trip (Pakyaw)",
+        timeOfDayLabel: "Time of Travel",
+        dayTime: "Day (Standard)",
+        nightTime: "Night (Surcharge)",
+        calculatedFare: "Estimated Legal Fare",
+        fareBreakdown: "Fare Breakdown",
+        rateSource: "Source",
+        effectiveDate: "Effective",
+        statusVerified: "Verified",
+        statusUnverified: "Unverified",
+        statusPartial: "Partial (Base Missing)",
+        btnCheckAgainstDriver: "⚖️ Check Against Driver's Price",
+        btnReportOvercharge: "📢 Report Overcharging",
+        msgNoRate: "No official Catbalogan rate loaded yet",
+        msgNoRateDetail: "Tricycle and Habal-habal rates are set by Catbalogan City Hall ordinances. Click below to view or enter local rates.",
+        msgMissingBase: "Base fare not loaded yet. Per-km rate is ₱{perKm}. Ask the driver for the posted fare matrix.",
+        btnEnterRate: "Open Rates Tab to Enter Rate",
+        authorityLtfrb: "LTFRB Region 8",
+        authorityLgu: "Local rate (set by City Hall)",
+
+        checkHeading: "Am I Being Overcharged?",
+        checkSub: "Compare the amount asked by the driver against the official legal tariff.",
+        askedLabel: "Amount Driver Asked (₱)",
+        btnEvaluateFare: "Evaluate Fare",
+        verdictFairTitle: "Fair Fare",
+        verdictFairDesc: "The driver's asked fare is within or equal to the official legal rate.",
+        verdictSlightlyHighTitle: "Slightly High",
+        verdictSlightlyHighDesc: "Slightly high, you can ask for change or the posted matrix.",
+        verdictOverchargeTitle: "Overcharged!",
+        verdictOverchargeDesc: "Overcharge of ₱{diff}. Politely cite the fare matrix.",
+        verdictUnavailableTitle: "Official Rate Unavailable",
+        verdictUnavailableDesc: "Cannot determine overcharging because the official rate for this vehicle is unverified or incomplete.",
+        diffLabel: "Fare Difference",
+        btnPreFillReport: "📢 File a Formal Report With This Trip",
+
+        routesHeading: "Popular Catbalogan Routes",
+        routesSub: "Tap any route to automatically load its distance into the Calculator.",
+        btnAddRoute: "Add Custom Route",
+        fromLabel: "Origin (From)",
+        toLabel: "Destination (To)",
+        saveRouteBtn: "Save Route to Phone",
+        customRouteTag: "User Added",
+        seedRouteTag: "Estimated",
+
+        tipsHeading: "Passenger Rights & Scam Avoidance",
+        tip1Title: "1. Agree on the fare before boarding",
+        tip1Desc: "Always clarify the fare before stepping onto a tricycle or habal-habal to avoid awkward disputes at destination.",
+        tip2Title: "2. Ask to see the posted fare matrix",
+        tip2Desc: "All PUVs and tricycles are required by law to prominently display their approved tariff matrix inside the vehicle.",
+        tip3Title: "3. No '3-for-1' passenger charging",
+        tip3Desc: "A driver cannot charge 3 passengers' fare for 1 person on a shared trip. Solo rides are only charged as special trips if you hired the entire vehicle.",
+        tip4Title: "4. Note the Plate or Body Number",
+        tip4Desc: "Check the local franchise sticker and body number painted on the side and rear of the vehicle before or during the ride.",
+        tip5Title: "5. Take a photo if safe",
+        tip5Desc: "A quick photo of the vehicle plate or body number serves as indisputable evidence for city traffic inspectors.",
+        tip6Title: "6. 20% Mandatory Discount",
+        tip6Desc: "Students, Senior Citizens, and PWDs are entitled by Philippine law to a 20% discount on all days, including holidays and weekends.",
+
+        reportHeading: "Report Overcharging Incident",
+        reportSub: "Log incidents of fare gouging. Saved locally and ready to forward to authorities.",
+        dateTimeLabel: "Incident Date & Time",
+        plateLabel: "Plate / Body Number (Optional)",
+        chargedLabel: "Amount Charged (₱)",
+        correctLabel: "Official Fare (₱)",
+        notesLabel: "Incident Notes / Remarks",
+        submitReportBtn: "💾 Submit & Save Report",
+        myReportsHeading: "My Reports History",
+        btnCopyReport: "📋 Copy Formatted Complaint Text",
+        agenciesHeading: "Official Traffic & Complaint Offices",
+        agenciesSub: "You can copy-paste your report and send it to these offices:",
+
+        ratesHeading: "Official Fare Tariffs & Settings",
+        ratesSub: "Review current fare schedules or customize rates for Catbalogan City.",
+        lastUpdatedLabel: "Rates Last Updated",
+        lguNotice: "Notice: Tricycle and Habal-Habal rates are not governed by the LTFRB. They are legislated exclusively by the Catbalogan City Local Government Unit (City Hall & Sangguniang Panlungsod).",
+        adminToggleLabel: "Unlock Admin / Edit Mode",
+        adminActiveNotice: "Admin mode is active. You can modify rates below and save them locally.",
+        btnSaveRates: "💾 Save Rates to LocalStorage",
+        btnResetRates: "🔄 Reset to Default Tariffs",
+        exportHeading: "Export / Backup Rates (JSON)",
+        btnCopyJson: "📋 Copy Rates JSON",
+        importHeading: "Import Rates (JSON)",
+        btnApplyJson: "📥 Apply Imported Rates",
+        btnRunTests: "Run Tests"
+      },
+      war: {
+        /* Note: Waray terms marked for native-speaker review */
+        appTitle: "Pamasahe Catbalogan",
+        appSubtitle: "Dire Magpalabi hit Pletehan ha Syudad han Catbalogan, Samar",
+        tabCalc: "Kalkula",
+        tabCheck: "Suri",
+        tabRoutes: "Ruta",
+        tabTips: "Sumbong",
+        tabRates: "Taripa",
+
+        calcHeading: "Kalkulador hit Plete",
+        calcSub: "Kwentaha an husto nga plete para ha bisan diin nga biyahe ha Catbalogan ngan Samar.",
+        vehicleLabel: "Klase hit Sasakyan",
+        distanceLabel: "Kahirayo (km)",
+        distanceError: "Alayon pagbutang hin husto nga kahirayo tikang 0.1 tubtob 300 km.",
+        routeQuickPick: "O pamili hin ruta:",
+        selectRoutePlaceholder: "-- Pili hin ruta ha Catbalogan --",
+        passengerLabel: "Klase hit Pasahero",
+        regularPass: "Regular nga Pasahero",
+        discountedPass: "Estudyante / Senior / PWD (-20%)",
+        rideTypeLabel: "Klase hit Sakay",
+        sharedRide: "Dungan (Regular)",
+        specialRide: "Espesyal / Pakyaw",
+        timeOfDayLabel: "Oras hit Biyahe",
+        dayTime: "Adlaw (Standard)",
+        nightTime: "Gab-i (May dugang)",
+        calculatedFare: "Husto nga Pasahe",
+        fareBreakdown: "Paliwanag hit Kwenta",
+        rateSource: "Gintikangan",
+        effectiveDate: "Petsa hit Patuman",
+        statusVerified: "Beripikado",
+        statusUnverified: "Waray pa ma-beripika",
+        statusPartial: "Diri Kumpleto",
+        btnCheckAgainstDriver: "⚖️ I-tanding ha Ginsukot han Drayber",
+        btnReportOvercharge: "📢 Isumbong an Sobra nga Plete",
+        msgNoRate: "Wala pa ma-load an opisyal nga taripa han Catbalogan para hini",
+        msgNoRateDetail: "An taripa hit Taraysikel ngan Habal-Habal ginpapasa han City Hall han Catbalogan. Pindota ha ubos basi makita o makabutang hin taripa.",
+        msgMissingBase: "Wala pa ma-load an base fare. An per-km nga taripa in ₱{perKm}. Pangutan-a an drayber han nakapaskil nga taripa.",
+        btnEnterRate: "Ibutang an Taripa ha Rates Tab",
+        authorityLtfrb: "LTFRB Rehiyon 8",
+        authorityLgu: "Taripa han Syudad (Catbalogan City Hall)",
+
+        checkHeading: "Sobra ba an Akon Plete?",
+        checkSub: "I-tanding an sukot han drayber kontra ha opisyal nga taripa.",
+        askedLabel: "Ginsukot han Drayber (₱)",
+        btnEvaluateFare: "Susiha an Plete",
+        verdictFairTitle: "Kustahi la an Pasahe",
+        verdictFairDesc: "Kustahi la o igo an ginsukot han drayber sumala ha opisyal nga taripa.",
+        verdictSlightlyHighTitle: "Gutiay nga Labaw",
+        verdictSlightlyHighDesc: "Gutiay la an labaw, pwede ka mag-aro hin sukli o han nakapaskil nga taripa.",
+        verdictOverchargeTitle: "Sobra an Plete!",
+        verdictOverchargeDesc: "Sobra hin ₱{diff}. Maupay nga ig-pahinumdom an opisyal nga fare matrix.",
+        verdictUnavailableTitle: "Waray Opisyal nga Taripa",
+        verdictUnavailableDesc: "Diri masusubay an subra kay waray pa kompleto nga opisyal nga taripa para hini nga sasakyan.",
+        diffLabel: "Kalainan hit Plete",
+        btnPreFillReport: "📢 Isumbong Ini nga Biyahe",
+
+        routesHeading: "Mga Ruta ha Catbalogan",
+        routesSub: "Pindota an ruta basi diretso nga ma-kalkula an plete.",
+        btnAddRoute: "Dugang hin Bag-o nga Ruta",
+        fromLabel: "Tikang (From)",
+        toLabel: "Pakadto (To)",
+        saveRouteBtn: "Ig-save an Ruta ha Phone",
+        customRouteTag: "Gindugang",
+        seedRouteTag: "Tigaman",
+
+        tipsHeading: "Katungod han Pasahero & Mga Pahimatngon",
+        tip1Title: "1. Baya mag-ayos hit plete ugsa sumakay",
+        tip1Desc: "Pakianahe ngan sabotan an plete ugsa sumakay ha taraysikel o habal-habal basi waray diri pagsinabtanay.",
+        tip2Title: "2. Pangita-a an nakapaskil nga Taripa (Fare Matrix)",
+        tip2Desc: "Obligado an mga pampubliko nga sasakyan nga magbutang han opisyal nga taripa ha sulod han sakayan.",
+        tip3Title: "3. Diri pwede singilon an 3 ka pasahero para ha 1",
+        tip3Desc: "Diri ka angay panukton hin para ha tulo nga pasahero kon regular nga sakay. An pakyaw para la kon imo gin-arkila an bug-os nga sakayan.",
+        tip4Title: "4. Tigamni an Plate Number o Body Number",
+        tip4Desc: "Kitaa an numero han prangkisa o plaka nga nakapintura ha kilid ngan luyo han sasakyan.",
+        tip5Title: "5. Pagkuha hin litrato kon talwas",
+        tip5Desc: "An litrato han numero han sakayan in mabaskog nga ebidensya kon magsumbong ha mga otoridad.",
+        tip6Title: "6. 20% Mandatory nga Diskwento",
+        tip6Desc: "An mga Estudyante, Senior Citizens, ngan PWD in may 20% nga diskwento kada adlaw, bisan holidays o Sabado/Domingo.",
+
+        reportHeading: "Sumbong han Sobra nga Plete",
+        reportSub: "Ilista an mga panhitabo hin pagpalabi hit pletehan. Naka-save ha imo cellphone ngan andam ipadangat ha mga opisinahan.",
+        dateTimeLabel: "Petsa ngan Oras",
+        plateLabel: "Plaka / Body Number (Kon may-ada)",
+        chargedLabel: "Ginsukot nga Plete (₱)",
+        correctLabel: "Husto nga Taripa (₱)",
+        notesLabel: "Dugang nga Pahayag / Detalye",
+        submitReportBtn: "💾 Ig-padangat an Sumbong",
+        myReportsHeading: "Akon mga Sumbong",
+        btnCopyReport: "📋 Kopyaha an Text han Sumbong",
+        agenciesHeading: "Mga Opisina nga Pwede Sumbungan",
+        agenciesSub: "Pwede mo kopyahon an report ngan ipadangat ha mga nasunod:",
+
+        ratesHeading: "Opisyal nga mga Taripa & Admin",
+        ratesSub: "Kitaa o bag-uha an mga taripa para ha Syudad han Catbalogan.",
+        lastUpdatedLabel: "Kataposan nga Pag-update",
+        lguNotice: "Pahimatngon: An taripa hit Taraysikel ngan Habal-Habal in diri sakop hit LTFRB. Ini in eksklusibo nga gindudumara han City Hall han Catbalogan ngan Sangguniang Panlungsod.",
+        adminToggleLabel: "Abrihan an Admin / Edit Mode",
+        adminActiveNotice: "Naka-on an Admin mode. Pwede mo bag-uhon an mga taripa ngan ig-save.",
+        btnSaveRates: "💾 Ig-save an Taripa ha Phone",
+        btnResetRates: "🔄 Ibalik ha Opisyal nga Taripa",
+        exportHeading: "I-export an Taripa (JSON)",
+        btnCopyJson: "📋 Kopyaha an JSON",
+        importHeading: "I-import an Taripa (JSON)",
+        btnApplyJson: "📥 Ipatuman an Bag-o nga Taripa",
+        btnRunTests: "Padalagana an Tests"
+      }
+    };
+
+    let currentLang = localStorage.getItem("pamasahe_lang") || "en";
+    let currentTheme = localStorage.getItem("pamasahe_theme") || "auto";
+    let isAdminUnlocked = false;
+
+    // Haptic feedback helper
+    function triggerHaptic() {
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate(12); } catch (e) {}
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 4. CORE FARE CALCULATION ENGINE (FLOATING-POINT SAFE)
+     * =========================================================================
+     */
+    function roundToQuarterPesos(centavos) {
+      const roundedCentavos = Math.round(centavos / 25) * 25;
+      return roundedCentavos / 100;
+    }
+
+    function calculateFare(vehicleKey, distanceKm, passengerType = "regular", rideType = "shared", timeOfDay = "day") {
+      const v = FARES.vehicles[vehicleKey];
+      if (!v) {
+        return { valid: false, status: "not_found", fare: null, message: "Vehicle type not found" };
+      }
+
+      const dist = parseFloat(distanceKm);
+      if (isNaN(dist) || dist <= 0 || dist > 300) {
+        return {
+          valid: false,
+          status: "invalid_input",
+          fare: null,
+          message: currentLang === 'war' 
+            ? "Alayon pagbutang hin husto nga kahirayo (0.1 tubtob 300 km)."
+            : "Please enter a valid distance between 0.1 and 300 km."
+        };
+      }
+
+      const billedKm = Math.ceil(dist);
+
+      if (v.category === "lgu") {
+        if (rideType === "special") {
+          if (v.specialTripFlat === null || v.specialTripFlat === undefined) {
+            return {
+              valid: false,
+              status: "no_rate",
+              fare: null,
+              vehicle: v,
+              errorMessage: currentLang === 'war' ? STRINGS.war.msgNoRate : STRINGS.en.msgNoRate,
+              message: currentLang === 'war' ? STRINGS.war.msgNoRate : STRINGS.en.msgNoRate
+            };
+          }
+          const isNight = timeOfDay === "night";
+          const nightSurcharge = (isNight && v.nightSurcharge) ? v.nightSurcharge : 0;
+          const flatCentavos = Math.round((v.specialTripFlat + nightSurcharge) * 100);
+          const finalFare = roundToQuarterPesos(flatCentavos);
+          const breakdown = `Special Trip (Pakyaw): ₱${v.specialTripFlat.toFixed(2)} flat rate${isNight && v.nightSurcharge ? ` + ₱${v.nightSurcharge.toFixed(2)} night surcharge` : ''} = ₱${finalFare.toFixed(2)}`;
+
+          return {
+            valid: true,
+            status: "success",
+            fare: finalFare,
+            rawRegularFare: finalFare,
+            fareFormatted: `₱${finalFare.toFixed(2)}`,
+            breakdown: breakdown,
+            rateInfo: v,
+            billedKm: billedKm,
+            extraKm: 0,
+            isDiscounted: false
+          };
+        }
+
+        if (v.baseFare === null || v.baseFare === undefined || v.baseKm === null || v.perKm === null) {
+          return {
+            valid: false,
+            status: "no_rate",
+            fare: null,
+            vehicle: v,
+            errorMessage: currentLang === 'war' ? STRINGS.war.msgNoRate : STRINGS.en.msgNoRate,
+            message: currentLang === 'war' ? STRINGS.war.msgNoRate : STRINGS.en.msgNoRate
+          };
+        }
+      }
+
+      if (v.baseFare === null || v.baseFare === undefined) {
+        const perKmText = v.perKm !== null ? v.perKm.toFixed(2) : "0.00";
+        const missingTemplate = currentLang === 'war' ? STRINGS.war.msgMissingBase : STRINGS.en.msgMissingBase;
+        const msg = missingTemplate.replace('{perKm}', perKmText);
+        return {
+          valid: false,
+          status: "missing_base",
+          fare: null,
+          vehicle: v,
+          errorMessage: msg,
+          message: msg
+        };
+      }
+
+      const baseKm = v.baseKm || 4;
+      const extraKm = Math.max(0, billedKm - baseKm);
+
+      const baseCentavos = Math.round(v.baseFare * 100);
+      const perKmCentavos = Math.round((v.perKm || 0) * 100);
+      
+      const isNight = (v.category === "lgu" && timeOfDay === "night");
+      const nightSurchargeCentavos = (isNight && v.nightSurcharge) ? Math.round(v.nightSurcharge * 100) : 0;
+
+      const rawCentavos = baseCentavos + (extraKm * perKmCentavos) + nightSurchargeCentavos;
+      const regularFare = roundToQuarterPesos(rawCentavos);
+
+      const isStudent = passengerType === "discounted";
+      let finalFare = 0;
+      let breakdownText = "";
+
+      if (!isStudent) {
+        finalFare = regularFare;
+        breakdownText = `Base fare ₱${v.baseFare.toFixed(2)} (first ${baseKm} km)` +
+          (extraKm > 0 ? ` + ${extraKm} extra km @ ₱${v.perKm.toFixed(2)}/km (billed as ${billedKm} km)` : ` (${billedKm} km within base)`) +
+          (nightSurchargeCentavos > 0 ? ` + ₱${(nightSurchargeCentavos/100).toFixed(2)} night surcharge` : '') +
+          ` = ₱${finalFare.toFixed(2)}`;
+      } else {
+        const discountedRawCentavos = rawCentavos * 0.80;
+        finalFare = roundToQuarterPesos(discountedRawCentavos);
+        breakdownText = `Raw fare: ₱${(rawCentavos / 100).toFixed(2)} (Regular: ₱${regularFare.toFixed(2)}) × 80% student/senior/PWD discount = ₱${(discountedRawCentavos / 100).toFixed(2)} → Rounded to nearest ₱0.25 = ₱${finalFare.toFixed(2)}`;
+      }
+
+      return {
+        valid: true,
+        status: "success",
+        fare: finalFare,
+        rawRegularFare: regularFare,
+        fareFormatted: `₱${finalFare.toFixed(2)}`,
+        breakdown: breakdownText,
+        rateInfo: v,
+        billedKm: billedKm,
+        extraKm: extraKm,
+        isDiscounted: isStudent
+      };
+    }
+
+    function evaluateFareCheck(vehicleKey, distanceKm, passengerType, askedAmount, rideType = "shared", timeOfDay = "day") {
+      const calc = calculateFare(vehicleKey, distanceKm, passengerType, rideType, timeOfDay);
+      const asked = parseFloat(askedAmount);
+
+      if (isNaN(asked) || asked < 0) {
+        return { status: "invalid_asked", message: "Please enter a valid asked amount." };
+      }
+
+      if (!calc.valid || calc.fare === null) {
+        return {
+          status: "unavailable",
+          correctFare: null,
+          asked: asked,
+          diff: null,
+          message: calc.errorMessage || (currentLang === 'war' ? STRINGS.war.verdictUnavailableDesc : STRINGS.en.verdictUnavailableDesc)
+        };
+      }
+
+      const correct = calc.fare;
+      const diff = Math.round((asked - correct) * 100) / 100;
+      const diffFormatted = `₱${Math.abs(diff).toFixed(2)}`;
+
+      if (asked <= correct) {
+        return {
+          status: "fair",
+          correctFare: correct,
+          asked: asked,
+          diff: diff,
+          diffFormatted: diffFormatted,
+          title: currentLang === 'war' ? STRINGS.war.verdictFairTitle : STRINGS.en.verdictFairTitle,
+          message: currentLang === 'war' ? STRINGS.war.verdictFairDesc : STRINGS.en.verdictFairDesc
+        };
+      } else if (asked <= correct + 2.00) {
+        return {
+          status: "slightly_high",
+          correctFare: correct,
+          asked: asked,
+          diff: diff,
+          diffFormatted: `+${diffFormatted}`,
+          title: currentLang === 'war' ? STRINGS.war.verdictSlightlyHighTitle : STRINGS.en.verdictSlightlyHighTitle,
+          message: currentLang === 'war' ? STRINGS.war.verdictSlightlyHighDesc : STRINGS.en.verdictSlightlyHighDesc
+        };
+      } else {
+        const template = currentLang === 'war' ? STRINGS.war.verdictOverchargeDesc : STRINGS.en.verdictOverchargeDesc;
+        return {
+          status: "overcharge",
+          correctFare: correct,
+          asked: asked,
+          diff: diff,
+          diffFormatted: `+${diffFormatted}`,
+          title: currentLang === 'war' ? STRINGS.war.verdictOverchargeTitle : STRINGS.en.verdictOverchargeTitle,
+          message: template.replace('{diff}', diff.toFixed(2))
+        };
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 5. BACKEND HOOK & PERSISTENCE
+     * =========================================================================
+     */
+    function submitReport(report) {
+      /**
+       * -------------------------------------------------------------
+       * BACKEND SWAP-IN AREA (SUPABASE / FIREBASE / API)
+       * -------------------------------------------------------------
+       * To connect to Supabase:
+       *   // const { data, error } = await supabase.from('fare_reports').insert([report]);
+       * 
+       * To connect to Firebase:
+       *   // const docRef = await addDoc(collection(db, "fare_reports"), report);
+       * -------------------------------------------------------------
+       */
+
+      const reports = loadReports();
+      reports.unshift(report);
+      try {
+        localStorage.setItem("pamasahe_reports", JSON.stringify(reports));
+        return { success: true, id: report.id };
+      } catch (err) {
+        console.error("Error saving report to localStorage:", err);
+        return { success: false, error: err.message };
+      }
+    }
+
+    function loadReports() {
+      try {
+        const raw = localStorage.getItem("pamasahe_reports");
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function deleteReport(id) {
+      const reports = loadReports().filter(r => r.id !== id);
+      localStorage.setItem("pamasahe_reports", JSON.stringify(reports));
+      renderReports();
+      showToast(currentLang === 'war' ? "Na-delete na an report." : "Report deleted.");
+    }
+
+    function loadFaresFromStorage() {
+      try {
+        const raw = localStorage.getItem("pamasahe_fares");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.vehicles) return parsed;
+        }
+      } catch (e) {
+        console.warn("Could not load custom fares, using defaults.", e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_FARES));
+    }
+
+    function saveFaresToStorage(faresObj) {
+      FARES = faresObj;
+      FARES.lastUpdated = new Date().toISOString().split('T')[0];
+      localStorage.setItem("pamasahe_fares", JSON.stringify(FARES));
+      localStorage.setItem("pamasahe_last_updated", FARES.lastUpdated);
+      renderVehicleCards();
+      updateCalculatorUI();
+      renderRatesTable();
+      renderAdminEditor();
+      document.getElementById('rates-last-updated-display').textContent = FARES.lastUpdated;
+    }
+
+    function resetFaresToDefaults() {
+      FARES = JSON.parse(JSON.stringify(DEFAULT_FARES));
+      localStorage.removeItem("pamasahe_fares");
+      renderVehicleCards();
+      updateCalculatorUI();
+      renderRatesTable();
+      renderAdminEditor();
+      document.getElementById('rates-last-updated-display').textContent = FARES.lastUpdated;
+      showToast(currentLang === 'war' ? STRINGS.war.ratesResetMsg || "Nabalik na ha default." : "Rates reset to default tariffs.");
+    }
+
+    function loadRoutesFromStorage() {
+      try {
+        const raw = localStorage.getItem("pamasahe_routes");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_ROUTES));
+    }
+
+    function saveRoutesToStorage(routesList) {
+      ROUTES = routesList;
+      localStorage.setItem("pamasahe_routes", JSON.stringify(ROUTES));
+      renderRoutes();
+      populateQuickRouteDropdowns();
+    }
+
+    /**
+     * =========================================================================
+     * 6. UI RENDERERS & EVENT HANDLERS
+     * =========================================================================
+     */
+
+    // Render Visual Vehicle Cards Horizontal Bar
+    function renderVehicleCards() {
+      const container = document.getElementById('vehicle-cards-bar');
+      const selected = document.getElementById('calc-vehicle').value || 'jeepney_traditional';
+      let html = '';
+
+      Object.keys(FARES.vehicles).forEach(key => {
+        const v = FARES.vehicles[key];
+        const isSelected = key === selected;
+        const name = currentLang === 'war' && v.warayName ? v.warayName : v.name;
+        const shortName = name.split(' ')[0] + ' ' + (name.split(' ')[1] || '');
+        const badgeColor = v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified');
+
+        html += `
+          <button type="button" class="vehicle-card-btn ${isSelected ? 'active' : ''}" data-key="${key}" role="radio" aria-checked="${isSelected}">
+            <span class="vehicle-card-icon">${v.icon || '🚌'}</span>
+            <span class="vehicle-card-name">${shortName}</span>
+            <span class="vehicle-card-badge ${badgeColor}">${v.status}</span>
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+
+      // Event listeners for vehicle cards
+      container.querySelectorAll('.vehicle-card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          const key = btn.getAttribute('data-key');
+          document.getElementById('calc-vehicle').value = key;
+          renderVehicleCards();
+          updateCalculatorUI();
+        });
+      });
+    }
+
+    // Populate Vehicle Dropdowns
+    function populateVehicleDropdowns() {
+      const calcSelect = document.getElementById('calc-vehicle');
+      const checkSelect = document.getElementById('check-vehicle');
+      const reportSelect = document.getElementById('report-vehicle');
+
+      const vehicleKeys = Object.keys(FARES.vehicles);
+      let html = '';
+
+      vehicleKeys.forEach(key => {
+        const v = FARES.vehicles[key];
+        const name = currentLang === 'war' && v.warayName ? v.warayName : v.name;
+        const statusIcon = v.status === 'verified' ? '🟢' : (v.status === 'partial' ? '🟡' : '🔴');
+        html += `<option value="${key}">${v.icon || ''} ${statusIcon} ${name}</option>`;
+      });
+
+      calcSelect.innerHTML = html;
+      checkSelect.innerHTML = html;
+      reportSelect.innerHTML = html;
+    }
+
+    // Populate Quick Pick Route Dropdowns
+    function populateQuickRouteDropdowns() {
+      const quickSelect = document.getElementById('calc-quick-route');
+      const placeholder = currentLang === 'war' ? STRINGS.war.selectRoutePlaceholder : STRINGS.en.selectRoutePlaceholder;
+      let html = `<option value="">${placeholder}</option>`;
+
+      ROUTES.forEach(r => {
+        html += `<option value="${r.km}">${r.from} → ${r.to} (${r.km} km)</option>`;
+      });
+
+      quickSelect.innerHTML = html;
+    }
+
+    // Live Calculator UI Update
+    function updateCalculatorUI() {
+      const vehicleKey = document.getElementById('calc-vehicle').value;
+      const distanceInput = document.getElementById('calc-distance');
+      const distanceError = document.getElementById('calc-distance-error');
+      const dist = parseFloat(distanceInput.value);
+
+      const passRadio = document.querySelector('input[name="calc-passenger"]:checked');
+      const passengerType = passRadio ? passRadio.value : 'regular';
+
+      const rideTypeRadio = document.querySelector('input[name="calc-ride-type"]:checked');
+      const rideType = rideTypeRadio ? rideTypeRadio.value : 'shared';
+
+      const timeRadio = document.querySelector('input[name="calc-time"]:checked');
+      const timeOfDay = timeRadio ? timeRadio.value : 'day';
+
+      // Keep horizontal visual cards synced
+      document.querySelectorAll('.vehicle-card-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-key') === vehicleKey);
+      });
+
+      // Show/hide tricycle and habal-habal conditional fields
+      const v = FARES.vehicles[vehicleKey];
+      const localOptionsDiv = document.getElementById('calc-local-options');
+      if (v && v.category === 'lgu') {
+        localOptionsDiv.style.display = 'block';
+      } else {
+        localOptionsDiv.style.display = 'none';
+      }
+
+      if (isNaN(dist) || dist <= 0 || dist > 300) {
+        distanceInput.classList.add('is-invalid');
+        distanceError.classList.add('visible');
+        document.getElementById('calc-fare-amount').textContent = '--';
+        document.getElementById('calc-breakdown-text').textContent = currentLang === 'war' 
+          ? "Alayon pagbutang hin husto nga kahirayo tikang 0.1 tubtob 300 km."
+          : "Please enter a valid distance between 0.1 and 300 km.";
+        return;
+      } else {
+        distanceInput.classList.remove('is-invalid');
+        distanceError.classList.remove('visible');
+      }
+
+      const res = calculateFare(vehicleKey, dist, passengerType, rideType, timeOfDay);
+
+      const priceWrap = document.getElementById('calc-price-wrap');
+      const missingNotice = document.getElementById('calc-missing-notice');
+      const missingText = document.getElementById('calc-missing-text');
+      const badge = document.getElementById('calc-badge');
+      const breakdownText = document.getElementById('calc-breakdown-text');
+      const sourceSpan = document.getElementById('calc-source');
+      const effectiveSpan = document.getElementById('calc-effective');
+
+      const discountBadgeWrap = document.getElementById('calc-discount-badge-wrap');
+      const strikethroughLine = document.getElementById('calc-strikethrough-line');
+      const regularPriceSpan = document.getElementById('calc-regular-price');
+      const savingsText = document.getElementById('calc-savings-text');
+
+      if (v) {
+        sourceSpan.textContent = v.source || (v.category === 'lgu' ? (currentLang === 'war' ? STRINGS.war.authorityLgu : STRINGS.en.authorityLgu) : 'LTFRB');
+        effectiveSpan.textContent = v.effectiveDate || '28 Sep 2026';
+
+        badge.className = 'fare-badge ' + (v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified'));
+        badge.textContent = v.status === 'verified' ? (currentLang === 'war' ? STRINGS.war.statusVerified : STRINGS.en.statusVerified) : 
+          (v.status === 'partial' ? (currentLang === 'war' ? STRINGS.war.statusPartial : STRINGS.en.statusPartial) : (currentLang === 'war' ? STRINGS.war.statusUnverified : STRINGS.en.statusUnverified));
+      }
+
+      if (res.valid && res.fare !== null) {
+        priceWrap.style.display = 'block';
+        missingNotice.style.display = 'none';
+        document.getElementById('calc-fare-amount').textContent = res.fare.toFixed(2);
+        breakdownText.textContent = res.breakdown;
+
+        if (res.isDiscounted && res.rawRegularFare) {
+          discountBadgeWrap.style.display = 'inline-block';
+          strikethroughLine.style.display = 'block';
+          regularPriceSpan.textContent = `₱${res.rawRegularFare.toFixed(2)}`;
+          const savings = (res.rawRegularFare - res.fare).toFixed(2);
+          savingsText.textContent = `🎉 -20% (Save ₱${savings})`;
+        } else {
+          discountBadgeWrap.style.display = 'none';
+          strikethroughLine.style.display = 'none';
+        }
+      } else {
+        priceWrap.style.display = 'none';
+        missingNotice.style.display = 'block';
+        missingText.textContent = res.errorMessage || res.message;
+        breakdownText.textContent = currentLang === 'war' 
+          ? "Diri pa makwenta an plete kay kulang an taripa hini nga sakayan."
+          : "Cannot compute fare: official tariff is incomplete or unverified for this vehicle.";
+      }
+    }
+
+    // Evaluate Check Fare Screen with Gauge & Polite Script
+    function handleEvaluateCheck() {
+      triggerHaptic();
+      const vehicleKey = document.getElementById('check-vehicle').value;
+      const distanceInput = document.getElementById('check-distance');
+      const askedInput = document.getElementById('check-asked-amount');
+      const distError = document.getElementById('check-distance-error');
+      const askedError = document.getElementById('check-asked-error');
+
+      const dist = parseFloat(distanceInput.value);
+      const asked = parseFloat(askedInput.value);
+
+      let hasErr = false;
+      if (isNaN(dist) || dist <= 0 || dist > 300) {
+        distanceInput.classList.add('is-invalid');
+        distError.classList.add('visible');
+        hasErr = true;
+      } else {
+        distanceInput.classList.remove('is-invalid');
+        distError.classList.remove('visible');
+      }
+
+      if (isNaN(asked) || asked < 0) {
+        askedInput.classList.add('is-invalid');
+        askedError.classList.add('visible');
+        hasErr = true;
+      } else {
+        askedInput.classList.remove('is-invalid');
+        askedError.classList.remove('visible');
+      }
+
+      if (hasErr) return;
+
+      const passRadio = document.querySelector('input[name="check-passenger"]:checked');
+      const passengerType = passRadio ? passRadio.value : 'regular';
+
+      const res = evaluateFareCheck(vehicleKey, dist, passengerType, asked);
+      const verdictBox = document.getElementById('check-verdict-box');
+      const titleEl = document.getElementById('verdict-title');
+      const descEl = document.getElementById('verdict-desc');
+      const diffEl = document.getElementById('verdict-diff');
+      const diffWrap = document.getElementById('verdict-diff-wrap');
+      const breakdownEl = document.getElementById('verdict-breakdown-line');
+      const actionWrap = document.getElementById('verdict-action-wrap');
+      const gaugeNeedle = document.getElementById('gauge-needle');
+      const disputeBox = document.getElementById('dispute-script-box');
+      const disputeQuote = document.getElementById('dispute-quote-text');
+
+      verdictBox.className = 'verdict-box visible';
+
+      if (res.status === 'unavailable') {
+        verdictBox.classList.add('verdict-neutral');
+        titleEl.textContent = currentLang === 'war' ? STRINGS.war.verdictUnavailableTitle : STRINGS.en.verdictUnavailableTitle;
+        descEl.textContent = res.message;
+        diffWrap.style.display = 'none';
+        actionWrap.style.display = 'none';
+        disputeBox.style.display = 'none';
+      } else {
+        diffWrap.style.display = 'block';
+        titleEl.textContent = res.title;
+        descEl.textContent = res.message;
+        diffEl.textContent = res.diffFormatted;
+        breakdownEl.textContent = `Official Fare: ₱${res.correctFare.toFixed(2)} | Driver Asked: ₱${res.asked.toFixed(2)}`;
+
+        // Overcharge Gauge Needle Position
+        if (res.status === 'fair') {
+          verdictBox.classList.add('verdict-fair');
+          actionWrap.style.display = 'none';
+          gaugeNeedle.style.left = '20%';
+          disputeBox.style.display = 'none';
+        } else if (res.status === 'slightly_high') {
+          verdictBox.classList.add('verdict-caution');
+          actionWrap.style.display = 'block';
+          gaugeNeedle.style.left = '50%';
+          disputeBox.style.display = 'block';
+        } else if (res.status === 'overcharge') {
+          verdictBox.classList.add('verdict-danger');
+          actionWrap.style.display = 'block';
+          gaugeNeedle.style.left = '85%';
+          disputeBox.style.display = 'block';
+        }
+
+        // Set Polite Script
+        if (currentLang === 'war') {
+          disputeQuote.textContent = `"Nong/Nang, sumala po ha opisyal nga taripa, ₱${res.correctFare.toFixed(2)} la po an plete para ha ${dist} km. Pwede po paki-check an nakapaskil nga taripa?"`;
+        } else {
+          disputeQuote.textContent = `"Boss, based on the official LTFRB tariff, the legal fare for ${dist} km is only ₱${res.correctFare.toFixed(2)}. Could we please check the posted fare matrix?"`;
+        }
+      }
+    }
+
+    // Render Routes Tab with Filtering
+    let currentRouteFilter = 'all';
+
+    function renderRoutes() {
+      const container = document.getElementById('routes-list-container');
+      const searchTerm = (document.getElementById('route-search-input').value || '').toLowerCase().trim();
+
+      const filtered = ROUTES.filter(r => {
+        const matchesSearch = r.from.toLowerCase().includes(searchTerm) || r.to.toLowerCase().includes(searchTerm);
+        if (!matchesSearch) return false;
+
+        if (currentRouteFilter === 'proper') return r.km < 4;
+        if (currentRouteFilter === 'inter') return r.km >= 4 && r.km <= 25;
+        if (currentRouteFilter === 'bus') return r.km > 25;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align: center; color: var(--text-muted); padding: 20px;">` +
+          (currentLang === 'war' ? 'Waray nakit-an nga ruta.' : 'No routes matched your search.') +
+          `</div>`;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(r => {
+        const isCustom = r.source === 'user';
+        const badgeLabel = isCustom ? 
+          (currentLang === 'war' ? STRINGS.war.customRouteTag : STRINGS.en.customRouteTag) : 
+          (currentLang === 'war' ? STRINGS.war.seedRouteTag : STRINGS.en.seedRouteTag);
+
+        const estMinutes = Math.max(3, Math.round(r.km * 2.2));
+
+        html += `
+          <div class="route-item" onclick="selectRouteForCalc('${r.from}', '${r.to}', ${r.km})">
+            <div class="route-info">
+              <div class="route-name">
+                <span>${r.from}</span>
+                <span style="color: var(--brand-amber);">→</span>
+                <span>${r.to}</span>
+              </div>
+              <div class="route-sub">
+                <span class="route-badge">${badgeLabel}</span>
+                <span>⏱️ ~${estMinutes} mins</span>
+                <span style="margin-left: 2px;">• ${currentLang === 'war' ? 'Pindota para kwentahon' : 'Tap to calculate'}</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="route-km">${r.km} km</div>
+              ${isCustom ? `<button type="button" class="stepper-btn" style="min-width: 32px; min-height: 32px; font-size: 0.8rem;" onclick="event.stopPropagation(); deleteCustomRoute('${r.id}');" title="Delete">🗑️</button>` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    window.selectRouteForCalc = function(from, to, km) {
+      triggerHaptic();
+      document.getElementById('calc-distance').value = km;
+      updateCalculatorUI();
+      switchTab('screen-calc');
+      showToast(currentLang === 'war' ? `Ruta na-load: ${from} → ${to} (${km} km)` : `Loaded route: ${from} → ${to} (${km} km)`);
+    };
+
+    window.deleteCustomRoute = function(id) {
+      const updated = ROUTES.filter(r => r.id !== id);
+      saveRoutesToStorage(updated);
+      showToast(currentLang === 'war' ? "Na-delete na an ruta." : "Route deleted.");
+    };
+
+    // Render Past Reports with Native SMS & Email Dispatch
+    function renderReports() {
+      const container = document.getElementById('reports-list-wrap');
+      const badge = document.getElementById('report-count-badge');
+      const reports = loadReports();
+
+      badge.textContent = reports.length;
+
+      if (reports.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem; padding: 10px 0; text-align: center;">` +
+          (currentLang === 'war' ? STRINGS.war.noReports : STRINGS.en.noReports) +
+          `</p>`;
+        return;
+      }
+
+      let html = '';
+      reports.forEach(r => {
+        const diff = (r.amountCharged - (r.correctFare || 0)).toFixed(2);
+        const v = FARES.vehicles[r.vehicle];
+        const vName = v ? (currentLang === 'war' && v.warayName ? v.warayName : v.name) : r.vehicle;
+
+        html += `
+          <div class="report-item">
+            <div class="report-item-header">
+              <div>
+                <strong style="font-size: 1rem;">${vName}</strong>
+                <div class="report-date">${r.timestamp.replace('T', ' ')}</div>
+              </div>
+              <button type="button" class="stepper-btn" style="min-width: 32px; min-height: 32px; font-size: 0.8rem;" onclick="deleteReport('${r.id}')" title="Delete">🗑️</button>
+            </div>
+            <div style="font-size: 0.88rem; margin: 4px 0;">
+              <strong>Route:</strong> ${r.from} → ${r.to}
+            </div>
+            <div style="font-size: 0.85rem; display: flex; gap: 12px; margin-bottom: 4px;">
+              <span style="color: #DC2626; font-weight: 700;">Charged: ₱${parseFloat(r.amountCharged).toFixed(2)}</span>
+              <span style="color: var(--text-muted);">Official: ₱${r.correctFare ? parseFloat(r.correctFare).toFixed(2) : 'N/A'}</span>
+              <span style="color: #DC2626; font-weight: 800;">(+₱${diff})</span>
+            </div>
+            ${r.plateNumber ? `<div style="font-size: 0.8rem; color: var(--text-secondary);"><strong>Plate/Body #:</strong> ${r.plateNumber}</div>` : ''}
+            ${r.notes ? `<div style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic; margin-top: 4px;">"${r.notes}"</div>` : ''}
+            
+            <div class="report-actions-row">
+              <button type="button" class="btn btn-secondary btn-sm" style="flex: 1;" onclick="copyFormattedReport('${r.id}')">
+                📋 Copy Text
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" style="flex: 1;" onclick="shareViaSMS('${r.id}')">
+                📱 Send SMS
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" style="flex: 1;" onclick="shareViaEmail('${r.id}')">
+                ✉️ Email
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function formatReportMessage(id) {
+      const reports = loadReports();
+      const r = reports.find(item => item.id === id);
+      if (!r) return "";
+
+      const v = FARES.vehicles[r.vehicle];
+      const vName = v ? v.name : r.vehicle;
+      const diff = (r.amountCharged - (r.correctFare || 0)).toFixed(2);
+
+      return `=== SUMBONG HAN SOBRA NGA PLETE (FARE OVERCHARGING REPORT) ===
+Petsa/Oras: ${r.timestamp.replace('T', ' ')}
+Sasakyan: ${vName}
+Ruta: ${r.from} to ${r.to}
+Ginsukot: ₱${parseFloat(r.amountCharged).toFixed(2)}
+Husto nga Taripa: ${r.correctFare ? `₱${parseFloat(r.correctFare).toFixed(2)}` : 'Unverified'}
+Sobra nga Sukot: +₱${diff}
+Plaka/Body #: ${r.plateNumber || 'None'}
+Notes: ${r.notes || 'None'}
+
+Ginpadangat ha: Catbalogan City TMO / LTFRB Region 8
+Ginhimo pinaagi han Pamasahe Catbalogan App`;
+    }
+
+    window.copyFormattedReport = function(id) {
+      triggerHaptic();
+      const text = formatReportMessage(id);
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(currentLang === 'war' ? STRINGS.war.reportCopied : STRINGS.en.reportCopied);
+      }).catch(() => {
+        showToast("Please copy text manually.");
+      });
+    };
+
+    window.shareViaSMS = function(id) {
+      triggerHaptic();
+      const text = formatReportMessage(id);
+      if (!text) return;
+      window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+    };
+
+    window.shareViaEmail = function(id) {
+      triggerHaptic();
+      const text = formatReportMessage(id);
+      if (!text) return;
+      const subject = encodeURIComponent("Fare Overcharging Incident Report - Catbalogan City");
+      window.location.href = `mailto:traffic@catbalogan.gov.ph,r8@ltfrb.gov.ph?subject=${subject}&body=${encodeURIComponent(text)}`;
+    };
+
+    // Render Rates Screen (Read-Only Matrix)
+    function renderRatesTable() {
+      const tbody = document.getElementById('rates-table-body');
+      let html = '';
+
+      Object.keys(FARES.vehicles).forEach(key => {
+        const v = FARES.vehicles[key];
+        const name = currentLang === 'war' && v.warayName ? v.warayName : v.name;
+        const baseFareText = v.baseFare !== null ? `₱${v.baseFare.toFixed(2)}` : '<span style="color:#DC2626;">Unset</span>';
+        const baseKmText = v.baseKm !== null ? `${v.baseKm} km` : '-';
+        const perKmText = v.perKm !== null ? `₱${v.perKm.toFixed(2)}/km` : '-';
+
+        const badgeClass = v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified');
+        const badgeLabel = v.status === 'verified' ? 'Verified' : (v.status === 'partial' ? 'Partial' : 'Unverified');
+
+        html += `
+          <tr>
+            <td>
+              <strong>${v.icon || ''} ${name}</strong><br>
+              <small style="color: var(--text-muted);">${v.authority || 'LTFRB'}</small>
+            </td>
+            <td>${baseFareText}</td>
+            <td>${baseKmText}</td>
+            <td>${perKmText}</td>
+            <td><span class="fare-badge ${badgeClass}">${badgeLabel}</span></td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      document.getElementById('rates-last-updated-display').textContent = FARES.lastUpdated || '2026-09-28';
+    }
+
+    // Render Rates Screen (Admin Editor Grid)
+    function renderAdminEditor() {
+      const container = document.getElementById('admin-vehicles-editor');
+      let html = '';
+
+      Object.keys(FARES.vehicles).forEach(key => {
+        const v = FARES.vehicles[key];
+        html += `
+          <div class="admin-vehicle-card" data-key="${key}">
+            <div style="font-weight: 800; margin-bottom: 8px; font-size: 1rem;">
+              ${v.icon || ''} ${v.name} <span class="route-badge">${v.category.toUpperCase()}</span>
+            </div>
+            
+            <div class="admin-grid-3 form-group">
+              <div>
+                <label style="font-size:0.75rem;">Base Fare (₱)</label>
+                <input type="number" class="input-control admin-base-fare" value="${v.baseFare !== null ? v.baseFare : ''}" placeholder="null" step="0.25">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;">Base Km</label>
+                <input type="number" class="input-control admin-base-km" value="${v.baseKm !== null ? v.baseKm : ''}" placeholder="null" step="1">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;">Per Km (₱)</label>
+                <input type="number" class="input-control admin-per-km" value="${v.perKm !== null ? v.perKm : ''}" placeholder="null" step="0.05">
+              </div>
+            </div>
+
+            ${v.category === 'lgu' ? `
+              <div class="admin-grid-2 form-group">
+                <div>
+                  <label style="font-size:0.75rem;">Special Flat (₱)</label>
+                  <input type="number" class="input-control admin-special-flat" value="${v.specialTripFlat !== null ? v.specialTripFlat : ''}" placeholder="null" step="1">
+                </div>
+                <div>
+                  <label style="font-size:0.75rem;">Night Surcharge (₱)</label>
+                  <input type="number" class="input-control admin-night-surcharge" value="${v.nightSurcharge !== null ? v.nightSurcharge : ''}" placeholder="null" step="1">
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="admin-grid-2 form-group">
+              <div>
+                <label style="font-size:0.75rem;">Status</label>
+                <select class="input-control admin-status">
+                  <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified</option>
+                  <option value="partial" ${v.status === 'partial' ? 'selected' : ''}>Partial</option>
+                  <option value="unverified" ${v.status === 'unverified' ? 'selected' : ''}>Unverified</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.75rem;">Effective Date</label>
+                <input type="text" class="input-control admin-effective-date" value="${v.effectiveDate || ''}">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      document.getElementById('rates-export-area').value = JSON.stringify(FARES, null, 2);
+    }
+
+    function saveAdminRates() {
+      triggerHaptic();
+      const cards = document.querySelectorAll('.admin-vehicle-card');
+      const updatedFares = JSON.parse(JSON.stringify(FARES));
+
+      cards.forEach(card => {
+        const key = card.getAttribute('data-key');
+        if (!updatedFares.vehicles[key]) return;
+
+        const baseFareVal = card.querySelector('.admin-base-fare').value.trim();
+        const baseKmVal = card.querySelector('.admin-base-km').value.trim();
+        const perKmVal = card.querySelector('.admin-per-km').value.trim();
+        const statusVal = card.querySelector('.admin-status').value;
+        const effectiveVal = card.querySelector('.admin-effective-date').value.trim();
+
+        updatedFares.vehicles[key].baseFare = baseFareVal === '' ? null : parseFloat(baseFareVal);
+        updatedFares.vehicles[key].baseKm = baseKmVal === '' ? null : parseFloat(baseKmVal);
+        updatedFares.vehicles[key].perKm = perKmVal === '' ? null : parseFloat(perKmVal);
+        updatedFares.vehicles[key].status = statusVal;
+        updatedFares.vehicles[key].effectiveDate = effectiveVal || '28 Sep 2026';
+
+        if (updatedFares.vehicles[key].category === 'lgu') {
+          const specialEl = card.querySelector('.admin-special-flat');
+          const nightEl = card.querySelector('.admin-night-surcharge');
+          if (specialEl) {
+            updatedFares.vehicles[key].specialTripFlat = specialEl.value.trim() === '' ? null : parseFloat(specialEl.value);
+          }
+          if (nightEl) {
+            updatedFares.vehicles[key].nightSurcharge = nightEl.value.trim() === '' ? null : parseFloat(nightEl.value);
+          }
+        }
+      });
+
+      saveFaresToStorage(updatedFares);
+      showToast(currentLang === 'war' ? STRINGS.war.ratesSavedMsg : STRINGS.en.ratesSavedMsg);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('app-toast');
+      const text = document.getElementById('toast-message');
+      text.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function switchTab(screenId) {
+      triggerHaptic();
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const targetScreen = document.getElementById(screenId);
+      if (targetScreen) targetScreen.classList.add('active');
+
+      const targetBtn = document.querySelector(`.tab-btn[data-target="${screenId}"]`);
+      if (targetBtn) targetBtn.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setLanguage(lang) {
+      triggerHaptic();
+      currentLang = lang;
+      localStorage.setItem("pamasahe_lang", lang);
+      document.documentElement.lang = lang;
+
+      const langBtn = document.getElementById('lang-btn-text');
+      langBtn.textContent = lang === 'war' ? '🇬🇧 EN' : '🇵🇭 WAR';
+
+      document.getElementById('header-title').textContent = STRINGS[lang].appTitle;
+      document.getElementById('header-sub').textContent = STRINGS[lang].appSubtitle;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (STRINGS[lang][key]) {
+          el.textContent = STRINGS[lang][key];
+        }
+      });
+
+      populateVehicleDropdowns();
+      renderVehicleCards();
+      populateQuickRouteDropdowns();
+      updateCalculatorUI();
+      renderRoutes();
+      renderReports();
+      renderRatesTable();
+    }
+
+    function setTheme(theme) {
+      triggerHaptic();
+      currentTheme = theme;
+      localStorage.setItem("pamasahe_theme", theme);
+
+      const icon = document.getElementById('theme-btn-icon');
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 7. ACCEPTANCE SELF-TEST SUITE: runTests()
+     * =========================================================================
+     */
+    window.runTests = function() {
+      const results = [];
+
+      try {
+        const t1 = calculateFare('jeepney_traditional', 10, 'regular');
+        const pass1 = t1.fareFormatted === '₱26.00';
+        results.push({ name: "Traditional jeepney, 10 km, regular -> ₱26.00", pass: pass1, got: t1.fareFormatted, expected: '₱26.00' });
+      } catch (e) { results.push({ name: "Traditional jeepney, 10 km, regular", pass: false, error: e.message }); }
+
+      try {
+        const t2 = calculateFare('jeepney_traditional', 1, 'discounted');
+        const pass2 = t2.fareFormatted === '₱11.25';
+        results.push({ name: "Traditional jeepney, 1 km, student -> ₱11.25", pass: pass2, got: t2.fareFormatted, expected: '₱11.25' });
+      } catch (e) { results.push({ name: "Traditional jeepney, 1 km, student", pass: false, error: e.message }); }
+
+      try {
+        const t3reg = calculateFare('jeepney_traditional', 50, 'regular');
+        const t3stu = calculateFare('jeepney_traditional', 50, 'discounted');
+        const pass3 = t3reg.fareFormatted === '₱106.00' && t3stu.fareFormatted === '₱84.75';
+        results.push({ 
+          name: "Traditional jeepney, 50 km, regular -> ₱106.00; student -> ₱84.75", 
+          pass: pass3, 
+          got: `reg=${t3reg.fareFormatted}, stu=${t3stu.fareFormatted}`, 
+          expected: "reg=₱106.00, stu=₱84.75" 
+        });
+      } catch (e) { results.push({ name: "Traditional jeepney, 50 km", pass: false, error: e.message }); }
+
+      try {
+        const t4reg = calculateFare('jeepney_modern', 10, 'regular');
+        const t4stu = calculateFare('jeepney_modern', 10, 'discounted');
+        const pass4 = t4reg.fareFormatted === '₱31.50' && t4stu.fareFormatted === '₱25.00';
+        results.push({ 
+          name: "Modern jeepney, 10 km, regular -> ₱31.50; student -> ₱25.00", 
+          pass: pass4, 
+          got: `reg=${t4reg.fareFormatted}, stu=${t4stu.fareFormatted}`, 
+          expected: "reg=₱31.50, stu=₱25.00" 
+        });
+      } catch (e) { results.push({ name: "Modern jeepney, 10 km", pass: false, error: e.message }); }
+
+      try {
+        const t5reg = calculateFare('bus_ordinary', 20, 'regular');
+        const t5stu = calculateFare('bus_ordinary', 20, 'discounted');
+        const pass5 = t5reg.fareFormatted === '₱45.00' && t5stu.fareFormatted === '₱36.00';
+        results.push({ 
+          name: "Provincial bus ordinary, 20 km, regular -> ₱45.00; student -> ₱36.00", 
+          pass: pass5, 
+          got: `reg=${t5reg.fareFormatted}, stu=${t5stu.fareFormatted}`, 
+          expected: "reg=₱45.00, stu=₱36.00" 
+        });
+      } catch (e) { results.push({ name: "Provincial bus ordinary 20km", pass: false, error: e.message }); }
+
+      try {
+        const t6 = calculateFare('jeepney_traditional', 4.2, 'regular');
+        const pass6 = t6.billedKm === 5 && t6.extraKm === 1;
+        results.push({ 
+          name: "Distance 4.2 km on a 4 km base rounds to 5 km billed", 
+          pass: pass6, 
+          got: `billedKm=${t6.billedKm}, extraKm=${t6.extraKm}`, 
+          expected: "billedKm=5, extraKm=1" 
+        });
+      } catch (e) { results.push({ name: "Distance 4.2 km rounding", pass: false, error: e.message }); }
+
+      try {
+        const t7 = calculateFare('tricycle', 3, 'regular');
+        const msgContains = t7.errorMessage && (t7.errorMessage.toLowerCase().includes('no official') || t7.errorMessage.toLowerCase().includes('wala pa'));
+        const pass7 = t7.status === 'no_rate' && t7.fare === null && msgContains;
+        results.push({ 
+          name: "Tricycle with null rates -> shows 'No official rate loaded' message, not a number", 
+          pass: pass7, 
+          got: `status=${t7.status}, fare=${t7.fare}`, 
+          expected: "status=no_rate, fare=null" 
+        });
+      } catch (e) { results.push({ name: "Tricycle null rate test", pass: false, error: e.message }); }
+
+      try {
+        const t8 = evaluateFareCheck('jeepney_traditional', 10, 'regular', 40);
+        const pass8 = t8.status === 'overcharge' && t8.diff === 14 && t8.diffFormatted === '+₱14.00';
+        results.push({ 
+          name: "Check-a-Fare: traditional jeepney 10 km, asked ₱40 -> overcharge of ₱14.00", 
+          pass: pass8, 
+          got: `status=${t8.status}, diff=₱${t8.diff}`, 
+          expected: "status=overcharge, diff=₱14" 
+        });
+      } catch (e) { results.push({ name: "Check-a-Fare test", pass: false, error: e.message }); }
+
+      console.log("%c=== PAMASAHE CATBALOGAN ACCEPTANCE TESTS ===", "font-weight:bold; color:#f59e0b; font-size:1.1rem;");
+      let passedCount = 0;
+      results.forEach((r, idx) => {
+        if (r.pass) {
+          passedCount++;
+          console.log(`%c[PASS] Test ${idx+1}: ${r.name}`, "color:#10b981; font-weight:600;");
+        } else {
+          console.error(`[FAIL] Test ${idx+1}: ${r.name}`, r.got ? `(Got: ${r.got}, Expected: ${r.expected})` : r.error);
+        }
+      });
+      console.log(`%cSummary: ${passedCount}/${results.length} tests passed.`, "font-weight:bold;");
+
+      const panel = document.getElementById('test-results-panel');
+      if (panel) {
+        panel.style.display = 'block';
+        let output = `=== ACCEPTANCE SELF-TEST RESULTS (${passedCount}/${results.length} PASSED) ===\n\n`;
+        results.forEach((r, idx) => {
+          output += `${r.pass ? '✅ [PASS]' : '❌ [FAIL]'} #${idx+1}: ${r.name}\n`;
+          if (!r.pass) output += `   Got: ${r.got || r.error} | Expected: ${r.expected}\n`;
+        });
+        panel.textContent = output;
+      }
+
+      return { total: results.length, passed: passedCount, allPassed: passedCount === results.length, results };
+    };
+
+    /**
+     * =========================================================================
+     * 7.5 TRANSIT APP LOADING & REFRESH ENGINE (1 TO 3 SECONDS)
+     * =========================================================================
+     */
+    function triggerAppRefresh(durationMs = 1800, onComplete = null) {
+      triggerHaptic();
+      const splash = document.getElementById('app-splash-screen');
+      if (!splash) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      const bar = document.getElementById('splash-progress-bar');
+      const text = document.getElementById('splash-status-text');
+      const tagline = document.getElementById('splash-tagline');
+
+      if (tagline) {
+        tagline.textContent = currentLang === 'war' 
+          ? 'Dire magpalabi hit pletehan!' 
+          : 'Fair Transit Fares for Catbalogan City';
+      }
+
+      splash.style.display = 'flex';
+      splash.classList.remove('fade-out');
+      if (bar) bar.style.width = '0%';
+      if (text) {
+        text.textContent = currentLang === 'war' 
+          ? 'Gin-aandam an opisyal nga taripa...'
+          : 'Loading official Catbalogan tariffs...';
+      }
+
+      // Stage 1: 35%
+      setTimeout(() => {
+        if (bar) bar.style.width = '35%';
+        if (text) {
+          text.textContent = currentLang === 'war'
+            ? 'Sinisusi an mga LTFRB taripa ngan mga ruta...'
+            : 'Verifying LTFRB tariff matrix & routes...';
+        }
+      }, Math.round(durationMs * 0.15));
+
+      // Stage 2: 75%
+      setTimeout(() => {
+        if (bar) bar.style.width = '75%';
+        if (text) {
+          text.textContent = currentLang === 'war'
+            ? 'Kina-karga an datos tikang ha memory...'
+            : 'Restoring local offline cache...';
+        }
+      }, Math.round(durationMs * 0.45));
+
+      // Stage 3: 100%
+      setTimeout(() => {
+        if (bar) bar.style.width = '100%';
+        if (text) {
+          text.textContent = currentLang === 'war'
+            ? 'Andam na an sistema! Matalwas nga biyahe!'
+            : 'System ready! Safe travels in Catbalogan!';
+        }
+      }, Math.round(durationMs * 0.8));
+
+      // Stage 4: Fade-out transition
+      setTimeout(() => {
+        if (onComplete) onComplete();
+        splash.classList.add('fade-out');
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 400);
+      }, durationMs);
+    }
+
+    /**
+     * =========================================================================
+     * 8. APPLICATION INITIALIZATION & EVENT LISTENERS
+     * =========================================================================
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('pamasahe_lang') || 'en';
+      const savedTheme = localStorage.getItem('pamasahe_theme');
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      } else {
+        setTheme('light');
+      }
+      setLanguage(savedLang);
+
+      // Trigger 1.8-second transit loading splash screen on initial startup/refresh
+      triggerAppRefresh(1800);
+
+      // Header "Refresh Entire Web App" Button
+      const refreshBtn = document.getElementById('app-refresh-btn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+          triggerAppRefresh(1800, () => {
+            FARES = loadFaresFromStorage();
+            ROUTES = loadRoutesFromStorage();
+            populateVehicleDropdowns();
+            renderVehicleCards();
+            populateQuickRouteDropdowns();
+            updateCalculatorUI();
+            renderRoutes();
+            renderReports();
+            renderRatesTable();
+            showToast(currentLang === 'war' ? 'Na-refresh na an bug-os nga app!' : 'Entire web app refreshed!');
+          });
+        });
+      }
+
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById('report-datetime').value = now.toISOString().slice(0, 16);
+
+      // Bottom Tab Navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-target');
+          switchTab(target);
+        });
+      });
+
+      // Calculator Controls
+      const calcVehicle = document.getElementById('calc-vehicle');
+      const calcDist = document.getElementById('calc-distance');
+      const btnMinus = document.getElementById('btn-km-minus');
+      const btnPlus = document.getElementById('btn-km-plus');
+      const quickRouteSelect = document.getElementById('calc-quick-route');
+
+      calcVehicle.addEventListener('change', () => {
+        renderVehicleCards();
+        updateCalculatorUI();
+      });
+      calcDist.addEventListener('input', updateCalculatorUI);
+
+      btnMinus.addEventListener('click', () => {
+        triggerHaptic();
+        const cur = parseFloat(calcDist.value) || 0;
+        if (cur > 1) {
+          calcDist.value = Math.max(0.1, cur - 1).toFixed(1);
+          updateCalculatorUI();
+        }
+      });
+
+      btnPlus.addEventListener('click', () => {
+        triggerHaptic();
+        const cur = parseFloat(calcDist.value) || 0;
+        if (cur < 300) {
+          calcDist.value = (cur + 1).toFixed(1);
+          updateCalculatorUI();
+        }
+      });
+
+      // Distance Preset Chips
+      document.querySelectorAll('.preset-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          triggerHaptic();
+          calcDist.value = chip.getAttribute('data-km');
+          updateCalculatorUI();
+        });
+      });
+
+      quickRouteSelect.addEventListener('change', () => {
+        if (quickRouteSelect.value) {
+          triggerHaptic();
+          calcDist.value = quickRouteSelect.value;
+          updateCalculatorUI();
+        }
+      });
+
+      document.querySelectorAll('input[name="calc-passenger"]').forEach(r => {
+        r.addEventListener('change', () => {
+          triggerHaptic();
+          updateCalculatorUI();
+        });
+      });
+
+      document.querySelectorAll('input[name="calc-ride-type"]').forEach(r => {
+        r.addEventListener('change', () => {
+          triggerHaptic();
+          updateCalculatorUI();
+        });
+      });
+
+      document.querySelectorAll('input[name="calc-time"]').forEach(r => {
+        r.addEventListener('change', () => {
+          triggerHaptic();
+          updateCalculatorUI();
+        });
+      });
+
+      document.getElementById('btn-go-to-rates').addEventListener('click', () => {
+        switchTab('screen-rates');
+      });
+
+      // Copy Breakdown Button
+      document.getElementById('btn-copy-breakdown').addEventListener('click', () => {
+        triggerHaptic();
+        const text = document.getElementById('calc-breakdown-text').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(currentLang === 'war' ? "Breakdown nakopya ha clipboard!" : "Breakdown copied to clipboard!");
+        });
+      });
+
+      // Fullscreen "Show Driver" Modal
+      const modal = document.getElementById('fullscreen-driver-modal');
+      document.getElementById('btn-show-driver').addEventListener('click', () => {
+        triggerHaptic();
+        const vehKey = calcVehicle.value;
+        const v = FARES.vehicles[vehKey];
+        const vName = v ? (currentLang === 'war' && v.warayName ? v.warayName : v.name) : vehKey;
+        const fare = document.getElementById('calc-fare-amount').textContent;
+        const dist = calcDist.value;
+        const passVal = document.querySelector('input[name="calc-passenger"]:checked').value;
+        const passLabel = passVal === 'discounted' ? 'Student / Senior / PWD (-20%)' : 'Regular Passenger';
+
+        document.getElementById('modal-vehicle-title').textContent = vName;
+        document.getElementById('modal-fare-amount').textContent = `₱${fare}`;
+        document.getElementById('modal-route-details').textContent = `${dist} km • ${passLabel}`;
+        document.getElementById('modal-authority-badge').textContent = v.authority || 'Official Tariff';
+
+        modal.classList.add('active');
+      });
+
+      modal.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+
+      document.getElementById('btn-close-modal').addEventListener('click', (e) => {
+        e.stopPropagation();
+        modal.classList.remove('active');
+      });
+
+      // Forward from Calculator to Check screen
+      document.getElementById('btn-send-to-check').addEventListener('click', () => {
+        triggerHaptic();
+        document.getElementById('check-vehicle').value = document.getElementById('calc-vehicle').value;
+        document.getElementById('check-distance').value = document.getElementById('calc-distance').value;
+        const passVal = document.querySelector('input[name="calc-passenger"]:checked').value;
+        const targetRadio = document.querySelector(`input[name="check-passenger"][value="${passVal}"]`);
+        if (targetRadio) targetRadio.checked = true;
+
+        switchTab('screen-check');
+        document.getElementById('check-asked-amount').focus();
+        showToast(currentLang === 'war' ? "Na-load an biyahe ha Check screen." : "Trip loaded into Check screen.");
+      });
+
+      // Forward from Calculator to Report screen
+      document.getElementById('btn-send-to-report').addEventListener('click', () => {
+        triggerHaptic();
+        const veh = document.getElementById('calc-vehicle').value;
+        document.getElementById('report-vehicle').value = veh;
+        const res = calculateFare(veh, parseFloat(calcDist.value) || 10, 'regular');
+        if (res.valid && res.fare !== null) {
+          document.getElementById('report-correct').value = res.fare.toFixed(2);
+        }
+        switchTab('screen-report');
+        document.getElementById('report-charged').focus();
+        showToast(currentLang === 'war' ? "Na-load an biyahe ha Sumbong screen." : "Trip loaded into Report screen.");
+      });
+
+      // Check a Fare Events
+      document.getElementById('btn-evaluate-fare').addEventListener('click', handleEvaluateCheck);
+
+      document.getElementById('btn-copy-dispute-script').addEventListener('click', () => {
+        triggerHaptic();
+        const script = document.getElementById('dispute-quote-text').textContent;
+        navigator.clipboard.writeText(script).then(() => {
+          showToast(currentLang === 'war' ? "Script nakopya ha clipboard!" : "Script copied to clipboard!");
+        });
+      });
+
+      document.getElementById('btn-check-to-report').addEventListener('click', () => {
+        triggerHaptic();
+        document.getElementById('report-vehicle').value = document.getElementById('check-vehicle').value;
+        const asked = document.getElementById('check-asked-amount').value;
+        document.getElementById('report-charged').value = asked;
+
+        const res = evaluateFareCheck(
+          document.getElementById('check-vehicle').value,
+          parseFloat(document.getElementById('check-distance').value),
+          document.querySelector('input[name="check-passenger"]:checked').value,
+          asked
+        );
+        if (res.correctFare !== null) {
+          document.getElementById('report-correct').value = res.correctFare.toFixed(2);
+        }
+
+        switchTab('screen-report');
+        showToast(currentLang === 'war' ? "Na-load an detalye ha Sumbong screen." : "Trip prefilled in Report form.");
+      });
+
+      // Routes Tab Filtering Events
+      document.getElementById('route-search-input').addEventListener('input', renderRoutes);
+
+      document.querySelectorAll('.filter-chip-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          document.querySelectorAll('.filter-chip-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentRouteFilter = btn.getAttribute('data-filter');
+          renderRoutes();
+        });
+      });
+
+      const addRouteToggleBtn = document.getElementById('btn-toggle-add-route');
+      const addRouteFormWrap = document.getElementById('add-route-form-wrap');
+      addRouteToggleBtn.addEventListener('click', () => {
+        triggerHaptic();
+        const isHidden = addRouteFormWrap.style.display === 'none';
+        addRouteFormWrap.style.display = isHidden ? 'block' : 'none';
+        addRouteToggleBtn.textContent = isHidden ? '- Hide' : '+ Add';
+      });
+
+      document.getElementById('btn-save-new-route').addEventListener('click', () => {
+        triggerHaptic();
+        const fromInput = document.getElementById('new-route-from');
+        const toInput = document.getElementById('new-route-to');
+        const kmInput = document.getElementById('new-route-km');
+
+        const fromVal = fromInput.value.trim();
+        const toVal = toInput.value.trim();
+        const kmVal = parseFloat(kmInput.value);
+
+        if (!fromVal || !toVal || isNaN(kmVal) || kmVal <= 0 || kmVal > 300) {
+          showToast(currentLang === 'war' ? "Alayon pag-check han impormasyon han ruta." : "Please enter valid origin, destination, and distance (0.1 - 300 km).");
+          return;
+        }
+
+        const newRoute = {
+          id: 'route_custom_' + Date.now(),
+          from: fromVal,
+          to: toVal,
+          km: kmVal,
+          category: kmVal < 4 ? 'proper' : (kmVal <= 25 ? 'inter' : 'bus'),
+          source: 'user'
+        };
+
+        const updated = [newRoute, ...ROUTES];
+        saveRoutesToStorage(updated);
+
+        fromInput.value = '';
+        toInput.value = '';
+        kmInput.value = '';
+        addRouteFormWrap.style.display = 'none';
+        addRouteToggleBtn.textContent = '+ Add';
+
+        showToast(currentLang === 'war' ? "Bag-o nga ruta na-save!" : "New route saved!");
+      });
+
+      // Quick Violation Chips in Report Form
+      document.querySelectorAll('.violation-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          triggerHaptic();
+          const tag = chip.getAttribute('data-tag');
+          const notes = document.getElementById('report-notes');
+          notes.value = notes.value ? `${notes.value}; ${tag}` : tag;
+          showToast(`Added: ${tag}`);
+        });
+      });
+
+      // Report Form Submission
+      const reportForm = document.getElementById('report-form');
+      reportForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        triggerHaptic();
+
+        const dtVal = document.getElementById('report-datetime').value;
+        const vehVal = document.getElementById('report-vehicle').value;
+        const fromVal = document.getElementById('report-from').value.trim();
+        const toVal = document.getElementById('report-to').value.trim();
+        const chargedVal = parseFloat(document.getElementById('report-charged').value);
+        const correctVal = parseFloat(document.getElementById('report-correct').value) || null;
+        const plateVal = document.getElementById('report-plate').value.trim();
+        const notesVal = document.getElementById('report-notes').value.trim();
+
+        if (!dtVal || !vehVal || !fromVal || !toVal || isNaN(chargedVal) || chargedVal <= 0) {
+          showToast(currentLang === 'war' ? "Alayon pagkumpleto han mga kinahanglanon nga field." : "Please fill in all required fields.");
+          return;
+        }
+
+        const report = {
+          id: 'rep_' + Date.now(),
+          timestamp: dtVal,
+          vehicle: vehVal,
+          from: fromVal,
+          to: toVal,
+          amountCharged: chargedVal,
+          correctFare: correctVal,
+          plateNumber: plateVal,
+          notes: notesVal
+        };
+
+        submitReport(report);
+        renderReports();
+        reportForm.reset();
+
+        const cur = new Date();
+        cur.setMinutes(cur.getMinutes() - cur.getTimezoneOffset());
+        document.getElementById('report-datetime').value = cur.toISOString().slice(0, 16);
+
+        showToast(currentLang === 'war' ? STRINGS.war.reportSuccess : STRINGS.en.reportSuccess);
+      });
+
+      // Rates & Admin Events
+      const adminToggleBtn = document.getElementById('btn-toggle-admin');
+      const adminStatus = document.getElementById('admin-mode-status');
+      const readonlyView = document.getElementById('rates-readonly-view');
+      const adminView = document.getElementById('rates-admin-view');
+
+      adminToggleBtn.addEventListener('click', () => {
+        triggerHaptic();
+        isAdminUnlocked = !isAdminUnlocked;
+        if (isAdminUnlocked) {
+          adminStatus.textContent = '🔓 Unlocked';
+          adminToggleBtn.classList.add('active');
+          readonlyView.style.display = 'none';
+          adminView.style.display = 'block';
+          renderAdminEditor();
+        } else {
+          adminStatus.textContent = '🔒 Locked';
+          adminToggleBtn.classList.remove('active');
+          readonlyView.style.display = 'block';
+          adminView.style.display = 'none';
+          renderRatesTable();
+        }
+      });
+
+      document.getElementById('btn-save-rates').addEventListener('click', saveAdminRates);
+      document.getElementById('btn-reset-rates').addEventListener('click', () => {
+        triggerHaptic();
+        if (confirm(currentLang === 'war' ? "Sigurado ka nga ibalik ha default an ngatanan nga taripa?" : "Reset all rates to original defaults?")) {
+          resetFaresToDefaults();
+        }
+      });
+
+      document.getElementById('btn-copy-rates-json').addEventListener('click', () => {
+        triggerHaptic();
+        const text = document.getElementById('rates-export-area').value;
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(currentLang === 'war' ? "Taripa JSON nakopya ha clipboard!" : "Rates JSON copied to clipboard!");
+        });
+      });
+
+      document.getElementById('btn-apply-rates-json').addEventListener('click', () => {
+        triggerHaptic();
+        const raw = document.getElementById('rates-import-area').value.trim();
+        try {
+          const parsed = JSON.parse(raw);
+          if (!parsed || !parsed.vehicles || typeof parsed.vehicles !== 'object') {
+            throw new Error("Missing vehicles object");
+          }
+          saveFaresToStorage(parsed);
+          document.getElementById('rates-import-area').value = '';
+          showToast(currentLang === 'war' ? STRINGS.war.importSuccessMsg : STRINGS.en.importSuccessMsg);
+        } catch (e) {
+          showToast(currentLang === 'war' ? STRINGS.war.importErrorMsg : STRINGS.en.importErrorMsg);
+        }
+      });
+
+      document.getElementById('btn-run-acceptance-tests').addEventListener('click', () => {
+        triggerHaptic();
+        window.runTests();
+      });
+
+      document.getElementById('lang-toggle-btn').addEventListener('click', () => {
+        setLanguage(currentLang === 'en' ? 'war' : 'en');
+      });
+
+      document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      });
+
+      // Service Worker Registration for offline capability
+      if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+        try {
+          const swCode = `
+            const CACHE_NAME = 'pamasahe-catbalogan-v2';
+            self.addEventListener('install', (e) => self.skipWaiting());
+            self.addEventListener('activate', (e) => clients.claim());
+            self.addEventListener('fetch', (e) => {
+              e.respondWith(
+                fetch(e.request).catch(() => caches.match(e.request))
+              );
+            });
+          `;
+          const swBlob = new Blob([swCode], { type: 'application/javascript' });
+          const swUrl = URL.createObjectURL(swBlob);
+          navigator.serviceWorker.register(swUrl).then(() => {
+            console.log('Pamasahe Catbalogan: Enhanced Service Worker active.');
+          }).catch(err => {
+            console.log('SW registration note:', err.message);
+          });
+        } catch (err) {
+          console.log('SW initialization note:', err.message);
+        }
+      }
+
+      console.log("Pamasahe Catbalogan enhanced successfully.");
+      window.runTests();
+    });
+  </script>
+</body>
+</html>
