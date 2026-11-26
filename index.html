@@ -1772,6 +1772,8 @@
             <button type="button" class="preset-chip" data-km="1.5">🏙️ Town (1.5 km)</button>
             <button type="button" class="preset-chip" data-km="3.5">🛣️ Brgy (3.5 km)</button>
             <button type="button" class="preset-chip" data-km="11.0">Jeepney (11 km)</button>
+            <button type="button" class="preset-chip" data-km="14.0">⛵ Daram (14 km)</button>
+            <button type="button" class="preset-chip" data-km="18.0">⛵ Zumarraga (18 km)</button>
             <button type="button" class="preset-chip" data-km="24.0">Wright (24 km)</button>
           </div>
 
@@ -1988,6 +1990,7 @@
       <!-- Route Category Filter Bar -->
       <div class="route-filter-bar">
         <button type="button" class="filter-chip-btn active" data-filter="all">All Routes</button>
+        <button type="button" class="filter-chip-btn" data-filter="sea">⛵ Pier 1 Sea Boats</button>
         <button type="button" class="filter-chip-btn" data-filter="proper">🏙️ Town Proper (&lt;4 km)</button>
         <button type="button" class="filter-chip-btn" data-filter="inter">🛣️ Jeepney (4-25 km)</button>
         <button type="button" class="filter-chip-btn" data-filter="bus">🚌 Bus/Van (&gt;25 km)</button>
@@ -2160,6 +2163,13 @@
           Email: <code>[Insert LTFRB R8 Email: e.g. r8@ltfrb.gov.ph]</code><br>
           Nationwide LTFRB Hotline: <strong>1342</strong>
         </div>
+
+        <div style="margin-top: 12px;">
+          <strong>⛵ Philippine Coast Guard (PCG) & MARINA Region 8 / Pier 1 Port Authority</strong><br>
+          Office: Catbalogan Pier 1 Port Area, Samar / MARINA R8 Regional Office<br>
+          PCG Catbalogan Station: <code>[Insert PCG Catbalogan Station Hotline / VHF Ch 16]</code><br>
+          Complaints: Catbalogan Port Management Office / MARINA Region 8 Complaints Desk
+        </div>
       </div>
     </section>
 
@@ -2175,11 +2185,11 @@
         <p class="screen-subtitle" data-i18n="ratesSub">Review current fare schedules or customize rates for Catbalogan City.</p>
       </div>
 
-      <!-- Notice regarding LGU jurisdiction -->
+      <!-- Notice regarding LGU and Pier 1 Maritime jurisdiction -->
       <div class="fare-breakdown-box" style="border-left-color: var(--brand-amber); margin-bottom: 16px;">
         <strong data-i18n="lastUpdatedLabel">Rates Last Updated</strong>: <span id="rates-last-updated-display">2026-09-28</span><br>
         <span style="font-size: 0.82rem;" data-i18n="lguNotice">
-          Notice: Tricycle and Habal-Habal rates are not governed by the LTFRB. They are legislated exclusively by the Catbalogan City Local Government Unit (City Hall & Sangguniang Panlungsod).
+          Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and the Philippine Coast Guard (PCG).
         </span>
       </div>
 
@@ -2518,6 +2528,23 @@
           status: "unverified",
           source: "Local Practice / Catbalogan City Hall",
           description: "Two-wheeled passenger motorcycle for upland and interior barangays."
+        },
+        sea_motorbanca: {
+          id: "sea_motorbanca",
+          name: "Pier 1 Sea Motorbanca / Passenger Boat",
+          warayName: "Pasaheroan ha Dagat / Lantsa (Pier 1)",
+          icon: "⛵",
+          category: "sea",
+          authority: "MARINA / Pier 1 Port Authority",
+          baseFare: null,
+          baseKm: null,
+          perKm: null,
+          specialTripFlat: null,
+          nightSurcharge: null,
+          effectiveDate: "Pier 1 Port Schedule",
+          status: "unverified",
+          source: "MARINA Region 8 / Catbalogan Pier 1 Boat Operators",
+          description: "Passenger motorbanca/lantsa operating from Catbalogan Pier 1 Port to island barangays (Daram, Zumarraga, Buri, Sierra Islands, etc.)."
         }
       }
     };
@@ -2539,7 +2566,12 @@
       { id: "route_7", from: "Catbalogan City Proper", to: "Jiabong Boundary (Jeepney Route)", km: 11.0, category: "inter", source: "estimate" },
       { id: "route_8", from: "Catbalogan City", to: "Wright (Paranas Junction)", km: 24.0, category: "inter", source: "estimate" },
       { id: "route_9", from: "Catbalogan City", to: "Calbayog City (Provincial Bus)", km: 72.0, category: "bus", source: "estimate" },
-      { id: "route_10", from: "Catbalogan City", to: "Tacloban City (Bus / Van)", km: 105.0, category: "bus", source: "estimate" }
+      { id: "route_10", from: "Catbalogan City", to: "Tacloban City (Bus / Van)", km: 105.0, category: "bus", source: "estimate" },
+      { id: "route_sea_1", from: "Catbalogan Pier 1 (Port)", to: "Daram Island (Daram Town / Bagacay)", km: 14.0, category: "sea", source: "sea_estimate" },
+      { id: "route_sea_2", from: "Catbalogan Pier 1 (Port)", to: "Zumarraga Island Proper (Buad Island)", km: 18.0, category: "sea", source: "sea_estimate" },
+      { id: "route_sea_3", from: "Catbalogan Pier 1 (Port)", to: "Buri Island (Passenger Boat Route)", km: 6.0, category: "sea", source: "sea_estimate" },
+      { id: "route_sea_4", from: "Catbalogan Pier 1 (Port)", to: "Sierra Islands (Cabugawan / Canlapwas)", km: 11.0, category: "sea", source: "sea_estimate" },
+      { id: "route_sea_5", from: "Catbalogan Pier 1 (Port)", to: "Tarangnan Coastal Port", km: 16.0, category: "sea", source: "sea_estimate" }
     ];
 
     let ROUTES = loadRoutesFromStorage();
@@ -2585,11 +2617,12 @@
         btnCheckAgainstDriver: "⚖️ Check Against Driver's Price",
         btnReportOvercharge: "📢 Report Overcharging",
         msgNoRate: "No official Catbalogan rate loaded yet",
-        msgNoRateDetail: "Tricycle and Habal-habal rates are set by Catbalogan City Hall ordinances. Click below to view or enter local rates.",
+        msgNoRateDetail: "Tricycle, habal-habal, and Pier 1 passenger boat rates are set by local ordinances and maritime authorities. Click below to view or enter local rates.",
         msgMissingBase: "Base fare not loaded yet. Per-km rate is ₱{perKm}. Ask the driver for the posted fare matrix.",
         btnEnterRate: "Open Rates Tab to Enter Rate",
         authorityLtfrb: "LTFRB Region 8",
         authorityLgu: "Local rate (set by City Hall)",
+        authoritySea: "MARINA / Pier 1 Port Authority",
 
         checkHeading: "Am I Being Overcharged?",
         checkSub: "Compare the amount asked by the driver against the official legal tariff.",
@@ -2645,7 +2678,7 @@
         ratesHeading: "Official Fare Tariffs & Settings",
         ratesSub: "Review current fare schedules or customize rates for Catbalogan City.",
         lastUpdatedLabel: "Rates Last Updated",
-        lguNotice: "Notice: Tricycle and Habal-Habal rates are not governed by the LTFRB. They are legislated exclusively by the Catbalogan City Local Government Unit (City Hall & Sangguniang Panlungsod).",
+        lguNotice: "Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and Philippine Coast Guard (PCG).",
         adminToggleLabel: "Unlock Admin / Edit Mode",
         adminActiveNotice: "Admin mode is active. You can modify rates below and save them locally.",
         btnSaveRates: "💾 Save Rates to LocalStorage",
@@ -2692,11 +2725,12 @@
         btnCheckAgainstDriver: "⚖️ I-tanding ha Ginsukot han Drayber",
         btnReportOvercharge: "📢 Isumbong an Sobra nga Plete",
         msgNoRate: "Wala pa ma-load an opisyal nga taripa han Catbalogan para hini",
-        msgNoRateDetail: "An taripa hit Taraysikel ngan Habal-Habal ginpapasa han City Hall han Catbalogan. Pindota ha ubos basi makita o makabutang hin taripa.",
+        msgNoRateDetail: "An taripa hit Taraysikel, Habal-Habal, ngan Pasaheroan ha Pier 1 ginpapasa han City Hall ngan MARINA. Pindota ha ubos basi makita o makabutang hin taripa.",
         msgMissingBase: "Wala pa ma-load an base fare. An per-km nga taripa in ₱{perKm}. Pangutan-a an drayber han nakapaskil nga taripa.",
         btnEnterRate: "Ibutang an Taripa ha Rates Tab",
         authorityLtfrb: "LTFRB Rehiyon 8",
         authorityLgu: "Taripa han Syudad (Catbalogan City Hall)",
+        authoritySea: "MARINA / Pasaheroan ha Pier 1",
 
         checkHeading: "Sobra ba an Akon Plete?",
         checkSub: "I-tanding an sukot han drayber kontra ha opisyal nga taripa.",
@@ -2752,7 +2786,7 @@
         ratesHeading: "Opisyal nga mga Taripa & Admin",
         ratesSub: "Kitaa o bag-uha an mga taripa para ha Syudad han Catbalogan.",
         lastUpdatedLabel: "Kataposan nga Pag-update",
-        lguNotice: "Pahimatngon: An taripa hit Taraysikel ngan Habal-Habal in diri sakop hit LTFRB. Ini in eksklusibo nga gindudumara han City Hall han Catbalogan ngan Sangguniang Panlungsod.",
+        lguNotice: "Pahibaro: An pletehan hit Taraysikel ngan Habal-Habal ginpapasa han Catbalogan City Hall. An pasaheroan ha Pier 1 sakop han MARINA Rehiyon 8 ngan Philippine Coast Guard (PCG).",
         adminToggleLabel: "Abrihan an Admin / Edit Mode",
         adminActiveNotice: "Naka-on an Admin mode. Pwede mo bag-uhon an mga taripa ngan ig-save.",
         btnSaveRates: "💾 Ig-save an Taripa ha Phone",
@@ -2806,7 +2840,7 @@
 
       const billedKm = Math.ceil(dist);
 
-      if (v.category === "lgu") {
+      if (v.category === "lgu" || v.category === "sea") {
         if (rideType === "special") {
           if (v.specialTripFlat === null || v.specialTripFlat === undefined) {
             return {
@@ -2870,7 +2904,7 @@
       const baseCentavos = Math.round(v.baseFare * 100);
       const perKmCentavos = Math.round((v.perKm || 0) * 100);
       
-      const isNight = (v.category === "lgu" && timeOfDay === "night");
+      const isNight = ((v.category === "lgu" || v.category === "sea") && timeOfDay === "night");
       const nightSurchargeCentavos = (isNight && v.nightSurcharge) ? Math.round(v.nightSurcharge * 100) : 0;
 
       const rawCentavos = baseCentavos + (extraKm * perKmCentavos) + nightSurchargeCentavos;
@@ -3012,7 +3046,15 @@
         const raw = localStorage.getItem("pamasahe_fares");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (parsed && parsed.vehicles) return parsed;
+          if (parsed && parsed.vehicles) {
+            // Merge any newly introduced vehicles (like sea_motorbanca)
+            Object.keys(DEFAULT_FARES.vehicles).forEach(k => {
+              if (!parsed.vehicles[k]) {
+                parsed.vehicles[k] = JSON.parse(JSON.stringify(DEFAULT_FARES.vehicles[k]));
+              }
+            });
+            return parsed;
+          }
         }
       } catch (e) {
         console.warn("Could not load custom fares, using defaults.", e);
@@ -3048,7 +3090,15 @@
         const raw = localStorage.getItem("pamasahe_routes");
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Ensure newly added default routes (e.g. Pier 1 sea routes) exist
+            DEFAULT_ROUTES.forEach(dr => {
+              if (!parsed.some(r => r.id === dr.id)) {
+                parsed.push(JSON.parse(JSON.stringify(dr)));
+              }
+            });
+            return parsed;
+          }
         }
       } catch (e) {}
       return JSON.parse(JSON.stringify(DEFAULT_ROUTES));
@@ -3158,10 +3208,10 @@
         b.classList.toggle('active', b.getAttribute('data-key') === vehicleKey);
       });
 
-      // Show/hide tricycle and habal-habal conditional fields
+      // Show/hide tricycle, habal-habal, and sea motorbanca conditional fields
       const v = FARES.vehicles[vehicleKey];
       const localOptionsDiv = document.getElementById('calc-local-options');
-      if (v && v.category === 'lgu') {
+      if (v && (v.category === 'lgu' || v.category === 'sea')) {
         localOptionsDiv.style.display = 'block';
       } else {
         localOptionsDiv.style.display = 'none';
@@ -3196,7 +3246,13 @@
       const savingsText = document.getElementById('calc-savings-text');
 
       if (v) {
-        sourceSpan.textContent = v.source || (v.category === 'lgu' ? (currentLang === 'war' ? STRINGS.war.authorityLgu : STRINGS.en.authorityLgu) : 'LTFRB');
+        let authText = 'LTFRB';
+        if (v.category === 'lgu') {
+          authText = currentLang === 'war' ? STRINGS.war.authorityLgu : STRINGS.en.authorityLgu;
+        } else if (v.category === 'sea') {
+          authText = currentLang === 'war' ? 'MARINA / Pasaheroan ha Pier 1' : 'MARINA / Pier 1 Port Authority';
+        }
+        sourceSpan.textContent = v.source || authText;
         effectiveSpan.textContent = v.effectiveDate || '28 Sep 2026';
 
         badge.className = 'fare-badge ' + (v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified'));
@@ -3332,9 +3388,10 @@
         const matchesSearch = r.from.toLowerCase().includes(searchTerm) || r.to.toLowerCase().includes(searchTerm);
         if (!matchesSearch) return false;
 
-        if (currentRouteFilter === 'proper') return r.km < 4;
-        if (currentRouteFilter === 'inter') return r.km >= 4 && r.km <= 25;
-        if (currentRouteFilter === 'bus') return r.km > 25;
+        if (currentRouteFilter === 'proper') return r.category === 'proper' || r.km < 4;
+        if (currentRouteFilter === 'inter') return r.category === 'inter' || (r.km >= 4 && r.km <= 25);
+        if (currentRouteFilter === 'bus') return r.category === 'bus' || r.km > 25;
+        if (currentRouteFilter === 'sea') return r.category === 'sea' || r.from.toLowerCase().includes('pier 1') || r.to.toLowerCase().includes('pier 1');
         return true;
       });
 
@@ -3355,7 +3412,7 @@
         const estMinutes = Math.max(3, Math.round(r.km * 2.2));
 
         html += `
-          <div class="route-item" onclick="selectRouteForCalc('${r.from}', '${r.to}', ${r.km})">
+          <div class="route-item" onclick="selectRouteForCalc('${r.from}', '${r.to}', ${r.km}, '${r.category || ''}')">
             <div class="route-info">
               <div class="route-name">
                 <span>${r.from}</span>
@@ -3363,7 +3420,7 @@
                 <span>${r.to}</span>
               </div>
               <div class="route-sub">
-                <span class="route-badge">${badgeLabel}</span>
+                <span class="route-badge">${r.category === 'sea' ? '⛵ PIER 1 SEA' : badgeLabel}</span>
                 <span>⏱️ ~${estMinutes} mins</span>
                 <span style="margin-left: 2px;">• ${currentLang === 'war' ? 'Pindota para kwentahon' : 'Tap to calculate'}</span>
               </div>
@@ -3379,9 +3436,16 @@
       container.innerHTML = html;
     }
 
-    window.selectRouteForCalc = function(from, to, km) {
+    window.selectRouteForCalc = function(from, to, km, category) {
       triggerHaptic();
       document.getElementById('calc-distance').value = km;
+      if (category === 'sea') {
+        const vehicleSelect = document.getElementById('calc-vehicle');
+        if (vehicleSelect && FARES.vehicles['sea_motorbanca']) {
+          vehicleSelect.value = 'sea_motorbanca';
+          renderVehicleCards();
+        }
+      }
       updateCalculatorUI();
       switchTab('screen-calc');
       showToast(currentLang === 'war' ? `Ruta na-load: ${from} → ${to} (${km} km)` : `Loaded route: ${from} → ${to} (${km} km)`);
@@ -3460,6 +3524,9 @@
       const v = FARES.vehicles[r.vehicle];
       const vName = v ? v.name : r.vehicle;
       const diff = (r.amountCharged - (r.correctFare || 0)).toFixed(2);
+      const authorityTarget = v && v.category === 'sea' 
+        ? 'MARINA Region 8 / PCG Catbalogan / Pier 1 Port Authority' 
+        : (v && v.category === 'lgu' ? 'Catbalogan City TMO / LGU' : 'LTFRB Region 8 / Catbalogan City TMO');
 
       return `=== SUMBONG HAN SOBRA NGA PLETE (FARE OVERCHARGING REPORT) ===
 Petsa/Oras: ${r.timestamp.replace('T', ' ')}
@@ -3471,7 +3538,7 @@ Sobra nga Sukot: +₱${diff}
 Plaka/Body #: ${r.plateNumber || 'None'}
 Notes: ${r.notes || 'None'}
 
-Ginpadangat ha: Catbalogan City TMO / LTFRB Region 8
+Ginpadangat ha: ${authorityTarget}
 Ginhimo pinaagi han Pamasahe Catbalogan App`;
     }
 
@@ -3562,10 +3629,10 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
               </div>
             </div>
 
-            ${v.category === 'lgu' ? `
+            ${(v.category === 'lgu' || v.category === 'sea') ? `
               <div class="admin-grid-2 form-group">
                 <div>
-                  <label style="font-size:0.75rem;">Special Flat (₱)</label>
+                  <label style="font-size:0.75rem;">Special Flat / Pakyaw (₱)</label>
                   <input type="number" class="input-control admin-special-flat" value="${v.specialTripFlat !== null ? v.specialTripFlat : ''}" placeholder="null" step="1">
                 </div>
                 <div>
@@ -3618,7 +3685,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         updatedFares.vehicles[key].status = statusVal;
         updatedFares.vehicles[key].effectiveDate = effectiveVal || '28 Sep 2026';
 
-        if (updatedFares.vehicles[key].category === 'lgu') {
+        if (updatedFares.vehicles[key].category === 'lgu' || updatedFares.vehicles[key].category === 'sea') {
           const specialEl = card.querySelector('.admin-special-flat');
           const nightEl = card.querySelector('.admin-night-surcharge');
           if (specialEl) {
@@ -4181,12 +4248,13 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
           return;
         }
 
+        const isSea = (fromVal + ' ' + toVal).toLowerCase().match(/pier\s*1|dagat|boat|banca|lantsa|daram|zumarraga|buri|sierra|island|islahanon|buad/);
         const newRoute = {
           id: 'route_custom_' + Date.now(),
           from: fromVal,
           to: toVal,
           km: kmVal,
-          category: kmVal < 4 ? 'proper' : (kmVal <= 25 ? 'inter' : 'bus'),
+          category: isSea ? 'sea' : (kmVal < 4 ? 'proper' : (kmVal <= 25 ? 'inter' : 'bus')),
           source: 'user'
         };
 
