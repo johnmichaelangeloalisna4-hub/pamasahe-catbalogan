@@ -28,6 +28,15 @@
       --brand-amber-light: #FEF3C7;
       --brand-amber-dark: #92400E;
       --brand-amber-glow: rgba(217, 119, 6, 0.25);
+
+      /* Responsive Layout & Viewport Tokens */
+      --app-vw: 100vw;
+      --app-vh: 100vh;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --container-max-width: 1280px;
       
       --color-slate-900: #0F172A;
       --color-slate-800: #1E293B;
@@ -173,9 +182,17 @@
       overflow-x: hidden;
       width: 100%;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       user-select: none;
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
+    }
+
+    /* Pause animations when tab is minimized or hidden */
+    .app-paused * {
+      animation-play-state: paused !important;
     }
 
     /* Mobile "Desktop Site" Mode Warning / Quick Fix Banner */
@@ -193,7 +210,7 @@
       z-index: 60;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       width: 100%;
-      max-width: 600px;
+      max-width: var(--container-max-width);
       margin: 0 auto;
     }
 
@@ -228,17 +245,23 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 8px 12px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 12px;
       backdrop-filter: blur(12px);
       box-shadow: var(--shadow-sm);
       width: 100%;
-      max-width: 600px;
+      max-width: var(--container-max-width);
       margin: 0 auto;
       box-sizing: border-box;
+    }
+
+    @media (min-width: 768px) {
+      .app-header {
+        padding: 12px 24px;
+      }
     }
 
     .brand-group {
@@ -272,7 +295,7 @@
     }
 
     .brand-title {
-      font-size: 1.05rem;
+      font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.3rem);
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.02em;
@@ -298,6 +321,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 95px;
+    }
+
+    @media (min-width: 768px) {
+      .brand-sub {
+        max-width: 280px;
+        font-size: 0.74rem;
+      }
     }
 
     .offline-status-pill {
@@ -396,22 +426,73 @@
     .app-main {
       flex: 1;
       width: 100%;
-      max-width: 600px;
+      max-width: var(--container-max-width);
       margin: 0 auto;
-      padding: 14px 14px calc(80px + env(safe-area-inset-bottom)) 14px;
+      padding: 14px 14px calc(80px + var(--safe-bottom)) 14px;
+      box-sizing: border-box;
+      min-height: calc(100vh - 120px);
+      min-height: calc(100dvh - 120px);
     }
 
     @media (max-width: 640px) {
       .app-main {
         max-width: 100%;
-        padding: 10px 12px calc(80px + env(safe-area-inset-bottom)) 12px;
+        padding: 12px clamp(10px, 3vw, 14px) calc(78px + var(--safe-bottom)) clamp(10px, 3vw, 14px);
       }
       .card {
-        padding: 12px 14px;
+        padding: 14px;
       }
       .stepper-btn {
         min-width: 48px;
         min-height: 48px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .app-main {
+        padding: 24px 24px 48px 24px;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .app-main {
+        padding: 28px 32px 56px 32px;
+      }
+    }
+
+    /* Responsive Multi-Column Layout Grid System */
+    .responsive-two-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .responsive-two-col .col-main,
+    .responsive-two-col .col-side {
+      width: 100%;
+      min-width: 0;
+    }
+
+    @media (min-width: 880px) {
+      .responsive-two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      .sticky-sidebar-col {
+        position: sticky;
+        top: 84px;
+        z-index: 10;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .responsive-two-col {
+        grid-template-columns: minmax(0, 1.25fr) minmax(420px, 0.75fr);
+        gap: 32px;
       }
     }
 
@@ -436,7 +517,7 @@
     }
 
     .screen-title {
-      font-size: 1.35rem;
+      font-size: clamp(1.2rem, 1.05rem + 0.7vw, 1.65rem);
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.01em;
@@ -1374,19 +1455,17 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Bottom Tab Bar */
+    /* Bottom Tab Bar (Mobile Navigation) */
     .bottom-tab-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
       background: var(--tab-bar-bg);
       border-top: 2px solid var(--tab-bar-border);
-      height: calc(64px + env(safe-area-inset-bottom));
-      padding-bottom: env(safe-area-inset-bottom);
+      height: calc(64px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       z-index: 100;
@@ -1394,11 +1473,98 @@
       box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.06);
     }
 
-    @media (max-width: 640px) {
+    @media (min-width: 768px) {
       .bottom-tab-bar {
-        max-width: 100%;
-        left: 0;
-        right: 0;
+        display: none !important;
+      }
+    }
+
+    /* Adaptive Header Navigation (Tablet & Desktop) */
+    .header-nav {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--bg-card-subtle);
+        padding: 4px 6px;
+        border-radius: var(--radius-full);
+        border: 1.5px solid var(--border-color);
+        margin: 0 8px;
+        flex-shrink: 0;
+      }
+
+      .header-nav .tab-btn {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        min-height: 38px;
+        border-radius: var(--radius-full);
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--tab-inactive-color);
+      }
+
+      .header-nav .tab-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2.2;
+      }
+
+      .header-nav .tab-btn:hover {
+        background: var(--brand-amber-light);
+        color: var(--brand-amber-dark);
+      }
+
+      .header-nav .tab-btn.active {
+        background: var(--brand-amber);
+        color: #FFFFFF;
+        box-shadow: 0 2px 6px var(--brand-amber-glow);
+      }
+
+      .header-nav .tab-btn.active::after {
+        display: none;
+      }
+
+      .header-nav .tab-btn.active svg {
+        transform: none;
+      }
+    }
+
+    /* Responsive Routes Grid */
+    #routes-list-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) {
+      #routes-list-container {
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 14px;
+      }
+      .route-item {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (min-width: 1100px) {
+      #routes-list-container {
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 16px;
+      }
+    }
+
+    /* Responsive Admin Rates Grid */
+    @media (min-width: 720px) {
+      .admin-edit-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 16px;
       }
     }
 
@@ -1673,6 +1839,55 @@
         </div>
       </div>
     </div>
+
+    <!-- Desktop Adaptive Navigation Bar (Visible on tablets and desktops >= 768px) -->
+    <nav class="header-nav" aria-label="Desktop Primary Navigation">
+      <button type="button" class="tab-btn active" data-target="screen-calc" aria-label="Calculator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"/>
+          <line x1="8" y1="6" x2="16" y2="6"/>
+          <line x1="16" y1="14" x2="16" y2="18"/>
+          <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+        </svg>
+        <span data-i18n="tabCalc">Calc</span>
+      </button>
+      <button type="button" class="tab-btn" data-target="screen-check" aria-label="Check Fare">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="M7 21h10"/>
+          <path d="M12 3v18"/>
+          <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+        </svg>
+        <span data-i18n="tabCheck">Check</span>
+      </button>
+      <button type="button" class="tab-btn" data-target="screen-routes" aria-label="Routes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="19" r="3"/>
+          <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/>
+          <circle cx="18" cy="5" r="3"/>
+        </svg>
+        <span data-i18n="tabRoutes">Routes</span>
+      </button>
+      <button type="button" class="tab-btn" data-target="screen-report" aria-label="Tips & Report">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 11 18-5v12L3 14v-3z"/>
+          <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+        </svg>
+        <span data-i18n="tabTips">Report</span>
+      </button>
+      <button type="button" class="tab-btn" data-target="screen-rates" aria-label="Rates">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <span data-i18n="tabRates">Rates</span>
+      </button>
+    </nav>
+
     <div class="header-actions">
       <button id="app-refresh-btn" class="icon-btn" aria-label="Refresh Entire Web App" title="Refresh Web App">
         <svg class="header-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -1715,7 +1930,9 @@
         <!-- Rendered dynamically via JS for fast one-tap selection -->
       </div>
 
-      <div class="card">
+      <div class="responsive-two-col">
+        <div class="col-main">
+          <div class="card">
         <!-- Vehicle Type Dropdown (kept synced) -->
         <div class="form-group">
           <label for="calc-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
@@ -1806,8 +2023,9 @@
         </div>
       </div>
 
-      <!-- Live Calculated Output (Digital Transit Ticket) -->
-      <div class="transit-ticket-card" id="calc-result-card">
+      <div class="col-side sticky-sidebar-col">
+        <!-- Live Calculated Output (Digital Transit Ticket) -->
+        <div class="transit-ticket-card" id="calc-result-card">
         <div class="ticket-header">
           <div class="ticket-title-tag">
             <span>🎫</span> <span data-i18n="calculatedFare">Estimated Legal Fare</span>
@@ -1872,7 +2090,9 @@
           <span><strong><span data-i18n="effectiveDate">Effective</span>:</strong> <span id="calc-effective">28 Sep 2026</span></span>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
     <!-- ========================================================
          SCREEN 2: CHECK A FARE
@@ -1886,7 +2106,9 @@
         <p class="screen-subtitle" data-i18n="checkSub">Compare the amount asked by the driver against the official legal tariff.</p>
       </div>
 
-      <div class="card">
+      <div class="responsive-two-col">
+        <div class="col-main">
+          <div class="card">
         <div class="form-group">
           <label for="check-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
           <select id="check-vehicle" class="input-control">
@@ -1924,7 +2146,9 @@
           Evaluate Fare
         </button>
       </div>
+    </div>
 
+    <div class="col-side sticky-sidebar-col">
       <!-- Verdict Box -->
       <div id="check-verdict-box" class="verdict-box">
         <div class="verdict-title" id="verdict-title">Fair Fare</div>
@@ -1968,7 +2192,9 @@
           </button>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
     <!-- ========================================================
          SCREEN 3: ROUTES
@@ -2039,136 +2265,142 @@
         <p class="screen-subtitle">Proteksyon hit pasahero kontra ha panloloko ha pletehan.</p>
       </div>
 
-      <!-- Tips Accordion / Cards -->
-      <div class="tip-card">
-        <div class="tip-card-title"><span>🤝</span> <span data-i18n="tip1Title">1. Agree on the fare before boarding</span></div>
-        <div class="tip-card-body" data-i18n="tip1Desc">Always clarify the fare before stepping onto a tricycle or habal-habal to avoid awkward disputes at destination.</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-card-title"><span>📋</span> <span data-i18n="tip2Title">2. Ask to see the posted fare matrix</span></div>
-        <div class="tip-card-body" data-i18n="tip2Desc">All PUVs and tricycles are required by law to prominently display their approved tariff matrix inside the vehicle.</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-card-title"><span>🚫</span> <span data-i18n="tip3Title">3. No '3-for-1' passenger charging</span></div>
-        <div class="tip-card-body" data-i18n="tip3Desc">A driver cannot charge 3 passengers' fare for 1 person on a shared trip. Solo rides are only charged as special trips if you hired the entire vehicle.</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-card-title"><span>🔢</span> <span data-i18n="tip4Title">4. Note the Plate or Body Number</span></div>
-        <div class="tip-card-body" data-i18n="tip4Desc">Check the local franchise sticker and body number painted on the side and rear of the vehicle before or during the ride.</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-card-title"><span>📸</span> <span data-i18n="tip5Title">5. Take a photo if safe</span></div>
-        <div class="tip-card-body" data-i18n="tip5Desc">A quick photo of the vehicle plate or body number serves as indisputable evidence for city traffic inspectors.</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-card-title"><span>🎓</span> <span data-i18n="tip6Title">6. 20% Mandatory Discount</span></div>
-        <div class="tip-card-body" data-i18n="tip6Desc">Students, Senior Citizens, and PWDs are entitled by Philippine law to a 20% discount on all days, including holidays and weekends.</div>
-      </div>
-
-      <!-- Report Form -->
-      <div class="card" style="margin-top: 20px;">
-        <div class="card-title">
-          <span data-i18n="reportHeading">Report Overcharging Incident</span>
-        </div>
-        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;" data-i18n="reportSub">
-          Log incidents of fare gouging. Saved locally and ready to forward to authorities.
-        </p>
-
-        <form id="report-form">
-          <div class="form-group">
-            <label for="report-datetime" data-i18n="dateTimeLabel">Incident Date & Time</label>
-            <input type="datetime-local" id="report-datetime" class="input-control" required>
+      <div class="responsive-two-col">
+        <div class="col-main">
+          <!-- Tips Accordion / Cards -->
+          <div class="tip-card">
+            <div class="tip-card-title"><span>🤝</span> <span data-i18n="tip1Title">1. Agree on the fare before boarding</span></div>
+            <div class="tip-card-body" data-i18n="tip1Desc">Always clarify the fare before stepping onto a tricycle or habal-habal to avoid awkward disputes at destination.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-card-title"><span>📋</span> <span data-i18n="tip2Title">2. Ask to see the posted fare matrix</span></div>
+            <div class="tip-card-body" data-i18n="tip2Desc">All PUVs and tricycles are required by law to prominently display their approved tariff matrix inside the vehicle.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-card-title"><span>🚫</span> <span data-i18n="tip3Title">3. No '3-for-1' passenger charging</span></div>
+            <div class="tip-card-body" data-i18n="tip3Desc">A driver cannot charge 3 passengers' fare for 1 person on a shared trip. Solo rides are only charged as special trips if you hired the entire vehicle.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-card-title"><span>🔢</span> <span data-i18n="tip4Title">4. Note the Plate or Body Number</span></div>
+            <div class="tip-card-body" data-i18n="tip4Desc">Check the local franchise sticker and body number painted on the side and rear of the vehicle before or during the ride.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-card-title"><span>📸</span> <span data-i18n="tip5Title">5. Take a photo if safe</span></div>
+            <div class="tip-card-body" data-i18n="tip5Desc">A quick photo of the vehicle plate or body number serves as indisputable evidence for city traffic inspectors.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-card-title"><span>🎓</span> <span data-i18n="tip6Title">6. 20% Mandatory Discount</span></div>
+            <div class="tip-card-body" data-i18n="tip6Desc">Students, Senior Citizens, and PWDs are entitled by Philippine law to a 20% discount on all days, including holidays and weekends.</div>
           </div>
 
-          <div class="form-group">
-            <label for="report-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
-            <select id="report-vehicle" class="input-control" required>
-              <!-- Populated via JS -->
-            </select>
-          </div>
+          <!-- Agency Contact Details (Selectable text with official placeholders) -->
+          <div class="agency-box">
+            <h4 data-i18n="agenciesHeading">Official Traffic & Complaint Offices</h4>
+            <p style="font-size: 0.8rem;" data-i18n="agenciesSub">You can copy-paste your report and send it to these offices:</p>
 
-          <div class="admin-grid-2 form-group">
+            <div style="margin-bottom: 12px;">
+              <strong>🏛️ Catbalogan City Traffic Management Office (TMO / LGU)</strong><br>
+              Office: City Hall Compound, Del Rosario St., Catbalogan City, Samar 6700<br>
+              Hotline: <code>[Insert City Hall / TMO Hotline: e.g. (055) XXX-XXXX]</code><br>
+              Email: <code>[Insert City Traffic Office Email: e.g. traffic@catbalogan.gov.ph]</code><br>
+              Sangguniang Panlungsod (Tricycle Franchising Board): <code>[Insert SP Office Contact]</code>
+            </div>
+
             <div>
-              <label for="report-from" data-i18n="fromLabel">Origin (From)</label>
-              <input type="text" id="report-from" class="input-control" placeholder="e.g. Public Market" required>
+              <strong>🚌 LTFRB Region 8 (Eastern Visayas Regional Office)</strong><br>
+              Office: Regional Government Center, Brgy. Candahug, Palo, Leyte<br>
+              Complaints Desk: <code>[Insert LTFRB R8 Telephone: e.g. (053) XXX-XXXX]</code><br>
+              Email: <code>[Insert LTFRB R8 Email: e.g. r8@ltfrb.gov.ph]</code><br>
+              Nationwide LTFRB Hotline: <strong>1342</strong>
             </div>
-            <div>
-              <label for="report-to" data-i18n="toLabel">Destination (To)</label>
-              <input type="text" id="report-to" class="input-control" placeholder="e.g. San Roque" required>
-            </div>
-          </div>
 
-          <div class="admin-grid-2 form-group">
-            <div>
-              <label for="report-charged" data-i18n="chargedLabel">Amount Charged (₱)</label>
-              <input type="number" id="report-charged" class="input-control" placeholder="e.g. 50" min="1" step="0.5" required inputmode="decimal">
-            </div>
-            <div>
-              <label for="report-correct" data-i18n="correctLabel">Official Fare (₱)</label>
-              <input type="number" id="report-correct" class="input-control" placeholder="e.g. 26" min="0" step="0.25" inputmode="decimal">
+            <div style="margin-top: 12px;">
+              <strong>⛵ Philippine Coast Guard (PCG) & MARINA Region 8 / Pier 1 Port Authority</strong><br>
+              Office: Catbalogan Pier 1 Port Area, Samar / MARINA R8 Regional Office<br>
+              PCG Catbalogan Station: <code>[Insert PCG Catbalogan Station Hotline / VHF Ch 16]</code><br>
+              Complaints: Catbalogan Port Management Office / MARINA Region 8 Complaints Desk
             </div>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="report-plate" data-i18n="plateLabel">Plate / Body Number (Optional)</label>
-            <input type="text" id="report-plate" class="input-control" placeholder="e.g. Tricycle Body #0421 or ABC-123">
-          </div>
-
-          <!-- Quick Violation Tags -->
-          <div class="form-group">
-            <label data-i18n="notesLabel">Incident Notes / Remarks</label>
-            <div class="violation-chips-wrap">
-              <span class="violation-chip" data-tag="Refused 20% discount (May ID)">🏷️ Refused 20% discount</span>
-              <span class="violation-chip" data-tag="Charged special/pakyaw rate on shared ride">🏷️ Charged special on shared ride</span>
-              <span class="violation-chip" data-tag="Demanded fare above matrix">🏷️ Demanded excess fare</span>
-              <span class="violation-chip" data-tag="No fare matrix posted">🏷️ No posted matrix</span>
+        <div class="col-side">
+          <!-- Report Form -->
+          <div class="card">
+            <div class="card-title">
+              <span data-i18n="reportHeading">Report Overcharging Incident</span>
             </div>
-            <textarea id="report-notes" class="input-control" rows="2" placeholder="e.g. Driver demanded ₱50 for a solo trip and refused student ID."></textarea>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;" data-i18n="reportSub">
+              Log incidents of fare gouging. Saved locally and ready to forward to authorities.
+            </p>
+
+            <form id="report-form">
+              <div class="form-group">
+                <label for="report-datetime" data-i18n="dateTimeLabel">Incident Date & Time</label>
+                <input type="datetime-local" id="report-datetime" class="input-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="report-vehicle" data-i18n="vehicleLabel">Vehicle Type</label>
+                <select id="report-vehicle" class="input-control" required>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+
+              <div class="admin-grid-2 form-group">
+                <div>
+                  <label for="report-from" data-i18n="fromLabel">Origin (From)</label>
+                  <input type="text" id="report-from" class="input-control" placeholder="e.g. Public Market" required>
+                </div>
+                <div>
+                  <label for="report-to" data-i18n="toLabel">Destination (To)</label>
+                  <input type="text" id="report-to" class="input-control" placeholder="e.g. San Roque" required>
+                </div>
+              </div>
+
+              <div class="admin-grid-2 form-group">
+                <div>
+                  <label for="report-charged" data-i18n="chargedLabel">Amount Charged (₱)</label>
+                  <input type="number" id="report-charged" class="input-control" placeholder="e.g. 50" min="1" step="0.5" required inputmode="decimal">
+                </div>
+                <div>
+                  <label for="report-correct" data-i18n="correctLabel">Official Fare (₱)</label>
+                  <input type="number" id="report-correct" class="input-control" placeholder="e.g. 26" min="0" step="0.25" inputmode="decimal">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="report-plate" data-i18n="plateLabel">Plate / Body Number (Optional)</label>
+                <input type="text" id="report-plate" class="input-control" placeholder="e.g. Tricycle Body #0421 or ABC-123">
+              </div>
+
+              <!-- Quick Violation Tags -->
+              <div class="form-group">
+                <label data-i18n="notesLabel">Incident Notes / Remarks</label>
+                <div class="violation-chips-wrap">
+                  <span class="violation-chip" data-tag="Refused 20% discount (May ID)">🏷️ Refused 20% discount</span>
+                  <span class="violation-chip" data-tag="Charged special/pakyaw rate on shared ride">🏷️ Charged special on shared ride</span>
+                  <span class="violation-chip" data-tag="Demanded fare above matrix">🏷️ Demanded excess fare</span>
+                  <span class="violation-chip" data-tag="No fare matrix posted">🏷️ No posted matrix</span>
+                </div>
+                <textarea id="report-notes" class="input-control" rows="2" placeholder="e.g. Driver demanded ₱50 for a solo trip and refused student ID."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" data-i18n="submitReportBtn">
+                💾 Submit & Save Report
+              </button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-primary" data-i18n="submitReportBtn">
-            💾 Submit & Save Report
-          </button>
-        </form>
-      </div>
-
-      <!-- Past Reports List -->
-      <div class="card">
-        <div class="card-title">
-          <span data-i18n="myReportsHeading">My Reports History</span>
-          <span id="report-count-badge" class="route-badge">0</span>
-        </div>
-        <div id="reports-list-wrap">
-          <!-- Populated via renderReports() -->
-        </div>
-      </div>
-
-      <!-- Agency Contact Details (Selectable text with official placeholders) -->
-      <div class="agency-box">
-        <h4 data-i18n="agenciesHeading">Official Traffic & Complaint Offices</h4>
-        <p style="font-size: 0.8rem;" data-i18n="agenciesSub">You can copy-paste your report and send it to these offices:</p>
-
-        <div style="margin-bottom: 12px;">
-          <strong>🏛️ Catbalogan City Traffic Management Office (TMO / LGU)</strong><br>
-          Office: City Hall Compound, Del Rosario St., Catbalogan City, Samar 6700<br>
-          Hotline: <code>[Insert City Hall / TMO Hotline: e.g. (055) XXX-XXXX]</code><br>
-          Email: <code>[Insert City Traffic Office Email: e.g. traffic@catbalogan.gov.ph]</code><br>
-          Sangguniang Panlungsod (Tricycle Franchising Board): <code>[Insert SP Office Contact]</code>
-        </div>
-
-        <div>
-          <strong>🚌 LTFRB Region 8 (Eastern Visayas Regional Office)</strong><br>
-          Office: Regional Government Center, Brgy. Candahug, Palo, Leyte<br>
-          Complaints Desk: <code>[Insert LTFRB R8 Telephone: e.g. (053) XXX-XXXX]</code><br>
-          Email: <code>[Insert LTFRB R8 Email: e.g. r8@ltfrb.gov.ph]</code><br>
-          Nationwide LTFRB Hotline: <strong>1342</strong>
-        </div>
-
-        <div style="margin-top: 12px;">
-          <strong>⛵ Philippine Coast Guard (PCG) & MARINA Region 8 / Pier 1 Port Authority</strong><br>
-          Office: Catbalogan Pier 1 Port Area, Samar / MARINA R8 Regional Office<br>
-          PCG Catbalogan Station: <code>[Insert PCG Catbalogan Station Hotline / VHF Ch 16]</code><br>
-          Complaints: Catbalogan Port Management Office / MARINA Region 8 Complaints Desk
+          <!-- Past Reports List -->
+          <div class="card">
+            <div class="card-title">
+              <span data-i18n="myReportsHeading">My Reports History</span>
+              <span id="report-count-badge" class="route-badge">0</span>
+            </div>
+            <div id="reports-list-wrap">
+              <!-- Populated via renderReports() -->
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2333,6 +2565,266 @@
        ======================================================== -->
   <script>
     "use strict";
+
+    /**
+     * =========================================================================
+     * 0. VIEWPORT & RESPONSIVE LAYOUT ENGINE (SINGLE SOURCE OF TRUTH)
+     * Handles live window resize, rotation (orientationchange), zoom,
+     * ResizeObserver, Page Visibility, and bfcache restoration.
+     * =========================================================================
+     */
+    const ViewportManager = (function() {
+      const BREAKPOINTS = {
+        xs: 0,
+        sm: 360,
+        md: 480,
+        lg: 768,
+        xl: 1024,
+        '2xl': 1280,
+        '3xl': 1536
+      };
+
+      const subscribers = new Set();
+      let rafPending = false;
+
+      const state = {
+        width: typeof window !== 'undefined' ? (window.innerWidth || 360) : 360,
+        height: typeof window !== 'undefined' ? (window.innerHeight || 640) : 640,
+        devicePixelRatio: typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1,
+        orientation: 'portrait',
+        tier: 'mobile',       // 'mobile' (<768) | 'tablet' (768-1023) | 'desktop' (1024-1535) | 'ultrawide' (>=1536)
+        breakpoint: 'md',     // 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+        isTouch: false,
+        isPointerCoarse: false,
+        isVisible: true,
+        lastResized: Date.now()
+      };
+
+      function computeTier(w) {
+        if (w < 768) return 'mobile';
+        if (w < 1024) return 'tablet';
+        if (w < 1536) return 'desktop';
+        return 'ultrawide';
+      }
+
+      function computeBreakpoint(w) {
+        if (w >= 1536) return '3xl';
+        if (w >= 1280) return '2xl';
+        if (w >= 1024) return 'xl';
+        if (w >= 768) return 'lg';
+        if (w >= 480) return 'md';
+        if (w >= 360) return 'sm';
+        return 'xs';
+      }
+
+      function measureAndUpdate() {
+        rafPending = false;
+        if (typeof window === 'undefined') return;
+
+        const w = window.innerWidth || (document.documentElement ? document.documentElement.clientWidth : 360) || 360;
+        const h = window.innerHeight || (document.documentElement ? document.documentElement.clientHeight : 640) || 640;
+        const dpr = window.devicePixelRatio || 1;
+        const orientation = w >= h ? 'landscape' : 'portrait';
+        const tier = computeTier(w);
+        const bp = computeBreakpoint(w);
+        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isPointerCoarse = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || false;
+        const isVisible = (typeof document !== 'undefined' && typeof document.hidden !== 'undefined') ? !document.hidden : true;
+
+        const prevTier = state.tier;
+        const prevBp = state.breakpoint;
+        const prevOrientation = state.orientation;
+
+        state.width = w;
+        state.height = h;
+        state.devicePixelRatio = dpr;
+        state.orientation = orientation;
+        state.tier = tier;
+        state.breakpoint = bp;
+        state.isTouch = isTouch;
+        state.isPointerCoarse = isPointerCoarse;
+        state.isVisible = isVisible;
+        state.lastResized = Date.now();
+
+        // Sync with CSS variables and data attributes on <html>
+        if (typeof document !== 'undefined' && document.documentElement) {
+          const root = document.documentElement;
+          root.setAttribute('data-layout-tier', tier);
+          root.setAttribute('data-breakpoint', bp);
+          root.setAttribute('data-orientation', orientation);
+          root.setAttribute('data-touch', isTouch ? 'true' : 'false');
+          root.style.setProperty('--app-vw', `${w}px`);
+          root.style.setProperty('--app-vh', `${h}px`);
+        }
+
+        const hasChanged = (prevTier !== tier) || (prevBp !== bp) || (prevOrientation !== orientation);
+
+        // Notify subscribers
+        subscribers.forEach(cb => {
+          try {
+            cb(state, { tierChanged: prevTier !== tier, hasChanged });
+          } catch (err) {
+            console.error('[ViewportManager] subscriber error:', err);
+          }
+        });
+
+        // Dispatch custom DOM event
+        if (typeof window.dispatchEvent === 'function') {
+          try {
+            window.dispatchEvent(new CustomEvent('viewportchange', { detail: state }));
+          } catch (e) {}
+        }
+      }
+
+      function scheduleUpdate() {
+        if (!rafPending) {
+          rafPending = true;
+          if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(measureAndUpdate);
+          } else {
+            setTimeout(measureAndUpdate, 16);
+          }
+        }
+      }
+
+      if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+        window.addEventListener('resize', scheduleUpdate, { passive: true });
+        window.addEventListener('orientationchange', () => {
+          scheduleUpdate();
+          setTimeout(scheduleUpdate, 60);
+          setTimeout(scheduleUpdate, 250);
+        }, { passive: true });
+
+        if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
+          window.visualViewport.addEventListener('resize', scheduleUpdate, { passive: true });
+        }
+
+        // matchMedia listeners for hardware-accelerated breakpoint transitions
+        if (typeof window.matchMedia === 'function') {
+          [360, 480, 768, 1024, 1280, 1536].forEach(px => {
+            const mql = window.matchMedia(`(min-width: ${px}px)`);
+            if (mql && mql.addEventListener) mql.addEventListener('change', scheduleUpdate);
+            else if (mql && mql.addListener) mql.addListener(scheduleUpdate);
+          });
+          const orientMql = window.matchMedia('(orientation: landscape)');
+          if (orientMql && orientMql.addEventListener) orientMql.addEventListener('change', scheduleUpdate);
+        }
+
+        // ResizeObserver on body / root
+        if (typeof ResizeObserver !== 'undefined' && typeof document !== 'undefined') {
+          const ro = new ResizeObserver(() => scheduleUpdate());
+          if (document.body) ro.observe(document.body);
+          else if (typeof document.addEventListener === 'function') {
+            document.addEventListener('DOMContentLoaded', () => { if (document.body) ro.observe(document.body); });
+          }
+        }
+
+        // Initial measurement
+        measureAndUpdate();
+      }
+
+      return {
+        getState: () => ({ ...state }),
+        isMobile: () => state.tier === 'mobile',
+        isTablet: () => state.tier === 'tablet',
+        isDesktop: () => state.tier === 'desktop' || state.tier === 'ultrawide',
+        isTouch: () => state.isTouch,
+        subscribe: (cb) => {
+          subscribers.add(cb);
+          try { cb(state, { tierChanged: false, hasChanged: false }); } catch (e) {}
+          return () => subscribers.delete(cb);
+        },
+        forceUpdate: () => measureAndUpdate(),
+        BREAKPOINTS
+      };
+    })();
+
+    // Expose ViewportManager globally
+    window.ViewportManager = ViewportManager;
+
+    // Reusable hook or helper for components
+    window.useViewport = function(callback) {
+      if (typeof callback === 'function') {
+        return ViewportManager.subscribe(callback);
+      }
+      return ViewportManager.getState();
+    };
+
+    /**
+     * App Lifecycle & Page Visibility Controller
+     * Pauses timers/animations when minimized/backgrounded;
+     * recalculates dimensions and restores state on return;
+     * handles bfcache restoration.
+     */
+    (function setupAppLifecycle() {
+      if (typeof document === 'undefined' || typeof window === 'undefined') return;
+
+      let isBackgrounded = false;
+      let backgroundTimestamp = 0;
+
+      function handleVisibilityChange() {
+        if (document.hidden) {
+          isBackgrounded = true;
+          backgroundTimestamp = Date.now();
+          if (document.documentElement) {
+            document.documentElement.classList.add('app-paused');
+          }
+        } else {
+          const wasBackgrounded = isBackgrounded;
+          isBackgrounded = false;
+          if (document.documentElement) {
+            document.documentElement.classList.remove('app-paused');
+          }
+
+          // Force immediate re-measurement since background may have reported 0x0
+          ViewportManager.forceUpdate();
+
+          // Refresh fares/routes if suspended for a significant duration (> 5 min)
+          if (wasBackgrounded && (Date.now() - backgroundTimestamp > 300000)) {
+            if (typeof loadFaresFromStorage === 'function') FARES = loadFaresFromStorage();
+            if (typeof loadRoutesFromStorage === 'function') ROUTES = loadRoutesFromStorage();
+            if (typeof renderVehicleCards === 'function') renderVehicleCards();
+            if (typeof updateCalculatorUI === 'function') updateCalculatorUI();
+          } else {
+            if (typeof updateCalculatorUI === 'function') updateCalculatorUI();
+          }
+        }
+      }
+
+      if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+      }
+
+      if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+        window.addEventListener('focus', () => {
+          if (document.documentElement) document.documentElement.classList.remove('app-paused');
+          ViewportManager.forceUpdate();
+        });
+        window.addEventListener('blur', () => {
+          if (document.hidden && document.documentElement) {
+            document.documentElement.classList.add('app-paused');
+          }
+        });
+
+        // Handle bfcache restore (back-forward cache in Safari / Chrome)
+        window.addEventListener('pageshow', (event) => {
+          if (event && event.persisted) {
+            console.log('[Lifecycle] Restored from bfcache. Re-initializing layout...');
+            if (document.documentElement) document.documentElement.classList.remove('app-paused');
+            if (typeof loadFaresFromStorage === 'function') FARES = loadFaresFromStorage();
+            if (typeof loadRoutesFromStorage === 'function') ROUTES = loadRoutesFromStorage();
+            if (typeof populateVehicleDropdowns === 'function') populateVehicleDropdowns();
+            if (typeof renderVehicleCards === 'function') renderVehicleCards();
+            if (typeof populateQuickRouteDropdowns === 'function') populateQuickRouteDropdowns();
+            if (typeof updateCalculatorUI === 'function') updateCalculatorUI();
+            if (typeof renderRoutes === 'function') renderRoutes();
+            if (typeof renderReports === 'function') renderReports();
+            if (typeof renderRatesTable === 'function') renderRatesTable();
+            ViewportManager.forceUpdate();
+          }
+        });
+      }
+    })();
 
     /**
      * =========================================================================
@@ -3719,8 +4211,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       const targetScreen = document.getElementById(screenId);
       if (targetScreen) targetScreen.classList.add('active');
 
-      const targetBtn = document.querySelector(`.tab-btn[data-target="${screenId}"]`);
-      if (targetBtn) targetBtn.classList.add('active');
+      document.querySelectorAll(`.tab-btn[data-target="${screenId}"]`).forEach(btn => btn.classList.add('active'));
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
