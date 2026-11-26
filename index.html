@@ -1520,6 +1520,131 @@
       display: flex;
     }
 
+    /* Two-Role Sub-Navigation & Complaints Desk Styles */
+    .admin-tabs-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .admin-tab-pill {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      margin-bottom: -2px;
+      white-space: nowrap;
+    }
+
+    .admin-tab-pill:hover {
+      color: var(--text-main);
+      border-color: var(--brand-amber);
+    }
+
+    .admin-tab-pill.active {
+      background: var(--bg-card);
+      color: var(--brand-amber);
+      border-color: var(--border-color);
+      border-bottom-color: var(--bg-card);
+      border-top: 3px solid var(--brand-amber);
+    }
+
+    .complaint-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .complaint-kpi-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .complaint-kpi-num {
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .complaint-kpi-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .complaint-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .complaint-filter-pill {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .complaint-filter-pill:hover {
+      border-color: var(--brand-amber);
+      color: var(--text-main);
+    }
+
+    .complaint-filter-pill.active {
+      background: var(--brand-amber);
+      color: #FFFFFF;
+      border-color: var(--brand-amber);
+    }
+
+    .complaint-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .complaint-card:hover {
+      border-color: var(--brand-amber);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .complaint-action-box {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--brand-amber);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 12px;
+    }
+
     .admin-login-card {
       max-width: 440px;
       width: 100%;
@@ -2842,8 +2967,8 @@
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
         </div>
-        <h3 id="admin-login-title" style="margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--text-main);">LGU Transit Admin Portal</h3>
-        <p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted);">Authorized City Hall &amp; LTFRB Regulatory Staff Only</p>
+        <h3 id="admin-login-title" style="margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--text-main);">LGU Transit &amp; Complaints Staff Portal</h3>
+        <p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted);">Authorized City Hall, LTFRB &amp; TMO Regulatory Personnel</p>
       </div>
 
       <div id="admin-login-alert" style="display: none; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.82rem; font-weight: 600; line-height: 1.4;"></div>
@@ -2851,7 +2976,7 @@
       <form id="admin-login-form">
         <div class="form-group" style="margin-bottom: 14px;">
           <label for="admin-username" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: block;">Username or Email</label>
-          <input type="text" id="admin-username" class="input-control" placeholder="admin or staff@catbalogan.gov.ph" required autocomplete="username">
+          <input type="text" id="admin-username" class="input-control" placeholder="admin or officer (or staff email)" required autocomplete="username">
         </div>
 
         <div class="form-group" style="margin-bottom: 18px;">
@@ -2867,8 +2992,9 @@
         </button>
       </form>
 
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.75rem; color: var(--text-muted);">
-        Default credentials: Username <code>admin</code> · Password <code>admin</code> or PIN <code>6700</code>
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
+        <div>👑 <strong>Transit Admin (Tariffs &amp; Fleet):</strong> <code>admin</code> / <code>admin</code> (or PIN <code>6700</code>)</div>
+        <div style="margin-top: 4px;">👮 <strong>Complaints Officer (TMO Desk):</strong> <code>officer</code> / <code>officer</code> (or <code>tmo2026</code>)</div>
       </div>
     </div>
   </div>
@@ -4558,8 +4684,19 @@
               <span style="color: var(--text-muted);">Official: ₱${r.correctFare ? parseFloat(r.correctFare).toFixed(2) : 'N/A'}</span>
               <span style="color: #DC2626; font-weight: 800;">(+₱${diff})</span>
             </div>
-            ${r.plateNumber ? `<div style="font-size: 0.8rem; color: var(--text-secondary);"><strong>Plate/Body #:</strong> ${r.plateNumber}</div>` : ''}
-            ${r.notes ? `<div style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic; margin-top: 4px;">"${r.notes}"</div>` : ''}
+            ${r.plateNumber ? `<div style="font-size: 0.8rem; color: var(--text-secondary);"><strong>Plate/Body #:</strong> ${escapeHtml(r.plateNumber)}</div>` : ''}
+            ${r.notes ? `<div style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic; margin-top: 4px;">"${escapeHtml(r.notes)}"</div>` : ''}
+            <div style="margin-top: 6px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">Status:</span>
+              ${(r.status === 'resolved') ? '<span class="fare-badge badge-verified" style="font-size:0.68rem;">✅ Resolved / Action Taken</span>' :
+                (r.status === 'investigating') ? '<span class="fare-badge" style="background:rgba(59,130,246,0.15);color:#2563EB;font-size:0.68rem;">🔍 Under Investigation</span>' :
+                (r.status === 'summoned') ? '<span class="fare-badge" style="background:rgba(147,51,234,0.15);color:#7C3AED;font-size:0.68rem;">⚖️ Driver Summoned</span>' :
+                (r.status === 'dismissed') ? '<span class="fare-badge" style="background:rgba(100,116,139,0.15);color:#64748B;font-size:0.68rem;">🚫 Dismissed</span>' :
+                '<span class="fare-badge badge-partial" style="font-size:0.68rem;">⏳ Pending Review</span>'}
+            </div>
+            ${r.actionNotes ? `<div style="margin-top: 6px; padding: 6px 10px; background: rgba(59, 130, 246, 0.08); border-left: 3px solid #3B82F6; border-radius: 4px; font-size: 0.76rem; color: var(--text-main);">
+              <strong style="color: #2563EB;">👮 TMO Desk Action:</strong> ${escapeHtml(r.actionNotes)}
+            </div>` : ''}
             
             <div class="report-actions-row">
               <button type="button" class="btn btn-secondary btn-sm" style="flex: 1;" onclick="copyFormattedReport('${r.id}')">
@@ -4729,6 +4866,10 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
      * (Cleanly separated from public commuter features with async placeholders)
      * =========================================================================
      */
+    let currentAdminSubTab = 'tariffs';
+    let currentComplaintStatusFilter = 'all';
+    let currentComplaintSearch = '';
+
     const AdminAuthService = {
       SESSION_KEY: 'pamasahe_admin_session',
       LOCKOUT_KEY: 'pamasahe_admin_lockout',
@@ -4753,6 +4894,16 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         } catch (e) {
           return null;
         }
+      },
+
+      isAdmin() {
+        const s = this.getSession();
+        return s && s.role === 'admin';
+      },
+
+      isOfficer() {
+        const s = this.getSession();
+        return s && (s.role === 'officer' || s.role === 'admin');
       },
 
       getLockoutStatus() {
@@ -4793,9 +4944,10 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       },
 
       /**
-       * Async authentication placeholder.
-       * Structured cleanly for drop-in replacement with Firebase Auth or backend API:
-       * e.g.: const res = await fetch('/api/admin/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+       * Async authentication placeholder for Firebase Auth or REST backend.
+       * Supports Two Roles:
+       * 1. 'admin' -> Full Tariff Management, Fleet CRUD, Notices, System Backups
+       * 2. 'officer' -> Dedicated Complaints Resolution & Hearing Desk (read-only tariffs)
        */
       async login(username, password) {
         const lockout = this.getLockoutStatus();
@@ -4806,16 +4958,35 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         const cleanUser = (username || '').trim().toLowerCase();
         const cleanPass = (password || '').trim();
 
-        // Valid demo/local credentials: username 'admin' or 'admin@catbalogan.gov.ph', password 'admin' or PIN '6700'
-        const validUsers = ['admin', 'admin@catbalogan.gov.ph', 'lgu_traffic', 'staff'];
-        const validPasses = ['admin', 'samar2026', 'catbalogan6700', '6700'];
+        // 1. Transit Administrator Credentials
+        const adminUsers = ['admin', 'admin@catbalogan.gov.ph', 'lgu_traffic', 'city_hall'];
+        const adminPasses = ['admin', 'samar2026', 'catbalogan6700', '6700'];
 
-        if (validUsers.includes(cleanUser) && validPasses.includes(cleanPass)) {
+        // 2. Complaints Officer / TMO Desk Credentials
+        const officerUsers = ['officer', 'officer@catbalogan.gov.ph', 'tmo', 'tmo_staff', 'inspector', 'staff', 'employee'];
+        const officerPasses = ['officer', 'tmo2026', 'samar2026', '6700', 'staff'];
+
+        if (adminUsers.includes(cleanUser) && adminPasses.includes(cleanPass)) {
           this.resetAttempts();
           const session = {
             user: cleanUser,
-            role: 'Transit Administrator',
-            token: 'sess_' + Math.random().toString(36).substring(2) + Date.now(),
+            role: 'admin',
+            roleTitle: 'Transit Administrator',
+            department: 'Catbalogan City Hall & LTFRB Regulatory',
+            token: 'sess_admin_' + Math.random().toString(36).substring(2) + Date.now(),
+            loginTime: Date.now(),
+            expiresAt: Date.now() + 8 * 3600 * 1000 // 8 hours (or until tab closed)
+          };
+          sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+          return session;
+        } else if (officerUsers.includes(cleanUser) && officerPasses.includes(cleanPass)) {
+          this.resetAttempts();
+          const session = {
+            user: cleanUser,
+            role: 'officer',
+            roleTitle: 'Traffic & Complaints Officer',
+            department: 'Catbalogan Traffic Management Office (TMO)',
+            token: 'sess_officer_' + Math.random().toString(36).substring(2) + Date.now(),
             loginTime: Date.now(),
             expiresAt: Date.now() + 8 * 3600 * 1000 // 8 hours (or until tab closed)
           };
@@ -4830,16 +5001,100 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         }
       },
 
-      /**
-       * Async logout placeholder.
-       * Structured for: await signOut(auth) or fetch('/api/admin/logout');
-       */
       async logout() {
         sessionStorage.removeItem(this.SESSION_KEY);
         return true;
       }
     };
     window.AdminAuthService = AdminAuthService;
+
+    // Helper functions for Officer Complaints Desk
+    function updateReportIncident(id, newStatus, actionNotes, officerName) {
+      const reports = loadReports();
+      const idx = reports.findIndex(r => r.id === id);
+      if (idx !== -1) {
+        reports[idx].status = newStatus || 'pending';
+        reports[idx].actionNotes = actionNotes || '';
+        reports[idx].officer = officerName || '';
+        reports[idx].updatedAt = new Date().toISOString();
+        localStorage.setItem("pamasahe_reports", JSON.stringify(reports));
+        return true;
+      }
+      return false;
+    }
+
+    function exportComplaintsCSV() {
+      const reports = loadReports();
+      if (reports.length === 0) {
+        showToast(currentLang === 'war' ? 'Waray pa mga sumbong nga ma-export.' : 'No complaints recorded to export.');
+        return;
+      }
+
+      const headers = ['Report ID', 'Date Time', 'Vehicle', 'Route From', 'Route To', 'Amount Charged', 'Legal Fare', 'Overcharge Diff', 'Plate or Body No', 'Status', 'Officer Action Notes', 'Officer Name', 'Last Updated'];
+      
+      const rows = reports.map(r => {
+        const v = FARES.vehicles[r.vehicle];
+        const vName = v ? v.name : r.vehicle;
+        const diff = (parseFloat(r.amountCharged || 0) - parseFloat(r.correctFare || 0)).toFixed(2);
+        return [
+          `"${r.id}"`,
+          `"${r.timestamp || ''}"`,
+          `"${(vName || '').replace(/"/g, '""')}"`,
+          `"${(r.from || '').replace(/"/g, '""')}"`,
+          `"${(r.to || '').replace(/"/g, '""')}"`,
+          r.amountCharged || '',
+          r.correctFare || '',
+          diff,
+          `"${(r.plateNumber || '').replace(/"/g, '""')}"`,
+          `"${(r.status || 'pending').toUpperCase()}"`,
+          `"${(r.actionNotes || '').replace(/"/g, '""')}"`,
+          `"${(r.officer || '').replace(/"/g, '""')}"`,
+          `"${r.updatedAt || ''}"`
+        ].join(',');
+      });
+
+      const csvContent = [headers.join(','), ...rows].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `catbalogan_tmo_complaints_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Complaints CSV exported successfully!');
+    }
+
+    function copyHearingDossier() {
+      const reports = loadReports();
+      if (reports.length === 0) {
+        showToast(currentLang === 'war' ? 'Waray pa mga sumbong.' : 'No complaints recorded.');
+        return;
+      }
+
+      let text = `=== CATBALOGAN CITY TMO - PASSENGER OVERCHARGING COMPLAINTS DOSSIER ===\n`;
+      text += `Generated: ${new Date().toLocaleString()}\n`;
+      text += `Total Records: ${reports.length}\n\n`;
+
+      reports.forEach((r, idx) => {
+        const v = FARES.vehicles[r.vehicle];
+        const vName = v ? v.name : r.vehicle;
+        const diff = (parseFloat(r.amountCharged || 0) - parseFloat(r.correctFare || 0)).toFixed(2);
+        text += `[CASE #${idx + 1}] ID: ${r.id} | Status: ${(r.status || 'pending').toUpperCase()}\n`;
+        text += `Date: ${r.timestamp.replace('T', ' ')} | Vehicle: ${vName}\n`;
+        text += `Route: ${r.from} -> ${r.to}\n`;
+        text += `Charged: ₱${parseFloat(r.amountCharged || 0).toFixed(2)} | Official: ₱${parseFloat(r.correctFare || 0).toFixed(2)} | Overcharge: +₱${diff}\n`;
+        if (r.plateNumber) text += `Plate/Body #: ${r.plateNumber}\n`;
+        if (r.notes) text += `Commuter Statement: "${r.notes}"\n`;
+        if (r.actionNotes) text += `Officer Action: ${r.actionNotes} (by ${r.officer || 'Officer'})\n`;
+        text += `------------------------------------------------------------\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Hearing dossier copied to clipboard!');
+      }).catch(() => {
+        showToast('Failed to copy dossier.');
+      });
+    }
 
     let lockoutTimerInterval = null;
     function showLoginLockout(remainingSeconds) {
@@ -4914,7 +5169,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       if (modal) modal.classList.remove('active');
     }
 
-    // Dynamic Navigation Tab Sync for Admin
+    // Dynamic Navigation Tab Sync for Admin & Officer
     function syncAdminNavTabs(show) {
       const headerNav = document.querySelector('.header-nav');
       const bottomBar = document.querySelector('.bottom-tab-bar');
@@ -4923,35 +5178,49 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       const existingBottomBtn = bottomBar ? bottomBar.querySelector('.admin-tab-btn') : null;
 
       if (show) {
-        if (headerNav && !existingHeaderBtn) {
+        const session = AdminAuthService.getSession();
+        const isOfficer = session && session.role === 'officer';
+        const label = isOfficer ? 'Complaints' : 'Admin';
+        const badgeText = isOfficer ? 'TMO' : 'LGU';
+        const badgeBg = isOfficer ? '#3B82F6' : '#EF4444';
+        const titleText = isOfficer ? 'TMO Complaints Desk (Shortcut: Alt+A)' : 'Admin Dashboard (Shortcut: Alt+A)';
+        const iconSvg = isOfficer
+          ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+               <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+             </svg>`
+          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+             </svg>`;
+
+        if (existingHeaderBtn) existingHeaderBtn.remove();
+        if (existingBottomBtn) existingBottomBtn.remove();
+
+        if (headerNav) {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'tab-btn admin-tab-btn';
           btn.setAttribute('data-target', 'screen-admin');
-          btn.setAttribute('aria-label', 'Admin Dashboard');
-          btn.setAttribute('title', 'Admin Dashboard (Shortcut: Alt+A)');
+          btn.setAttribute('aria-label', label);
+          btn.setAttribute('title', titleText);
           btn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Admin</span>
-            <span class="route-badge" style="background:#EF4444;color:#FFFFFF;padding:1px 5px;font-size:0.6rem;font-weight:800;">LGU</span>
+            ${iconSvg}
+            <span>${label}</span>
+            <span class="route-badge" style="background:${badgeBg};color:#FFFFFF;padding:1px 5px;font-size:0.6rem;font-weight:800;">${badgeText}</span>
           `;
           btn.addEventListener('click', () => switchTab('screen-admin'));
           headerNav.appendChild(btn);
         }
 
-        if (bottomBar && !existingBottomBtn) {
+        if (bottomBar) {
           const bBtn = document.createElement('button');
           bBtn.type = 'button';
           bBtn.className = 'tab-btn admin-tab-btn';
           bBtn.setAttribute('data-target', 'screen-admin');
-          bBtn.setAttribute('aria-label', 'Admin');
+          bBtn.setAttribute('aria-label', label);
           bBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Admin</span>
+            ${iconSvg}
+            <span>${label}</span>
           `;
           bBtn.addEventListener('click', () => switchTab('screen-admin'));
           bottomBar.appendChild(bBtn);
@@ -4962,8 +5231,253 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       }
     }
 
-    // Dynamic Injection of Protected Admin Dashboard
-    function renderAdminDashboard() {
+    // Helper to render read-only tariff reference for officers
+    function renderReadOnlyTariffsHtml() {
+      let rows = '';
+      Object.keys(FARES.vehicles).forEach(k => {
+        const v = FARES.vehicles[k];
+        const statusBadgeClass = v.status === 'verified' ? 'badge-verified' : (v.status === 'partial' ? 'badge-partial' : 'badge-unverified');
+        const statusLabel = v.status === 'verified' ? 'Verified' : (v.status === 'partial' ? 'Partial' : 'Unset');
+        const baseFareText = v.baseFare !== null ? `₱${v.baseFare.toFixed(2)}` : '<span style="color:var(--text-muted);">-</span>';
+        const baseKmText = v.baseKm !== null ? `${v.baseKm} km` : '<span style="color:var(--text-muted);">-</span>';
+        const perKmText = v.perKm !== null ? `₱${v.perKm.toFixed(2)}/km` : '<span style="color:var(--text-muted);">-</span>';
+        const specialFlatText = v.specialTripFlat !== null ? `₱${v.specialTripFlat.toFixed(2)}` : '<span style="color:var(--text-muted);">-</span>';
+        
+        rows += `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.1rem;">${v.icon || '🚗'}</span>
+                <div>
+                  <strong>${escapeHtml(v.name)}</strong>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">${escapeHtml(v.authority || '')}</div>
+                </div>
+              </div>
+            </td>
+            <td>${baseFareText}</td>
+            <td>${baseKmText}</td>
+            <td>${perKmText}</td>
+            <td>${specialFlatText}</td>
+            <td><span class="fare-badge ${statusBadgeClass}">${statusLabel}</span></td>
+          </tr>
+        `;
+      });
+
+      return `
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-title">
+            <span>📖 Official Tariff Quick-Reference (Read-Only)</span>
+            <span class="fare-badge badge-partial" style="font-size: 0.7rem;">🔒 Read-Only</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+            Official regulated tariffs for verifying complaint calculations during passenger-driver hearings. Tariff modifications require Senior Transit Administrator credentials.
+          </p>
+          <div style="overflow-x: auto;">
+            <table class="rate-table" style="font-size: 0.85rem;">
+              <thead>
+                <tr>
+                  <th>Vehicle</th>
+                  <th>Base Fare</th>
+                  <th>Base Distance</th>
+                  <th>Per Extra Km</th>
+                  <th>Special (Pakyaw)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // Helper to render the Complaints Desk workspace
+    function renderComplaintsDeskHtml(session) {
+      const reports = loadReports();
+      const total = reports.length;
+      const pendingCount = reports.filter(r => !r.status || r.status === 'pending').length;
+      const investigatingCount = reports.filter(r => r.status === 'investigating').length;
+      const summonedCount = reports.filter(r => r.status === 'summoned').length;
+      const resolvedCount = reports.filter(r => r.status === 'resolved').length;
+      const dismissedCount = reports.filter(r => r.status === 'dismissed').length;
+
+      let filtered = reports.filter(r => {
+        const curStatus = r.status || 'pending';
+        if (currentComplaintStatusFilter !== 'all' && curStatus !== currentComplaintStatusFilter) return false;
+        if (currentComplaintSearch) {
+          const q = currentComplaintSearch.toLowerCase();
+          const matchPlate = (r.plateNumber || '').toLowerCase().includes(q);
+          const matchRoute = `${r.from || ''} ${r.to || ''}`.toLowerCase().includes(q);
+          const matchVeh = (r.vehicle || '').toLowerCase().includes(q);
+          const matchNotes = (r.notes || '').toLowerCase().includes(q);
+          const matchAction = (r.actionNotes || '').toLowerCase().includes(q);
+          if (!matchPlate && !matchRoute && !matchVeh && !matchNotes && !matchAction) return false;
+        }
+        return true;
+      });
+
+      let cardsHtml = '';
+      if (filtered.length === 0) {
+        cardsHtml = `
+          <div class="card" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">📭</div>
+            <div style="font-weight: 700; font-size: 0.95rem;">No complaints found</div>
+            <div style="font-size: 0.8rem; margin-top: 4px;">${total === 0 ? 'No commuter reports have been filed yet via Screen 4 (Sumbong).' : 'No reports match the selected status filter or search query.'}</div>
+          </div>
+        `;
+      } else {
+        filtered.forEach(r => {
+          const curStatus = r.status || 'pending';
+          const diff = (parseFloat(r.amountCharged || 0) - parseFloat(r.correctFare || 0)).toFixed(2);
+          const v = FARES.vehicles[r.vehicle];
+          const vehName = v ? v.name : r.vehicle;
+          const vehIcon = v ? (v.icon || '🚗') : '🚗';
+
+          let statusBadge = '';
+          if (curStatus === 'resolved') {
+            statusBadge = '<span class="fare-badge badge-verified">✅ Resolved / Refunded</span>';
+          } else if (curStatus === 'investigating') {
+            statusBadge = '<span class="fare-badge" style="background:rgba(59,130,246,0.15);color:#2563EB;">🔍 Under Investigation</span>';
+          } else if (curStatus === 'summoned') {
+            statusBadge = '<span class="fare-badge" style="background:rgba(147,51,234,0.15);color:#7C3AED;">⚖️ Driver Summoned</span>';
+          } else if (curStatus === 'dismissed') {
+            statusBadge = '<span class="fare-badge" style="background:rgba(100,116,139,0.15);color:#64748B;">🚫 Dismissed</span>';
+          } else {
+            statusBadge = '<span class="fare-badge badge-partial">⏳ Pending Review</span>';
+          }
+
+          cardsHtml += `
+            <div class="complaint-card" data-id="${r.id}">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="vehicle-icon-badge" style="font-size: 1.2rem; width: 34px; height: 34px;">${vehIcon}</span>
+                  <div>
+                    <strong style="font-size: 1rem; color: var(--text-main);">${escapeHtml(vehName)}</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(r.timestamp.replace('T', ' '))} · Case <code>#${r.id.slice(-6)}</code></div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  ${statusBadge}
+                </div>
+              </div>
+
+              <div style="font-size: 0.9rem; margin-bottom: 6px;">
+                <strong>Route:</strong> ${escapeHtml(r.from)} → ${escapeHtml(r.to)}
+              </div>
+
+              <div style="font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; padding: 8px 12px; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
+                <div><span style="color: var(--text-muted); font-size: 0.75rem;">Charged:</span> <strong style="color: #DC2626; font-size: 0.95rem;">₱${parseFloat(r.amountCharged).toFixed(2)}</strong></div>
+                <div><span style="color: var(--text-muted); font-size: 0.75rem;">Legal Tariff:</span> <strong style="color: var(--text-main); font-size: 0.95rem;">₱${r.correctFare ? parseFloat(r.correctFare).toFixed(2) : 'N/A'}</strong></div>
+                <div><span style="color: var(--text-muted); font-size: 0.75rem;">Overcharge:</span> <strong style="color: #DC2626; font-size: 0.95rem; font-weight: 800;">+₱${diff}</strong></div>
+                ${r.plateNumber ? `<div><span style="color: var(--text-muted); font-size: 0.75rem;">Plate/Body:</span> <strong style="color: var(--brand-amber); font-family: monospace; font-size: 0.95rem;">${escapeHtml(r.plateNumber)}</strong></div>` : ''}
+              </div>
+
+              ${r.notes ? `<div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px; font-style: italic;">"${escapeHtml(r.notes)}"</div>` : ''}
+
+              <!-- Officer Resolution & Hearing Panel -->
+              <div class="complaint-action-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+                  <strong style="font-size: 0.82rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                    <span>👮 TMO Officer Hearing &amp; Action Log</span>
+                  </strong>
+                  ${r.updatedAt ? `<span style="font-size: 0.72rem; color: var(--text-muted);">Updated: ${new Date(r.updatedAt).toLocaleDateString()} by ${escapeHtml(r.officer || 'Officer')}</span>` : ''}
+                </div>
+
+                <div class="admin-grid-2 form-group" style="margin-bottom: 8px;">
+                  <div>
+                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Incident Status</label>
+                    <select class="input-control complaint-status-select" data-id="${r.id}" style="font-weight: 700; font-size: 0.82rem;">
+                      <option value="pending" ${curStatus === 'pending' ? 'selected' : ''}>⏳ Pending Review</option>
+                      <option value="investigating" ${curStatus === 'investigating' ? 'selected' : ''}>🔍 Under Investigation</option>
+                      <option value="summoned" ${curStatus === 'summoned' ? 'selected' : ''}>⚖️ Driver Summoned to City Hall</option>
+                      <option value="resolved" ${curStatus === 'resolved' ? 'selected' : ''}>✅ Resolved / Penalty & Refund Done</option>
+                      <option value="dismissed" ${curStatus === 'dismissed' ? 'selected' : ''}>🚫 Dismissed (Valid Fare / Unverified)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Officer / Inspector Name</label>
+                    <input type="text" class="input-control complaint-officer-name" data-id="${r.id}" value="${escapeHtml(r.officer || (session ? session.user : 'TMO Officer'))}" placeholder="Officer Name or Badge #">
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 8px;">
+                  <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Action Notes (Citation Ticket, Hearing Notes, Refund Record)</label>
+                  <textarea class="input-control complaint-action-notes" data-id="${r.id}" rows="2" placeholder="e.g. Citation Ticket #TMO-2026-104 issued. Driver summoned to Traffic Office; refunded ₱20 overcharge to passenger.">${escapeHtml(r.actionNotes || '')}</textarea>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                  <button type="button" class="btn btn-primary btn-sm btn-save-incident" data-id="${r.id}" style="font-weight: 800;">
+                    💾 Save Case Update
+                  </button>
+                  <button type="button" class="stepper-btn btn-delete-incident" data-id="${r.id}" title="Delete Case" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-size: 0.8rem; padding: 4px 8px;">
+                    🗑️ Delete Case
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      return `
+        <!-- KPI Bar -->
+        <div class="complaint-kpi-grid">
+          <div class="complaint-kpi-card">
+            <div class="complaint-kpi-num" style="color: var(--brand-amber);">${total}</div>
+            <div class="complaint-kpi-label">Total Reports</div>
+          </div>
+          <div class="complaint-kpi-card">
+            <div class="complaint-kpi-num" style="color: #D97706;">${pendingCount}</div>
+            <div class="complaint-kpi-label">Pending Review</div>
+          </div>
+          <div class="complaint-kpi-card">
+            <div class="complaint-kpi-num" style="color: #2563EB;">${investigatingCount + summonedCount}</div>
+            <div class="complaint-kpi-label">Investigating / Summoned</div>
+          </div>
+          <div class="complaint-kpi-card">
+            <div class="complaint-kpi-num" style="color: #10B981;">${resolvedCount}</div>
+            <div class="complaint-kpi-label">Resolved / Refunded</div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="card" style="margin-bottom: 16px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div class="complaint-filter-bar" style="margin-bottom: 0;">
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'all' ? 'active' : ''}" data-filter="all">All (${total})</button>
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'pending' ? 'active' : ''}" data-filter="pending">⏳ Pending (${pendingCount})</button>
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'investigating' ? 'active' : ''}" data-filter="investigating">🔍 Investigating (${investigatingCount})</button>
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'summoned' ? 'active' : ''}" data-filter="summoned">⚖️ Summoned (${summonedCount})</button>
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'resolved' ? 'active' : ''}" data-filter="resolved">✅ Resolved (${resolvedCount})</button>
+              <button type="button" class="complaint-filter-pill ${currentComplaintStatusFilter === 'dismissed' ? 'active' : ''}" data-filter="dismissed">🚫 Dismissed (${dismissedCount})</button>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button type="button" id="btn-export-complaints-csv" class="btn btn-secondary btn-sm" style="font-weight: 700;">
+                ⬇️ Export CSV
+              </button>
+              <button type="button" id="btn-copy-complaints-dossier" class="btn btn-secondary btn-sm" style="font-weight: 700;">
+                📋 Copy Dossier
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <input type="text" id="complaints-search-input" class="input-control" placeholder="🔍 Search complaints by plate number, body #, route, or notes..." value="${escapeHtml(currentComplaintSearch)}">
+          </div>
+        </div>
+
+        <!-- Complaints Cards List -->
+        <div id="complaints-cards-container">
+          ${cardsHtml}
+        </div>
+      `;
+    }
+
+    // Dynamic Injection of Protected Admin & Officer Dashboard
+    function renderAdminDashboard(targetSubTab) {
       const container = document.getElementById('screen-admin');
       if (!container) return;
 
@@ -4971,12 +5485,12 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         container.innerHTML = `
           <div class="card" style="text-align: center; padding: 48px 24px; max-width: 520px; margin: 40px auto;">
             <div style="font-size: 3rem; margin-bottom: 12px;">🔒</div>
-            <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">Restricted Admin Area</h3>
+            <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">Restricted Staff Portal</h3>
             <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
-              This console is reserved for authorized Catbalogan City Hall and LTFRB transit regulatory staff. Please authenticate to access fare modification controls.
+              This portal is reserved for authorized Catbalogan City Hall transit administrators and TMO complaints desk personnel.
             </p>
             <button type="button" class="btn btn-primary" onclick="openAdminLoginModal()" style="margin: 0 auto;">
-              🔐 Open Admin Login
+              🔐 Open Staff Login
             </button>
           </div>
         `;
@@ -4984,11 +5498,70 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       }
 
       const session = AdminAuthService.getSession();
+      const isOfficer = session && session.role === 'officer';
       const userDisplay = session ? session.user : 'admin@catbalogan.gov.ph';
       const lastUpdatedVal = FARES.lastUpdated || '2026-09-28';
       const noticeVal = FARES.noticeBanner || 'Notice: Tricycle and Habal-Habal rates are set by Catbalogan City Hall (LGU). Pier 1 sea passenger boats / pumpboats are under MARINA Region 8 and the Philippine Coast Guard (PCG).';
       const vehicleCount = Object.keys(FARES.vehicles).length;
+      const reports = loadReports();
 
+      if (targetSubTab) {
+        currentAdminSubTab = targetSubTab;
+      }
+
+      // -------------------------------------------------------------
+      // 1. OFFICER / EMPLOYEE VIEW (TMO Complaints Desk)
+      // -------------------------------------------------------------
+      if (isOfficer) {
+        container.innerHTML = `
+          <!-- Officer Session Bar -->
+          <div class="admin-session-bar" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.15)); border-color: rgba(59, 130, 246, 0.35);">
+            <div class="admin-session-info">
+              <span class="admin-pulse-dot" style="background-color: #3B82F6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);"></span>
+              <div>
+                <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                  <span>👮 Traffic &amp; Complaints Officer</span>
+                  <span class="route-badge" style="background: #3B82F6; color: #FFFFFF; font-size: 0.65rem; padding: 2px 6px;">TMO DESK</span>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">
+                  ${escapeHtml(userDisplay)} · Catbalogan City Traffic Management Office · <span style="color: #10B981; font-weight: 700;">Active Session</span>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="fare-badge badge-partial" style="font-size: 0.72rem;">🔒 Tariffs Read-Only</span>
+              <button type="button" id="btn-admin-logout" class="btn btn-secondary btn-sm" style="font-weight: 700; color: #DC2626; border-color: rgba(220, 38, 38, 0.3);">
+                🚪 Logout Officer
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-section-header" style="margin-top: 10px;">
+            <div>
+              <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: var(--text-main);">
+                📋 TMO Complaints Resolution &amp; Hearing Desk
+              </h3>
+              <p style="margin: 3px 0 0; font-size: 0.8rem; color: var(--text-muted);">
+                Review commuter overcharging reports filed via Screen 4 (Sumbong), issue citations, and log hearing outcomes.
+              </p>
+            </div>
+          </div>
+
+          <!-- Complaints Desk Area -->
+          ${renderComplaintsDeskHtml(session)}
+
+          <!-- Quick Reference to Regulated Tariffs (Read-Only) -->
+          ${renderReadOnlyTariffsHtml()}
+        `;
+
+        syncAdminNavTabs(true);
+        attachAdminDashboardEvents();
+        return;
+      }
+
+      // -------------------------------------------------------------
+      // 2. SENIOR TRANSIT ADMINISTRATOR VIEW (Full CRUD + Complaints)
+      // -------------------------------------------------------------
       let vehiclesHtml = '';
       Object.keys(FARES.vehicles).forEach(key => {
         const v = FARES.vehicles[key];
@@ -5043,72 +5616,57 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
 
             <div class="admin-grid-2 form-group" style="margin-bottom: 12px;">
               <div>
-                <label style="font-size:0.75rem;font-weight:700;">Legal Status</label>
+                <label style="font-size:0.75rem;font-weight:700;">Regulatory Status</label>
                 <select class="input-control admin-status">
-                  <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified (Official Tariffs)</option>
-                  <option value="partial" ${v.status === 'partial' ? 'selected' : ''}>Partial (Base Unverified)</option>
-                  <option value="unverified" ${v.status === 'unverified' ? 'selected' : ''}>Unverified (Pending LGU)</option>
+                  <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified (Official Law)</option>
+                  <option value="partial" ${v.status === 'partial' ? 'selected' : ''}>Partial (Incomplete)</option>
+                  <option value="unset" ${v.status === 'unset' ? 'selected' : ''}>Unset (No Rate Loaded)</option>
                 </select>
               </div>
               <div>
-                <label style="font-size:0.75rem;font-weight:700;">Authority / Law</label>
-                <input type="text" class="input-control admin-authority" value="${escapeHtml(v.authority || '')}" placeholder="e.g. Catbalogan LGU">
+                <label style="font-size:0.75rem;font-weight:700;">Governing Authority</label>
+                <input type="text" class="input-control admin-authority" value="${escapeHtml(v.authority || '')}" placeholder="e.g. LTFRB Region 8">
               </div>
             </div>
 
             <div class="form-group" style="margin-bottom: 12px;">
-              <label style="font-size:0.75rem;font-weight:700;">Description / Scope</label>
-              <input type="text" class="input-control admin-desc" value="${escapeHtml(v.description || '')}" placeholder="Tariff description">
+              <label style="font-size:0.75rem;font-weight:700;">Public Description / Legal Source</label>
+              <input type="text" class="input-control admin-desc" value="${escapeHtml(v.description || '')}" placeholder="e.g. City Ordinance No. 2024-03">
             </div>
 
             <div style="display: flex; justify-content: flex-end;">
-              <button type="button" class="btn btn-secondary btn-sm btn-save-single-vehicle" data-key="${key}" style="font-weight: 700; padding: 6px 14px;">
-                💾 Save Vehicle Changes
+              <button type="button" class="btn btn-primary btn-sm btn-save-single-vehicle" data-key="${key}" style="font-weight: 700;">
+                💾 Save ${escapeHtml(v.name)}
               </button>
             </div>
           </div>
         `;
       });
 
-      container.innerHTML = `
-        <div class="screen-header" style="margin-bottom: 16px;">
-          <h2 id="admin-title" class="screen-title">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand-amber)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>LGU Transit Regulatory Console</span>
-          </h2>
-          <p class="screen-subtitle">Official Fare Tariff Administration, Vehicle Registration, and Legal Disclaimers</p>
-        </div>
-
-        <!-- Session Status Bar -->
-        <div class="admin-session-bar">
-          <div class="admin-session-info">
-            <div class="admin-pulse-dot"></div>
-            <div>
-              <div style="font-size: 0.88rem; font-weight: 800; color: #065F46;">
-                Authenticated: <span style="font-family: monospace;">${escapeHtml(userDisplay)}</span>
-              </div>
-              <div style="font-size: 0.74rem; color: #047857;">
-                Protected Administrator Session · Automatically logs out when tab closes
-              </div>
-            </div>
-          </div>
-          <button type="button" id="btn-admin-logout" class="btn btn-secondary btn-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700;">
-            🚪 Logout Admin
+      // Sub-Tabs Navigation for Admin
+      const subTabsHtml = `
+        <div class="admin-tabs-nav">
+          <button type="button" class="admin-tab-pill ${currentAdminSubTab === 'tariffs' ? 'active' : ''}" data-subtab="tariffs">
+            🚗 Fare Tariffs &amp; Fleet Management (${vehicleCount})
+          </button>
+          <button type="button" class="admin-tab-pill ${currentAdminSubTab === 'complaints' ? 'active' : ''}" data-subtab="complaints">
+            📋 Complaints &amp; Hearing Desk (${reports.length})
+          </button>
+          <button type="button" class="admin-tab-pill ${currentAdminSubTab === 'backup' ? 'active' : ''}" data-subtab="backup">
+            💾 Data Backup &amp; Regulatory Tests
           </button>
         </div>
+      `;
 
-        <!-- Metadata & Official Notice Editor -->
+      // Content for Sub-Tab: Tariffs
+      const tariffsTabContent = `
+        <!-- Metadata & Jurisdiction Notice Editor -->
         <div class="card" style="margin-bottom: 20px;">
-          <div class="card-title" style="margin-bottom: 12px;">
-            <span>📢 Official Notice &amp; Legal Disclaimers</span>
+          <div class="card-title">
+            <span>⚙️ Official Legal Disclaimer &amp; Notice Banner</span>
           </div>
-          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
-            Changes here immediately update the warning banner and timestamp shown to all commuters on the public Rates screen.
-          </p>
-          <div class="form-group" style="margin-bottom: 14px;">
-            <label for="admin-meta-updated" style="font-size: 0.78rem; font-weight: 700;">Rates Last Updated (Date)</label>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="admin-meta-updated" style="font-size: 0.78rem; font-weight: 700;">Rates Last Updated Timestamp</label>
             <input type="text" id="admin-meta-updated" class="input-control" value="${escapeHtml(lastUpdatedVal)}" placeholder="YYYY-MM-DD or readable date">
           </div>
           <div class="form-group" style="margin-bottom: 14px;">
@@ -5147,7 +5705,10 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
             🔄 Reset to Factory Tariffs
           </button>
         </div>
+      `;
 
+      // Content for Sub-Tab: Backup & Tests
+      const backupTabContent = `
         <!-- Data Backup, Export & Cross-Device Sync -->
         <div class="card" style="margin-bottom: 20px;">
           <div class="card-title">
@@ -5189,6 +5750,35 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
             Ensures that changes made to the tariff matrix do not violate core Philippine transit laws (4km base rounding, 20% discounts, overcharge tolerances).
           </p>
           <div id="admin-test-results-panel" class="test-output-panel" style="display: none;"></div>
+        </div>
+      `;
+
+      container.innerHTML = `
+        <!-- Admin Session Bar -->
+        <div class="admin-session-bar">
+          <div class="admin-session-info">
+            <span class="admin-pulse-dot"></span>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                <span>👑 Transit Administrator</span>
+                <span class="route-badge" style="background:#EF4444;color:#FFFFFF;font-size:0.65rem;padding:2px 6px;">FULL ADMIN</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">
+                ${escapeHtml(userDisplay)} · Catbalogan City Hall &amp; LTFRB · <span style="color: #10B981; font-weight: 700;">Active Session</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" id="btn-admin-logout" class="btn btn-secondary btn-sm" style="font-weight: 700; color: #DC2626; border-color: rgba(220, 38, 38, 0.3);">
+              🚪 Logout Admin
+            </button>
+          </div>
+        </div>
+
+        ${subTabsHtml}
+
+        <div id="admin-subtab-container">
+          ${currentAdminSubTab === 'tariffs' ? tariffsTabContent : (currentAdminSubTab === 'complaints' ? renderComplaintsDeskHtml(session) : backupTabContent)}
         </div>
       `;
 
@@ -5293,15 +5883,215 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
       if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
           triggerHaptic();
-          if (confirm('Logout of Admin Console?')) {
+          if (confirm('Logout of Staff Portal?')) {
             await AdminAuthService.logout();
             teardownAdminDashboard();
-            showToast('Admin session closed. Public view restored.');
+            showToast('Staff session closed. Public commuter view restored.');
           }
         });
       }
 
-      // Save Metadata
+      // Admin Sub-Tab Switching
+      document.querySelectorAll('.admin-tab-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          const target = btn.getAttribute('data-subtab');
+          renderAdminDashboard(target);
+        });
+      });
+
+      // Complaints Filter Pills
+      document.querySelectorAll('.complaint-filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          triggerHaptic();
+          currentComplaintStatusFilter = btn.getAttribute('data-filter');
+          renderAdminDashboard();
+        });
+      });
+
+      // Complaints Search Input
+      const searchInput = document.getElementById('complaints-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          currentComplaintSearch = e.target.value;
+          const container = document.getElementById('complaints-cards-container');
+          if (container) {
+            const session = AdminAuthService.getSession();
+            const reports = loadReports();
+            let filtered = reports.filter(r => {
+              const curStatus = r.status || 'pending';
+              if (currentComplaintStatusFilter !== 'all' && curStatus !== currentComplaintStatusFilter) return false;
+              if (currentComplaintSearch) {
+                const q = currentComplaintSearch.toLowerCase();
+                const matchPlate = (r.plateNumber || '').toLowerCase().includes(q);
+                const matchRoute = `${r.from || ''} ${r.to || ''}`.toLowerCase().includes(q);
+                const matchVeh = (r.vehicle || '').toLowerCase().includes(q);
+                const matchNotes = (r.notes || '').toLowerCase().includes(q);
+                const matchAction = (r.actionNotes || '').toLowerCase().includes(q);
+                if (!matchPlate && !matchRoute && !matchVeh && !matchNotes && !matchAction) return false;
+              }
+              return true;
+            });
+
+            if (filtered.length === 0) {
+              container.innerHTML = `
+                <div class="card" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+                  <div style="font-size: 2.2rem; margin-bottom: 8px;">📭</div>
+                  <div style="font-weight: 700; font-size: 0.95rem;">No matching complaints</div>
+                  <div style="font-size: 0.8rem; margin-top: 4px;">No reports match "${escapeHtml(currentComplaintSearch)}".</div>
+                </div>
+              `;
+            } else {
+              let html = '';
+              filtered.forEach(r => {
+                const curStatus = r.status || 'pending';
+                const diff = (parseFloat(r.amountCharged || 0) - parseFloat(r.correctFare || 0)).toFixed(2);
+                const v = FARES.vehicles[r.vehicle];
+                const vehName = v ? v.name : r.vehicle;
+                const vehIcon = v ? (v.icon || '🚗') : '🚗';
+
+                let statusBadge = '';
+                if (curStatus === 'resolved') {
+                  statusBadge = '<span class="fare-badge badge-verified">✅ Resolved / Refunded</span>';
+                } else if (curStatus === 'investigating') {
+                  statusBadge = '<span class="fare-badge" style="background:rgba(59,130,246,0.15);color:#2563EB;">🔍 Under Investigation</span>';
+                } else if (curStatus === 'summoned') {
+                  statusBadge = '<span class="fare-badge" style="background:rgba(147,51,234,0.15);color:#7C3AED;">⚖️ Driver Summoned</span>';
+                } else if (curStatus === 'dismissed') {
+                  statusBadge = '<span class="fare-badge" style="background:rgba(100,116,139,0.15);color:#64748B;">🚫 Dismissed</span>';
+                } else {
+                  statusBadge = '<span class="fare-badge badge-partial">⏳ Pending Review</span>';
+                }
+
+                html += `
+                  <div class="complaint-card" data-id="${r.id}">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="vehicle-icon-badge" style="font-size: 1.2rem; width: 34px; height: 34px;">${vehIcon}</span>
+                        <div>
+                          <strong style="font-size: 1rem; color: var(--text-main);">${escapeHtml(vehName)}</strong>
+                          <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(r.timestamp.replace('T', ' '))} · Case <code>#${r.id.slice(-6)}</code></div>
+                        </div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        ${statusBadge}
+                      </div>
+                    </div>
+
+                    <div style="font-size: 0.9rem; margin-bottom: 6px;">
+                      <strong>Route:</strong> ${escapeHtml(r.from)} → ${escapeHtml(r.to)}
+                    </div>
+
+                    <div style="font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; padding: 8px 12px; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
+                      <div><span style="color: var(--text-muted); font-size: 0.75rem;">Charged:</span> <strong style="color: #DC2626; font-size: 0.95rem;">₱${parseFloat(r.amountCharged).toFixed(2)}</strong></div>
+                      <div><span style="color: var(--text-muted); font-size: 0.75rem;">Legal Tariff:</span> <strong style="color: var(--text-main); font-size: 0.95rem;">₱${r.correctFare ? parseFloat(r.correctFare).toFixed(2) : 'N/A'}</strong></div>
+                      <div><span style="color: var(--text-muted); font-size: 0.75rem;">Overcharge:</span> <strong style="color: #DC2626; font-size: 0.95rem; font-weight: 800;">+₱${diff}</strong></div>
+                      ${r.plateNumber ? `<div><span style="color: var(--text-muted); font-size: 0.75rem;">Plate/Body:</span> <strong style="color: var(--brand-amber); font-family: monospace; font-size: 0.95rem;">${escapeHtml(r.plateNumber)}</strong></div>` : ''}
+                    </div>
+
+                    ${r.notes ? `<div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px; font-style: italic;">"${escapeHtml(r.notes)}"</div>` : ''}
+
+                    <div class="complaint-action-box">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+                        <strong style="font-size: 0.82rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                          <span>👮 TMO Officer Hearing &amp; Action Log</span>
+                        </strong>
+                        ${r.updatedAt ? `<span style="font-size: 0.72rem; color: var(--text-muted);">Updated: ${new Date(r.updatedAt).toLocaleDateString()} by ${escapeHtml(r.officer || 'Officer')}</span>` : ''}
+                      </div>
+
+                      <div class="admin-grid-2 form-group" style="margin-bottom: 8px;">
+                        <div>
+                          <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Incident Status</label>
+                          <select class="input-control complaint-status-select" data-id="${r.id}" style="font-weight: 700; font-size: 0.82rem;">
+                            <option value="pending" ${curStatus === 'pending' ? 'selected' : ''}>⏳ Pending Review</option>
+                            <option value="investigating" ${curStatus === 'investigating' ? 'selected' : ''}>🔍 Under Investigation</option>
+                            <option value="summoned" ${curStatus === 'summoned' ? 'selected' : ''}>⚖️ Driver Summoned to City Hall</option>
+                            <option value="resolved" ${curStatus === 'resolved' ? 'selected' : ''}>✅ Resolved / Penalty & Refund Done</option>
+                            <option value="dismissed" ${curStatus === 'dismissed' ? 'selected' : ''}>🚫 Dismissed (Valid Fare / Unverified)</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Officer / Inspector Name</label>
+                          <input type="text" class="input-control complaint-officer-name" data-id="${r.id}" value="${escapeHtml(r.officer || (session ? session.user : 'TMO Officer'))}" placeholder="Officer Name or Badge #">
+                        </div>
+                      </div>
+
+                      <div class="form-group" style="margin-bottom: 8px;">
+                        <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block;">Action Notes (Citation Ticket, Hearing Notes, Refund Record)</label>
+                        <textarea class="input-control complaint-action-notes" data-id="${r.id}" rows="2" placeholder="e.g. Citation Ticket #TMO-2026-104 issued. Driver summoned to Traffic Office; refunded ₱20 overcharge to passenger.">${escapeHtml(r.actionNotes || '')}</textarea>
+                      </div>
+
+                      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                        <button type="button" class="btn btn-primary btn-sm btn-save-incident" data-id="${r.id}" style="font-weight: 800;">
+                          💾 Save Case Update
+                        </button>
+                        <button type="button" class="stepper-btn btn-delete-incident" data-id="${r.id}" title="Delete Case" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-size: 0.8rem; padding: 4px 8px;">
+                          🗑️ Delete Case
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              });
+              container.innerHTML = html;
+              // Re-bind incident save and delete buttons
+              bindIncidentButtons();
+            }
+          }
+        });
+      }
+
+      // Complaints Export & Dossier Buttons
+      const exportCsvBtn = document.getElementById('btn-export-complaints-csv');
+      if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', () => {
+          triggerHaptic();
+          exportComplaintsCSV();
+        });
+      }
+
+      const copyDossierBtn = document.getElementById('btn-copy-complaints-dossier');
+      if (copyDossierBtn) {
+        copyDossierBtn.addEventListener('click', () => {
+          triggerHaptic();
+          copyHearingDossier();
+        });
+      }
+
+      // Helper to bind incident save and delete buttons
+      function bindIncidentButtons() {
+        document.querySelectorAll('.btn-save-incident').forEach(btn => {
+          btn.addEventListener('click', () => {
+            triggerHaptic();
+            const id = btn.getAttribute('data-id');
+            const card = document.querySelector(`.complaint-card[data-id="${id}"]`);
+            if (!card) return;
+
+            const newStatus = card.querySelector('.complaint-status-select').value;
+            const officerName = card.querySelector('.complaint-officer-name').value.trim();
+            const actionNotes = card.querySelector('.complaint-action-notes').value.trim();
+
+            updateReportIncident(id, newStatus, actionNotes, officerName);
+            renderAdminDashboard();
+            renderReports();
+            showToast(`Incident ${id.slice(-6)} updated to: ${newStatus.toUpperCase()}`);
+          });
+        });
+
+        document.querySelectorAll('.btn-delete-incident').forEach(btn => {
+          btn.addEventListener('click', () => {
+            triggerHaptic();
+            const id = btn.getAttribute('data-id');
+            if (confirm(`Delete complaint record #${id.slice(-6)}?`)) {
+              deleteReport(id);
+              renderAdminDashboard();
+            }
+          });
+        });
+      }
+      bindIncidentButtons();
+
+      // Save Metadata (Admin only)
       const saveMetaBtn = document.getElementById('btn-save-admin-metadata');
       if (saveMetaBtn) {
         saveMetaBtn.addEventListener('click', () => {
@@ -5316,7 +6106,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Add Vehicle Trigger
+      // Add Vehicle Trigger (Admin only)
       const addVehTrigger = document.getElementById('btn-admin-add-vehicle-trigger');
       if (addVehTrigger) {
         addVehTrigger.addEventListener('click', () => {
@@ -5324,7 +6114,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Save Single Vehicle Buttons
+      // Save Single Vehicle Buttons (Admin only)
       document.querySelectorAll('.btn-save-single-vehicle').forEach(btn => {
         btn.addEventListener('click', () => {
           triggerHaptic();
@@ -5333,7 +6123,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       });
 
-      // Delete Vehicle Buttons
+      // Delete Vehicle Buttons (Admin only)
       document.querySelectorAll('.btn-delete-vehicle').forEach(btn => {
         btn.addEventListener('click', () => {
           triggerHaptic();
@@ -5342,7 +6132,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       });
 
-      // Save All Vehicles
+      // Save All Vehicles (Admin only)
       const saveAllBtn = document.getElementById('btn-save-all-admin-rates');
       if (saveAllBtn) {
         saveAllBtn.addEventListener('click', () => {
@@ -5351,7 +6141,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Reset to Factory Tariffs
+      // Reset to Factory Tariffs (Admin only)
       const resetBtn = document.getElementById('btn-reset-admin-rates');
       if (resetBtn) {
         resetBtn.addEventListener('click', () => {
@@ -5368,7 +6158,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Copy Rates JSON
+      // Copy Rates JSON (Admin only)
       const copyJsonBtn = document.getElementById('btn-copy-admin-json');
       if (copyJsonBtn) {
         copyJsonBtn.addEventListener('click', () => {
@@ -5380,7 +6170,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Download Rates JSON
+      // Download Rates JSON (Admin only)
       const downloadJsonBtn = document.getElementById('btn-download-admin-json');
       if (downloadJsonBtn) {
         downloadJsonBtn.addEventListener('click', () => {
@@ -5397,7 +6187,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Apply Rates JSON
+      // Apply Rates JSON (Admin only)
       const applyJsonBtn = document.getElementById('btn-apply-admin-json');
       if (applyJsonBtn) {
         applyJsonBtn.addEventListener('click', () => {
@@ -5422,7 +6212,7 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
         });
       }
 
-      // Run Acceptance Tests inside Admin
+      // Run Acceptance Tests inside Admin (Admin only)
       const runTestsBtn = document.getElementById('btn-admin-run-tests');
       if (runTestsBtn) {
         runTestsBtn.addEventListener('click', () => {
@@ -6079,7 +6869,11 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
           amountCharged: chargedVal,
           correctFare: correctVal,
           plateNumber: plateVal,
-          notes: notesVal
+          notes: notesVal,
+          status: 'pending',
+          actionNotes: '',
+          officer: '',
+          updatedAt: null
         };
 
         submitReport(report);
@@ -6151,11 +6945,15 @@ Ginhimo pinaagi han Pamasahe Catbalogan App`;
           const alertBox = document.getElementById('admin-login-alert');
 
           try {
-            await AdminAuthService.login(userVal, passVal);
+            const session = await AdminAuthService.login(userVal, passVal);
             closeAdminLoginModal();
             renderAdminDashboard();
             switchTab('screen-admin');
-            showToast(currentLang === 'war' ? 'Maopay nga pag-abot, Administrador!' : 'Welcome, Administrator! Admin panel unlocked.');
+            const isOfficer = session && session.role === 'officer';
+            const welcomeMsg = isOfficer 
+              ? (currentLang === 'war' ? 'Maopay nga pag-abot, TMO Complaints Officer! Na-unlock na an Complaints Desk.' : 'Welcome, TMO Officer! Complaints Desk unlocked.')
+              : (currentLang === 'war' ? 'Maopay nga pag-abot, Administrador!' : 'Welcome, Administrator! Admin panel unlocked.');
+            showToast(welcomeMsg);
           } catch (err) {
             const lockout = AdminAuthService.getLockoutStatus();
             if (lockout.isLocked) {
